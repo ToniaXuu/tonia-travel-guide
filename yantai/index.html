@@ -1303,7 +1303,7 @@
             var cards=document.querySelectorAll('.timeline-card');
             for(var i=0;i<cards.length;i++){(function(card){
                 var la=parseFloat(card.getAttribute('data-lat')),lo=parseFloat(card.getAttribute('data-lng'));
-                var cat=card.getAttribute('data-cat'),t=card.querySelector('.card-title').textContent;
+                var cat=card.getAttribute('data-category')||card.getAttribute('data-cat'),t=card.querySelector('.card-title').textContent;
                 if(!isNaN(la)&&!isNaN(lo)){
                     var m=new qq.maps.Marker({position:new qq.maps.LatLng(la,lo),map:map,title:t,
                         icon:new qq.maps.MarkerImage('data:image/svg+xml,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="28" height="36"><circle cx="14" cy="14" r="12" fill="'+(cc[cat]||'#10b981')+'" stroke="#fff" stroke-width="2"/><polygon points="14,34 8,24 20,24" fill="'+(cc[cat]||'#10b981')+'"/></svg>'),new qq.maps.Size(28,36),new qq.maps.Point(0,0),new qq.maps.Point(14,36))});
@@ -1352,6 +1352,8 @@
         }
 
         loadMap();
+        // 超时降级
+        setTimeout(function(){if(!map){fallbackMap()}}, 12000);
         
 
         // ============================================================
