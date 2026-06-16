@@ -23,8 +23,8 @@ body{
     background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;
 }
 /* 入场动画 — 弹性渐显 */
-body{animation:pageEnter .7s cubic-bezier(.22,.61,.36,1)}
-@keyframes pageEnter{from{opacity:0;transform:scale(.97)}to{opacity:1;transform:scale(1)}}
+body{animation:pageEnter .6s ease-out}
+@keyframes pageEnter{from{opacity:0}to{opacity:1}}
 /* 页面过渡遮罩 — 毛玻璃 + 波纹 */
 #page-transition{
     position:fixed;inset:0;z-index:9999;
@@ -111,8 +111,8 @@ body{animation:pageEnter .7s cubic-bezier(.22,.61,.36,1)}
 
 /* 卡片头部 */
 .card-header-img{height:180px;position:relative;overflow:hidden}
-.card-header-img.yantai{background:linear-gradient(135deg,#1D9E75 0%,#0d6b4f 30%,#1a6b8a 70%,#0d4f6b 100%)}
-.card-header-img.zibo{background:linear-gradient(135deg,#e67e22 0%,#d35400 30%,#c0392b 70%,#8e44ad 100%)}
+.card-header-img.yantai{background:linear-gradient(135deg,#1D9E75 0%,#0d6b4f 30%,#1a6b8a 70%,#0d4f6b 100%) url('assets/yantai-bg.jpg') center/cover;background-blend-mode:overlay}
+.card-header-img.zibo{background:linear-gradient(135deg,#e67e22 0%,#d35400 30%,#c0392b 70%,#8e44ad 100%) url('assets/zibo-bg.jpg') center/cover;background-blend-mode:overlay}
 .card-header-img .card-emoji{position:absolute;font-size:3.5rem;bottom:12px;right:20px;opacity:.7;animation:float 3s ease-in-out infinite}
 @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
 .card-header-img .card-city{position:absolute;bottom:16px;left:20px;color:rgba(255,255,255,.95);font-size:1.6rem;font-weight:700;text-shadow:0 2px 8px rgba(0,0,0,.3)}

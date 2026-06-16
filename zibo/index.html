@@ -10,7 +10,7 @@
 <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="../assets/favicon-16.png">
 <link rel="apple-touch-icon" sizes="128x128" href="../assets/favicon-128.png">
-<style>body{animation:pageIn .55s cubic-bezier(.22,.61,.36,1)}@keyframes pageIn{from{opacity:0;transform:scale(.97)}to{opacity:1;transform:scale(1)}}</style>
+<style>body{animation:pageIn .5s ease-out}@keyframes pageIn{from{opacity:0}to{opacity:1}}</style>
 <style>
 :root {
     --bg:#fef9f4; --card-bg:#fff; --text:#1a1a2e; --text-light:#555;
@@ -27,7 +27,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Noto Sans SC',s
 .back-btn:hover{background:#fff;transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,0,0,0.1)}
 
 /* Banner */
-.banner{background:linear-gradient(135deg,var(--color-banner-start) 0%,#c0392b 50%,var(--color-banner-end) 100%);color:#fff;text-align:center;padding:70px 20px 40px;position:relative;overflow:hidden}
+.banner{background:linear-gradient(135deg,var(--color-banner-start) 0%,#c0392b 50%,var(--color-banner-end) 100%) url('../assets/zibo-bg.jpg') center/cover;background-blend-mode:overlay;color:#fff;text-align:center;padding:70px 20px 40px;position:relative;overflow:hidden}
 .banner::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 30% 70%,rgba(255,255,255,0.08) 0%,transparent 60%),radial-gradient(circle at 70% 30%,rgba(255,255,255,0.05) 0%,transparent 60%)}
 .banner h1{font-size:clamp(1.8rem,4vw,2.5rem);font-weight:800;position:relative}
 .banner p{font-size:1rem;opacity:0.85;margin-top:8px;position:relative}

@@ -10,7 +10,7 @@
     <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="../assets/favicon-16.png">
     <link rel="apple-touch-icon" sizes="128x128" href="../assets/favicon-128.png">
-    <style>body{animation:pageIn .55s cubic-bezier(.22,.61,.36,1)}@keyframes pageIn{from{opacity:0;transform:scale(.97)}to{opacity:1;transform:scale(1)}}</style>
+    <style>body{animation:pageIn .5s ease-out}@keyframes pageIn{from{opacity:0}to{opacity:1}}</style>
     <!-- 腾讯地图API -->
     <!-- 请替换为您的腾讯地图API key，申请地址: https://lbs.qq.com/ -->
     <!-- 如果没有key，将显示备用SVG地图 -->
@@ -83,7 +83,8 @@
         .banner {
             position: relative;
             height: 200px;
-            background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 30%, #1e3a8a 70%, #1e1b4b 100%);
+            background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 30%, #1e3a8a 70%, #1e1b4b 100%) url('../assets/yantai-bg.jpg') center/cover;
+            background-blend-mode: overlay;
             overflow: hidden;
             display: flex;
             align-items: center;
