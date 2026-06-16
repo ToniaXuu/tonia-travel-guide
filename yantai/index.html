@@ -1308,6 +1308,8 @@
                             <div class="legend-dot" style="background: var(--violet);"></div>
                             <span>文化</span>
                         </div>
+                        <div class="legend-item" style="cursor:pointer;margin-left:auto" onclick="toggleSatellite()" id="sat-toggle">🛰 卫星</div>
+                        </div>
                         <div class="legend-item">
                             <div class="legend-dot" style="background: var(--emerald);"></div>
                             <span>购物</span>
@@ -1393,6 +1395,16 @@
             "交通": "#6366f1"
         };
         
+
+        // 卫星/地图切换
+        function toggleSatellite() {
+            if (!map) return;
+            window._isSatellite = !window._isSatellite;
+            map.setMapTypeId(window._isSatellite ? TMap.constants.MAPTYPE.SATELLITE : TMap.constants.MAPTYPE.NORMAL);
+            var b = document.getElementById('sat-toggle');
+            if (b) b.textContent = window._isSatellite ? '🗺 地图' : '🛰 卫星';
+        }
+
         // 备用SVG地图
         function createFallbackMap(day) {
             const daySpots = spots[day];

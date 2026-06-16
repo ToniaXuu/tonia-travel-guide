@@ -317,6 +317,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Noto Sans SC',s
                 <div class="legend-item"><div class="legend-dot" style="background:var(--purple)"></div>文化</div>
                 <div class="legend-item"><div class="legend-dot" style="background:var(--night)"></div>交通</div>
                 <div class="legend-item"><div class="legend-dot" style="background:#ec4899"></div>住宿</div>
+                <div class="legend-item" style="cursor:pointer" onclick="toggleSatellite()" id="sat-toggle">🛰 卫星</div>
             </div>
         </div>
     </div>
@@ -415,86 +416,76 @@ body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Noto Sans SC',s
 <!-- 腾讯地图 -->
 <script>
 const TENCENT_MAP_KEY = 'PBOBZ-S4XEN-YOVFW-STAR3-KJOME-4QBOO';
-var map = null;
-var markers = [];
-var currentCardIdx = -1;
+var map = null, markers = [], routeLines = [], isSatellite = false, currentDay = 1;
+var routes = {
+    1: [{lat:36.675,lng:117.020},{lat:36.8045,lng:118.0575},{lat:36.8130,lng:118.0180},{lat:36.8180,lng:118.0150},{lat:36.8200,lng:118.0120},{lat:36.8190,lng:118.0130},{lat:36.8070,lng:118.0540},{lat:36.8065,lng:118.0565}],
+    2: [{lat:36.8065,lng:118.0565},{lat:36.8020,lng:117.8550},{lat:36.675,lng:117.020}]
+};
 
-// Day切换
+function toggleSatellite(){
+    if(!map)return; isSatellite=!isSatellite;
+    map.setMapTypeId(isSatellite?qq.maps.MapTypeId.SATELLITE:qq.maps.MapTypeId.ROADMAP);
+    var b=document.getElementById('sat-toggle');if(b)b.textContent=isSatellite?'🗺 地图':'🛰 卫星';
+}
+
 function switchDay(d){
     document.querySelectorAll('.day-tab').forEach(function(t,i){t.classList.toggle('active',i===d-1)});
     document.getElementById('day1').classList.toggle('active',d===1);
     document.getElementById('day2').classList.toggle('active',d===2);
+    currentDay=d; if(map) drawRoutes(d);
 }
 
-// 加载腾讯地图
 function loadMap(){
-    var s = document.createElement('script');
-    s.src = 'https://map.qq.com/api/js?v=2.exp&key=' + TENCENT_MAP_KEY + '&callback=onMapLoaded';
-    s.onerror = function(){ fallbackMap(); };
-    document.head.appendChild(s);
+    var s=document.createElement('script');
+    s.src='https://map.qq.com/api/js?v=2.exp&key='+TENCENT_MAP_KEY+'&callback=onMapLoaded';
+    s.onerror=function(){fallbackMap()}; document.head.appendChild(s);
 }
 
 function onMapLoaded(){
-    document.getElementById('map-loading').style.display = 'none';
-    map = new qq.maps.Map(document.getElementById('map'), {
-        center: new qq.maps.LatLng(36.8065, 118.0595),
-        zoom: 11
-    });
-    var catColors = {'景点':'#10b981','美食':'#e74c3c','文化':'#8b5cf6','交通':'#6366f1','住宿':'#ec4899','购物':'#f59e0b'};
-    var cards = document.querySelectorAll('.timeline-card');
-    for (var i = 0; i < cards.length; i++) {
-        (function(card){
-            var lat = parseFloat(card.getAttribute('data-lat'));
-            var lng = parseFloat(card.getAttribute('data-lng'));
-            var cat = card.getAttribute('data-cat');
-            var title = card.querySelector('.card-title').textContent;
-            if (!isNaN(lat) && !isNaN(lng)) {
-                var m = new qq.maps.Marker({
-                    position: new qq.maps.LatLng(lat, lng),
-                    map: map,
-                    title: title,
-                    icon: new qq.maps.MarkerImage(
-                        'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="28" height="36"><circle cx="14" cy="14" r="12" fill="'+(catColors[cat]||'#10b981')+'" stroke="#fff" stroke-width="2"/><polygon points="14,34 8,24 20,24" fill="'+(catColors[cat]||'#10b981')+'"/></svg>'),
-                        new qq.maps.Size(28,36), new qq.maps.Point(0,0), new qq.maps.Point(14,36)
-                    )
-                });
-                markers.push({marker:m,card:card});
-                qq.maps.event.addListener(m, 'click', (function(idx){
-                    return function(){ highlightCard(idx); };
-                })(markers.length - 1));
-            }
-        })(cards[i]);
-    }
-    // 卡片点击事件
-    for (var j = 0; j < cards.length; j++) {
-        (function(card, idx2){
-            card.addEventListener('click', function(){
-                var lat = parseFloat(card.getAttribute('data-lat'));
-                var lng = parseFloat(card.getAttribute('data-lng'));
-                if (!isNaN(lat) && !isNaN(lng)) {
-                    map.setZoom(15);
-                    map.panTo(new qq.maps.LatLng(lat, lng));
-                    highlightCard(idx2);
-                }
-            });
-        })(cards[j], j);
-    }
+    document.getElementById('map-loading').style.display='none';
+    map=new qq.maps.Map(document.getElementById('map'),{center:new qq.maps.LatLng(36.8065,118.0595),zoom:11});
+    var cc={'景点':'#10b981','美食':'#e74c3c','文化':'#8b5cf6','交通':'#6366f1','住宿':'#ec4899','购物':'#f59e0b'};
+    var cards=document.querySelectorAll('.timeline-card');
+    for(var i=0;i<cards.length;i++){(function(card){
+        var la=parseFloat(card.getAttribute('data-lat')),lo=parseFloat(card.getAttribute('data-lng'));
+        var cat=card.getAttribute('data-cat'),t=card.querySelector('.card-title').textContent;
+        if(!isNaN(la)&&!isNaN(lo)){
+            var m=new qq.maps.Marker({position:new qq.maps.LatLng(la,lo),map:map,title:t,
+                icon:new qq.maps.MarkerImage('data:image/svg+xml,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="28" height="36"><circle cx="14" cy="14" r="12" fill="'+(cc[cat]||'#10b981')+'" stroke="#fff" stroke-width="2"/><polygon points="14,34 8,24 20,24" fill="'+(cc[cat]||'#10b981')+'"/></svg>'),new qq.maps.Size(28,36),new qq.maps.Point(0,0),new qq.maps.Point(14,36))});
+            markers.push({marker:m,card:card});
+            qq.maps.event.addListener(m,'click',(function(idx){return function(){highlightCard(idx)}})(markers.length-1));
+        }
+    })(cards[i])}
+    for(var j=0;j<cards.length;j++){(function(card,idx){
+        card.addEventListener('click',function(){
+            var la=parseFloat(card.getAttribute('data-lat')),lo=parseFloat(card.getAttribute('data-lng'));
+            if(!isNaN(la)&&!isNaN(lo)){map.setZoom(15);map.panTo(new qq.maps.LatLng(la,lo));highlightCard(idx)}
+        })
+    })(cards[j],j)}
+    drawRoutes(1);
+}
+
+function drawRoutes(day){
+    routeLines.forEach(function(l){l.setMap(null)}); routeLines=[];
+    var pts=routes[day]; if(!pts||pts.length<2)return;
+    var path=pts.map(function(p){return new qq.maps.LatLng(p.lat,p.lng)});
+    var line=new qq.maps.Polyline({path:path,map:map,strokeColor:day===1?'#e74c3c':'#6366f1',strokeWeight:3,strokeOpacity:.7,strokeDashStyle:day===1?'solid':'dash'});
+    routeLines.push(line);
+    var bounds=new qq.maps.LatLngBounds();path.forEach(function(p){bounds.extend(p)});map.fitBounds(bounds);
 }
 
 function highlightCard(idx){
     document.querySelectorAll('.timeline-card').forEach(function(c){c.classList.remove('highlight')});
-    var cards = document.querySelectorAll('.timeline-card');
-    if (cards[idx]) { cards[idx].classList.add('highlight'); cards[idx].scrollIntoView({behavior:'smooth',block:'center'}); }
+    var cards=document.querySelectorAll('.timeline-card');
+    if(cards[idx]){cards[idx].classList.add('highlight');cards[idx].scrollIntoView({behavior:'smooth',block:'center'})}
 }
 
 function fallbackMap(){
-    document.getElementById('map-loading').style.display = 'none';
-    var mapDiv = document.getElementById('map');
-    mapDiv.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 500" style="width:100%;height:100%"><rect width="600" height="500" fill="#f0f4f0"/><text x="300" y="200" text-anchor="middle" font-size="18" fill="#888">🗺 地图加载失败</text><text x="300" y="230" text-anchor="middle" font-size="12" fill="#aaa">请检查API Key或网络连接</text><circle cx="150" cy="280" r="6" fill="#10b981"/><text x="162" y="284" font-size="11" fill="#555">海岱楼</text><circle cx="300" cy="280" r="6" fill="#e74c3c"/><text x="312" y="284" font-size="11" fill="#555">八大局</text><circle cx="450" cy="280" r="6" fill="#8b5cf6"/><text x="462" y="284" font-size="11" fill="#555">周村古商城</text></svg>';
+    document.getElementById('map-loading').style.display='none';
+    document.getElementById('map').innerHTML='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 500" style="width:100%;height:100%"><rect width="600" height="500" fill="#f0f4f0"/><text x="300" y="200" text-anchor="middle" font-size="18" fill="#888">🗺 地图加载失败</text><text x="300" y="230" text-anchor="middle" font-size="12" fill="#aaa">请检查API Key</text><circle cx="120" cy="320" r="5" fill="#e74c3c"/><text x="140" y="324" font-size="10" fill="#555">八大局</text><circle cx="300" cy="320" r="5" fill="#10b981"/><text x="320" y="324" font-size="10" fill="#555">海岱楼</text><circle cx="480" cy="320" r="5" fill="#8b5cf6"/><text x="500" y="324" font-size="10" fill="#555">周村</text><circle cx="80" cy="200" r="5" fill="#6366f1"/><text x="100" y="204" font-size="10" fill="#555">济南</text><line x1="80" y1="200" x2="120" y2="320" stroke="#e74c3c" stroke-width="2"/><line x1="120" y1="320" x2="300" y2="320" stroke="#10b981" stroke-width="2"/><line x1="480" y1="320" x2="80" y2="200" stroke="#6366f1" stroke-width="2" stroke-dasharray="5"/></svg>';
 }
 
 loadMap();
-
 // ========== 实时天气（与烟台页一致）==========
 (function() {
     var WEATHER_ICONS = {'晴':'☀️','多云':'⛅','阴':'☁️','小雨':'🌦️','中雨':'🌧️','大雨':'🌧️','暴雨':'🌊','雷阵雨':'⛈️','阵雨':'🌦️','雾':'🌫️','霾':'🌫️','雪':'🌨️'};
