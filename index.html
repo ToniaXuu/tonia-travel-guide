@@ -22,21 +22,35 @@ body{
     font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Noto Sans SC',sans-serif;
     background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;
 }
-/* 入场动画 */
-body{animation:fadeInUp 0.6s ease-out}
-@keyframes fadeInUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-/* 页面过渡遮罩 */
+/* 入场动画 — 弹性渐显 */
+body{animation:pageEnter .7s cubic-bezier(.22,.61,.36,1)}
+@keyframes pageEnter{from{opacity:0;transform:scale(.97)}to{opacity:1;transform:scale(1)}}
+/* 页面过渡遮罩 — 毛玻璃 + 波纹 */
 #page-transition{
-    position:fixed;inset:0;z-index:9999;background:linear-gradient(135deg,rgba(168,230,207,0.95),rgba(213,198,224,0.95));
-    pointer-events:none;opacity:0;transition:opacity 0.35s ease;
+    position:fixed;inset:0;z-index:9999;
+    background:radial-gradient(circle at center,rgba(168,230,207,.92),rgba(213,198,224,.96),rgba(200,180,220,.98));
+    pointer-events:none;opacity:0;transition:opacity .4s cubic-bezier(.4,0,.2,1);
+    display:flex;align-items:center;justify-content:center;
 }
 #page-transition.active{opacity:1}
-#page-transition .spinner{
+#page-transition .ripple{
+    width:0;height:0;border-radius:50%;
+    background:rgba(255,255,255,.4);
     position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
-    width:40px;height:40px;border:3px solid rgba(255,255,255,0.3);border-top-color:#fff;
-    border-radius:50%;animation:spin 0.7s linear infinite;
+    transition:width .45s cubic-bezier(.26,.53,.74,.98),height .45s cubic-bezier(.26,.53,.74,.98);
 }
-@keyframes spin{to{transform:translate(-50%,-50%) rotate(360deg)}}
+#page-transition.active .ripple{width:120vmax;height:120vmax}
+#page-transition .loading-dots{
+    position:relative;z-index:1;display:flex;gap:10px;
+}
+#page-transition .dot{
+    width:10px;height:10px;border-radius:50%;background:#fff;
+    animation:dotBounce 1.2s ease-in-out infinite;
+}
+#page-transition .dot:nth-child(1){animation-delay:0s;background:var(--green-mid)}
+#page-transition .dot:nth-child(2){animation-delay:.15s;background:var(--purple-mid)}
+#page-transition .dot:nth-child(3){animation-delay:.3s;background:var(--green-mid)}
+@keyframes dotBounce{0%,80%,100%{transform:translateY(0)}40%{transform:translateY(-16px)}}
 
 /* 粒子 */
 #particles{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none}
@@ -44,9 +58,15 @@ body{animation:fadeInUp 0.6s ease-out}
 /* 容器 */
 .container{position:relative;z-index:1;max-width:960px;margin:0 auto;padding:0 24px}
 
-/* Hero */
+/* Hero — 渐变光标扫过 */
 .hero{text-align:center;padding:70px 20px 20px}
-.hero h1{font-size:clamp(2rem,5vw,3rem);font-weight:800;background:linear-gradient(135deg,#66bb6a,#7e57c2);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:8px}
+.hero h1{
+    font-size:clamp(2rem,5vw,3rem);font-weight:800;
+    background:linear-gradient(135deg,#66bb6a 0%,#7e57c2 50%,#66bb6a 100%);
+    background-size:200% 200%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+    margin-bottom:8px;animation:shimmer 3s ease-in-out infinite;
+}
+@keyframes shimmer{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
 .hero .subtitle{font-size:1rem;color:var(--text-light);letter-spacing:2px}
 .hero .divider{width:50px;height:3px;background:linear-gradient(90deg,var(--green-mid),var(--purple-mid));border-radius:2px;margin:16px auto}
 
@@ -74,20 +94,20 @@ body{animation:fadeInUp 0.6s ease-out}
 .empty-year{text-align:center;padding:40px 20px;color:var(--text-light);opacity:0.6}
 .empty-year .empty-icon{font-size:3rem;margin-bottom:8px}
 
-/* 旅行卡片网格 */
+/* 旅行卡片 — 弹性交错入场 */
 .travel-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:28px;padding:10px 0 30px}
 .travel-card{
     background:var(--white);border-radius:18px;overflow:hidden;box-shadow:var(--shadow);
-    transition:all 0.35s cubic-bezier(0.25,0.8,0.25,1.2);cursor:pointer;
+    transition:all .4s cubic-bezier(.34,1.56,.64,1);cursor:pointer;
     text-decoration:none;color:inherit;display:block;position:relative;
-    animation:cardIn 0.5s ease-out both;
+    animation:cardSpring .6s cubic-bezier(.34,1.56,.64,1) both;
 }
-.travel-card:nth-child(1){animation-delay:0.05s}
-.travel-card:nth-child(2){animation-delay:0.15s}
-.travel-card:nth-child(3){animation-delay:0.25s}
-@keyframes cardIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
-.travel-card:hover{transform:translateY(-6px);box-shadow:var(--shadow-hover)}
-.travel-card:active{transform:translateY(-3px)}
+.travel-card:nth-child(1){animation-delay:.08s}
+.travel-card:nth-child(2){animation-delay:.18s}
+.travel-card:nth-child(3){animation-delay:.28s}
+@keyframes cardSpring{from{opacity:0;transform:translateY(40px) scale(.92)}to{opacity:1;transform:translateY(0) scale(1)}}
+.travel-card:hover{transform:translateY(-6px) scale(1.015);box-shadow:0 20px 50px rgba(0,0,0,.12)}
+.travel-card:active{transform:translateY(-3px) scale(.99)}
 
 /* 卡片头部 */
 .card-header-img{height:180px;position:relative;overflow:hidden}
@@ -133,7 +153,7 @@ body{animation:fadeInUp 0.6s ease-out}
 <body>
 
 <canvas id="particles"></canvas>
-<div id="page-transition"><div class="spinner"></div></div>
+<div id="page-transition"><div class="ripple"></div><div class="loading-dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div></div>
 
 <div class="container">
     <header class="hero">
