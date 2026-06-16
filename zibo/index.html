@@ -336,7 +336,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Noto Sans SC',s
                 <div class="price-note">平日约 ¥180-280</div>
                 <div class="addr">📍 张店区共青团路西路95号 · 距八大局步行8分钟</div>
                 <div class="book-btns">
-                    <a href="https://hotels.ctrip.com/hotels/979554.html?checkIn=2026-06-19&checkOut=2026-06-20" target="_blank" class="book-btn ctrip">携程预订</a>
+                    <a href="javascript:void(0)" data-hotel-id="979554" class="book-btn ctrip">携程预订</a>
                 </div>
             </div>
             <div class="hotel-card">
@@ -346,7 +346,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Noto Sans SC',s
                 <div class="price-note">平日约 ¥150-250</div>
                 <div class="addr">📍 张店区体育场街道 · 万象汇旁 · 距八大局驾车3分钟</div>
                 <div class="book-btns">
-                    <a href="https://hotels.ctrip.com/hotels/117879019.html?checkIn=2026-06-19&checkOut=2026-06-20" target="_blank" class="book-btn ctrip">携程预订</a>
+                    <a href="javascript:void(0)" data-hotel-id="117879019" class="book-btn ctrip">携程预订</a>
                 </div>
             </div>
             <div class="hotel-card">
@@ -356,7 +356,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Noto Sans SC',s
                 <div class="price-note">平日约 ¥120-200</div>
                 <div class="addr">📍 张店区华光路64号 · 距八大局步行12分钟 · 免费停车</div>
                 <div class="book-btns">
-                    <a href="https://hotels.ctrip.com/hotels/121878771.html?checkIn=2026-06-19&checkOut=2026-06-20" target="_blank" class="book-btn ctrip">携程预订</a>
+                    <a href="javascript:void(0)" data-hotel-id="121878771" class="book-btn ctrip">携程预订</a>
                 </div>
             </div>
             <div class="hotel-card">
@@ -366,7 +366,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Noto Sans SC',s
                 <div class="price-note">平日约 ¥100-180</div>
                 <div class="addr">📍 张店区金晶大道2号 · 火车站旁 · 步行至八大局10分钟</div>
                 <div class="book-btns">
-                    <a href="https://hotels.ctrip.com/hotels/1996553.html?checkIn=2026-06-19&checkOut=2026-06-20" target="_blank" class="book-btn ctrip">携程预订</a>
+                    <a href="javascript:void(0)" data-hotel-id="1996553" class="book-btn ctrip">携程预订</a>
                 </div>
             </div>
         </div>
@@ -548,6 +548,7 @@ loadMap();
     setTimeout(function(){if(window[cb]){delete window[cb];fallback()}},8000);
 })();
 </script>
+<script>document.addEventListener('click',function(e){var b=e.target.closest('.book-btn.ctrip[data-hotel-id]');if(!b)return;e.preventDefault();var id=b.dataset.hotelId,m=innerWidth<=768;window.open(m?'https://m.ctrip.com/html5/hotel/hoteldetail/'+id+'.html?checkIn=2026-06-19&checkOut=2026-06-20':'https://hotels.ctrip.com/hotels/'+id+'.html?checkIn=2026-06-19&checkOut=2026-06-20','_blank')});</script>
 
 </body>
 </html>

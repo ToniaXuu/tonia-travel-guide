@@ -1985,7 +1985,7 @@
                     </div>
                     <div class="hotel-desc">位于龙湖蓝湖郡11号楼，距养马岛大桥约5分钟车程。4.9分好评如潮，适合追求品质的情侣。</div>
                     <div class="book-btns">
-                        <a href="https://m.ctrip.com/html5/hotel/hoteldetail/131955924.html?checkIn=2026-06-19&checkOut=2026-06-20" target="_blank" class="book-btn ctrip">携程预订</a>
+                        <a href="javascript:void(0)" data-hotel-id="131955924" class="book-btn ctrip">携程预订</a>
                     </div>
                 </div>
                 
@@ -2002,7 +2002,7 @@
                     </div>
                     <div class="hotel-desc">位于养马岛环岛路288号，岛上核心位置。出门就是环岛路，适合早起看日出的情侣。</div>
                     <div class="book-btns">
-                        <a href="https://m.ctrip.com/html5/hotel/hoteldetail/127945373.html?checkIn=2026-06-19&checkOut=2026-06-20" target="_blank" class="book-btn ctrip">携程预订</a>
+                        <a href="javascript:void(0)" data-hotel-id="127945373" class="book-btn ctrip">携程预订</a>
                     </div>
                 </div>
                 
@@ -2019,7 +2019,7 @@
                     </div>
                     <div class="hotel-desc">特色：民宿内提供电驴租赁，可以骑着电动车环游养马岛。第二天早上还可以骑去看日出。</div>
                     <div class="book-btns">
-                        <a href="https://hotels.ctrip.com/hotels/122458548.html?checkIn=2026-06-19&checkOut=2026-06-20" target="_blank" class="book-btn ctrip">携程预订</a>
+                        <a href="javascript:void(0)" data-hotel-id="122458548" class="book-btn ctrip">携程预订</a>
                     </div>
                 </div>
                 
@@ -2036,7 +2036,7 @@
                     </div>
                     <div class="hotel-desc">养马岛龙湖葡醍海湾旁，设施齐全的假日酒店。有健身房和洗衣房，适合喜欢标准化服务的情侣。</div>
                     <div class="book-btns">
-                        <a href="https://hotels.ctrip.com/hotels/129732178.html?checkIn=2026-06-19&checkOut=2026-06-20" target="_blank" class="book-btn ctrip">携程预订</a>
+                        <a href="javascript:void(0)" data-hotel-id="129732178" class="book-btn ctrip">携程预订</a>
                     </div>
                 </div>
             </div>
@@ -3015,5 +3015,6 @@
         }
     </style>
     
+    <script>document.addEventListener('click',function(e){var b=e.target.closest('.book-btn.ctrip[data-hotel-id]');if(!b)return;e.preventDefault();var id=b.dataset.hotelId,m=innerWidth<=768;window.open(m?'https://m.ctrip.com/html5/hotel/hoteldetail/'+id+'.html?checkIn=2026-06-19&checkOut=2026-06-20':'https://hotels.ctrip.com/hotels/'+id+'.html?checkIn=2026-06-19&checkOut=2026-06-20','_blank')});</script>
 </body>
 </html>
