@@ -3,10 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="淄博烧烤自驾两日游攻略：济南出发1.5h，八大局早市、海岱楼钟书阁、周村古商城、灵魂三件套烧烤。含携程酒店预订、交互地图。">
+<meta property="og:title" content="淄博烧烤之旅 · 两日自驾游 | Tonia's Travel Journal">
+<meta property="og:description" content="自驾1.5h，八大局寻味、海岱楼打卡、周村穿越，灵魂三件套烧烤之旅。">
 <title>淄博烧烤之旅 · 两日自驾游攻略 | Tonia's Travel Journal</title>
 <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="../assets/favicon-16.png">
 <link rel="apple-touch-icon" sizes="128x128" href="../assets/favicon-128.png">
+<style>body{animation:fadeIn .5s ease-out}@keyframes fadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}</style>
 <style>
 :root {
     --bg:#fef9f4; --card-bg:#fff; --text:#1a1a2e; --text-light:#555;
@@ -490,6 +494,59 @@ function fallbackMap(){
 }
 
 loadMap();
+
+// ========== 实时天气（与烟台页一致）==========
+(function() {
+    var WEATHER_ICONS = {'晴':'☀️','多云':'⛅','阴':'☁️','小雨':'🌦️','中雨':'🌧️','大雨':'🌧️','暴雨':'🌊','雷阵雨':'⛈️','阵雨':'🌦️','雾':'🌫️','霾':'🌫️','雪':'🌨️'};
+    function getIcon(w){for(var k in WEATHER_ICONS){if(w.indexOf(k)>=0)return WEATHER_ICONS[k];}return '🌤️';}
+    function updWidget(id,label,info){
+        var el=document.getElementById(id);if(!el)return;
+        var dw=info.day.weather||'',nw=info.night.weather||'';
+        el.querySelector('.weather-date').textContent=label;
+        el.querySelector('.weather-icon').textContent=getIcon(dw);
+        el.querySelector('.weather-temp').textContent=info.night.temperature+'~'+info.day.temperature+'°C';
+        el.querySelector('.weather-desc').textContent=dw===nw?dw:dw+'→'+nw;
+    }
+    function addToCards(dayData,container){
+        if(!dayData||!container)return;
+        var cards=container.querySelectorAll('.timeline-card');
+        var dw=dayData.day.weather||'',nw=dayData.night.weather||'';
+        var dt=dayData.day.temperature||'--',nt=dayData.night.temperature||'--';
+        cards.forEach(function(card){
+            var timeEl=card.querySelector('.card-time');if(!timeEl)return;
+            var t=timeEl.textContent,m=t.match(/(\d{1,2}):\d{2}/);
+            var h=m?parseInt(m[1]):12,isNight=h>=18||h<4;
+            var w=isNight?nw:dw,temp=isNight?nt:dt;
+            var old=card.querySelector('.card-weather');if(old)old.remove();
+            var badge=document.createElement('span');
+            badge.className='card-weather';
+            badge.style.cssText='font-size:.7rem;padding:1px 7px;border-radius:10px;background:rgba(245,158,11,.12);color:#f59e0b;font-weight:500;margin-left:auto;margin-right:8px;white-space:nowrap';
+            badge.innerHTML='<span style="font-size:.75rem">'+getIcon(w)+'</span> '+temp+'°';
+            var cat=card.querySelector('.card-cat');if(cat)card.querySelector('.card-header').insertBefore(badge,cat);
+        });
+    }
+    function fallback(){
+        var d1={day:{weather:'多云',temperature:33},night:{weather:'多云',temperature:23}};
+        var d2={day:{weather:'多云',temperature:34},night:{weather:'阴',temperature:24}};
+        updWidget('weather-day1','6月19日 周五',d1);
+        updWidget('weather-day2','6月20日 周六',d2);
+        addToCards(d1,document.querySelector('#day1'));addToCards(d2,document.querySelector('#day2'));
+    }
+    var cb='weatherCB_'+Date.now(),adcode='370300';
+    window[cb]=function(d){
+        delete window[cb];if(d.status===0&&d.result&&d.result.forecast){
+            var infos=d.result.forecast.infos,d1=null,d2=null;
+            for(var i=0;i<infos.length;i++){if(infos[i].date==='2026-06-19')d1=infos[i];if(infos[i].date==='2026-06-20')d2=infos[i];}
+            if(d1){updWidget('weather-day1','6月19日 周五',d1);addToCards(d1,document.querySelector('#day1'));}
+            if(d2){updWidget('weather-day2','6月20日 周六',d2);addToCards(d2,document.querySelector('#day2'));}
+            var ue=document.getElementById('weather-update-time');if(ue&&d.result.forecast.update_time)ue.textContent='更新于 '+d.result.forecast.update_time;
+        }
+    };
+    var s=document.createElement('script');
+    s.src='https://apis.map.qq.com/ws/weather/v1/?key='+TENCENT_MAP_KEY+'&adcode='+adcode+'&type=future&get_md=1&output=jsonp&callback='+cb;
+    s.onerror=fallback;document.body.appendChild(s);
+    setTimeout(function(){if(window[cb]){delete window[cb];fallback()}},8000);
+})();
 </script>
 
 </body>
