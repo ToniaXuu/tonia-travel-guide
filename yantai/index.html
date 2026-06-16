@@ -1251,38 +1251,18 @@
         <!-- Right Panel - Map -->
         <div class="right-panel">
             <div class="map-container">
-                <div id="map"></div>
-                <div class="map-overlay">
-                    <div class="map-legend">
-                        <div class="legend-item">
-                            <div class="legend-dot" style="background: var(--ocean);"></div>
-                            <span>景点</span>
-                        </div>
-                        <div class="legend-item">
-                            <div class="legend-dot" style="background: var(--coral);"></div>
-                            <span>美食</span>
-                        </div>
-                        <div class="legend-item">
-                            <div class="legend-dot" style="background: var(--violet);"></div>
-                            <span>文化</span>
-                        </div>
-                        <div class="legend-item" style="cursor:pointer" onclick="toggleSatellite()" id="sat-toggle">🛰 卫星</div>
-                    </div>
-                </div>
-                <!-- 加载动画覆盖层 -->
-                <div id="map-loading" class="map-loading-overlay">
+                <div class="map-loading-overlay" id="map-loading">
                     <div class="map-loading-spinner"></div>
-                    <span style="font-size:0.85rem;color:var(--gray-500)">地图加载中...</span>
+                    <span style="font-size:0.85rem;color:var(--text-light)">地图加载中...</span>
                 </div>
-                <!-- 调试信息覆盖层 -->
-                <div id="debug-overlay" class="debug-overlay" style="display: none;">
-                    <div class="debug-content">
-                        <div class="debug-header">
-                            <span>🔧 地图加载调试信息</span>
-                            <button class="debug-close" onclick="hideDebugOverlay()">×</button>
-                        </div>
-                        <div id="debug-info" class="debug-info"></div>
-                    </div>
+                <div id="map"></div>
+                <div class="map-legend">
+                    <div class="legend-item"><div class="legend-dot" style="background:var(--ocean)"></div>景点</div>
+                    <div class="legend-item"><div class="legend-dot" style="background:var(--coral)"></div>美食</div>
+                    <div class="legend-item"><div class="legend-dot" style="background:var(--violet)"></div>文化</div>
+                    <div class="legend-item"><div class="legend-dot" style="background:#6366f1"></div>交通</div>
+                    <div class="legend-item"><div class="legend-dot" style="background:#ec4899"></div>住宿</div>
+                    <div class="legend-item" style="cursor:pointer" onclick="toggleSatellite()" id="sat-toggle">🛰 卫星</div>
                 </div>
             </div>
         </div>
