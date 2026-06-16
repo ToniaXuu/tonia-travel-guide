@@ -3015,15 +3015,17 @@
         }
     </style>
     <script>
-    // 打开App（安装时跳转App，未安装则跳网页）
     function openApp(appScheme, webUrl) {
-        var now = Date.now();
+        var timer = null, skip = false;
+        function cancel() { skip = true; if (timer) clearTimeout(timer); }
+        document.addEventListener('pagehide', cancel);
+        document.addEventListener('visibilitychange', function() { if (document.hidden) cancel(); });
+        document.addEventListener('blur', cancel);
         window.location.href = appScheme;
-        setTimeout(function() {
-            if (Date.now() - now < 2500) {
-                window.location.href = webUrl;
-            }
-        }, 600);
+        timer = setTimeout(function() {
+            if (!skip) { window.location.href = webUrl; }
+            document.removeEventListener('pagehide', cancel);
+        }, 3000);
     }
     </script>
 </body>

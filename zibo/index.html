@@ -514,15 +514,20 @@ function fallbackMap(){
     mapDiv.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 500" style="width:100%;height:100%"><rect width="600" height="500" fill="#f0f4f0"/><text x="300" y="200" text-anchor="middle" font-size="18" fill="#888">🗺 地图加载失败</text><text x="300" y="230" text-anchor="middle" font-size="12" fill="#aaa">请检查API Key或网络连接</text><circle cx="150" cy="280" r="6" fill="#10b981"/><text x="162" y="284" font-size="11" fill="#555">海岱楼</text><circle cx="300" cy="280" r="6" fill="#e74c3c"/><text x="312" y="284" font-size="11" fill="#555">八大局</text><circle cx="450" cy="280" r="6" fill="#8b5cf6"/><text x="462" y="284" font-size="11" fill="#555">周村古商城</text></svg>';
 }
 
-// 打开App（安装时跳转App，未安装则跳网页）
+// 打开App：能唤醒则跳App，未安装则跳网页；App打开后不再跳网页
 function openApp(appScheme, webUrl) {
-    var now = Date.now();
+    var timer = null, skip = false;
+    function cancel() { skip = true; if (timer) clearTimeout(timer); }
+    document.addEventListener('pagehide', cancel);
+    document.addEventListener('visibilitychange', function() { if (document.hidden) cancel(); });
+    document.addEventListener('blur', cancel);  // window失去焦点 = App被唤醒
+    
     window.location.href = appScheme;
-    setTimeout(function() {
-        if (Date.now() - now < 2500) {
-            window.location.href = webUrl;
-        }
-    }, 600);
+    
+    timer = setTimeout(function() {
+        if (!skip) { window.location.href = webUrl; }
+        document.removeEventListener('pagehide', cancel);
+    }, 3000);
 }
 
 loadMap();
