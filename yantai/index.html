@@ -1308,7 +1308,7 @@
                             <div class="legend-dot" style="background: var(--violet);"></div>
                             <span>文化</span>
                         </div>
-                        <div class="legend-item" style="cursor:pointer;margin-left:auto" onclick="toggleSatellite()" id="sat-toggle">🛰 卫星</div>
+                        <div class="legend-item" style="cursor:pointer" onclick="toggleSatellite()" id="sat-toggle">🛰 卫星</div>
                         </div>
                         <div class="legend-item">
                             <div class="legend-dot" style="background: var(--emerald);"></div>
@@ -1347,429 +1347,91 @@
     </div>
     
     <script>
-        // 腾讯地图初始化
-        let map = null;
-        let markers = [];
-        let polyline = null;
-        let currentDay = 1;
-        let ytPulseMarker = null; // 脉冲动画标记
-        
-        // 景点数据
-        const spots = {
-            1: [
-                { lat: 36.675, lng: 117.125, name: "济南东站", category: "交通" },
-                { lat: 37.5535, lng: 121.3914, name: "烟台站", category: "交通" },
-                { lat: 37.5535, lng: 121.3914, name: "朝阳街", category: "景点" },
-                { lat: 37.5465, lng: 121.3885, name: "烟台山", category: "景点" },
-                { lat: 37.5445, lng: 121.3925, name: "蓬莱春酒家", category: "美食" },
-                { lat: 37.5485, lng: 121.3905, name: "所城里大街", category: "文化" },
-                { lat: 37.4615, lng: 121.6085, name: "养马岛换乘中心", category: "景点" },
-                { lat: 37.4685, lng: 121.6125, name: "獐岛", category: "景点" },
-                { lat: 37.4645, lng: 121.6185, name: "秦风崖", category: "景点" },
-                { lat: 37.4625, lng: 121.6145, name: "莲花夕照", category: "景点" },
-                { lat: 37.4635, lng: 121.6165, name: "海岛日记", category: "文化" },
-                { lat: 37.4655, lng: 121.6105, name: "东辰望海渔家", category: "美食" },
-                { lat: 37.4675, lng: 121.6095, name: "居巢民宿", category: "住宿" }
-            ],
-            2: [
-                { lat: 37.4675, lng: 121.6095, name: "居巢民宿", category: "住宿" },
-                { lat: 37.4685, lng: 121.6125, name: "獐岛赶海", category: "景点" },
-                { lat: 37.4665, lng: 121.6115, name: "老船长渔家乐", category: "美食" },
-                { lat: 37.4645, lng: 121.6185, name: "秦风崖日出", category: "景点" },
-                { lat: 37.5325, lng: 121.4205, name: "渔人码头", category: "景点" },
-                { lat: 37.5385, lng: 121.4065, name: "月亮湾", category: "景点" },
-                { lat: 37.5405, lng: 121.3945, name: "旺角小渔村", category: "美食" },
-                { lat: 37.5425, lng: 121.3885, name: "特产采购", category: "购物" },
-                { lat: 37.5535, lng: 121.3914, name: "烟台站", category: "交通" },
-                { lat: 36.675, lng: 117.125, name: "济南东站", category: "交通" }
-            ]
+        const TENCENT_MAP_KEY = 'PBOBZ-S4XEN-YOVFW-STAR3-KJOME-4QBOO';
+        var map = null, markers = [], routeLines = [], isSatellite = false, currentDay = 1;
+        var highlightMarker = null, highlightLabel = null;
+        var routes = {
+            1: [{lat:36.675,lng:117.125},{lat:37.5535,lng:121.3914},{lat:37.5465,lng:121.3885},{lat:37.5445,lng:121.3925},{lat:37.5485,lng:121.3905},{lat:37.4615,lng:121.6085},{lat:37.4685,lng:121.6125},{lat:37.4645,lng:121.6185},{lat:37.4625,lng:121.6145},{lat:37.4635,lng:121.6165},{lat:37.4655,lng:121.6105},{lat:37.4675,lng:121.6095}],
+            2: [{lat:37.4675,lng:121.6095},{lat:37.4685,lng:121.6125},{lat:37.4665,lng:121.6115},{lat:37.4645,lng:121.6185},{lat:37.5325,lng:121.4205},{lat:37.5385,lng:121.4065},{lat:37.5405,lng:121.3945},{lat:37.5425,lng:121.3885},{lat:37.5535,lng:121.3914},{lat:36.675,lng:117.125}]
         };
-        
-        // 类别颜色
-        const categoryColors = {
-            "景点": "#2563eb",
-            "美食": "#f97316",
-            "文化": "#8b5cf6",
-            "购物": "#10b981",
-            "住宿": "#ec4899",
-            "交通": "#6366f1"
-        };
-        
 
-        // 卫星/地图切换
-        function toggleSatellite() {
-            if (!map) return;
-            window._isSatellite = !window._isSatellite;
-            map.setMapTypeId(window._isSatellite ? TMap.constants.MAPTYPE.SATELLITE : TMap.constants.MAPTYPE.NORMAL);
-            var b = document.getElementById('sat-toggle');
-            if (b) b.textContent = window._isSatellite ? '🗺 地图' : '🛰 卫星';
+        function toggleSatellite(){
+            if(!map)return; isSatellite=!isSatellite;
+            map.setMapTypeId(isSatellite?qq.maps.MapTypeId.SATELLITE:qq.maps.MapTypeId.ROADMAP);
+            var b=document.getElementById('sat-toggle');if(b)b.textContent=isSatellite?'🗺 地图':'🛰 卫星';
         }
 
-        // 备用SVG地图
-        function createFallbackMap(day) {
-            const daySpots = spots[day];
-            const mapContainer = document.getElementById('map');
-            
-            // 创建SVG地图
-            const svg = `
-                <svg viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg" style="width: 100%; height: 100%;">
-                    <!-- 背景 -->
-                    <rect width="800" height="600" fill="#f8fafc"/>
-                    
-                    <!-- 海洋 -->
-                    <path d="M0 300 Q200 250 400 300 Q600 350 800 300 V600 H0 Z" fill="#e0f2fe" opacity="0.5"/>
-                    
-                    <!-- 陆地 -->
-                    <path d="M0 300 Q200 250 400 300 Q600 350 800 300 V0 H0 Z" fill="#f0fdf4"/>
-                    
-                    <!-- 养马岛 -->
-                    <ellipse cx="650" cy="350" rx="80" ry="60" fill="#d1fae5" stroke="#10b981" stroke-width="2"/>
-                    <text x="650" y="355" text-anchor="middle" font-size="14" fill="#059669" font-weight="bold">养马岛</text>
-                    
-                    <!-- 烟台市区 -->
-                    <ellipse cx="350" cy="280" rx="100" ry="80" fill="#dbeafe" stroke="#3b82f6" stroke-width="2"/>
-                    <text x="350" y="285" text-anchor="middle" font-size="14" fill="#1d4ed8" font-weight="bold">烟台市区</text>
-                    
-                    <!-- 路线 -->
-                    <path d="M350 280 Q500 300 650 350" stroke="${categoryColors[daySpots[0].category]}" stroke-width="3" fill="none" stroke-dasharray="10,5"/>
-                    
-                    <!-- 标记点 -->
-                    ${daySpots.map((spot, index) => {
-                        const x = 350 + (index * 30);
-                        const y = 280 + (index * 20);
-                        return `
-                            <circle cx="${x}" cy="${y}" r="8" fill="${categoryColors[spot.category]}" stroke="white" stroke-width="2"/>
-                            <text x="${x}" y="${y + 4}" text-anchor="middle" font-size="10" fill="white" font-weight="bold">${index + 1}</text>
-                            <text x="${x}" y="${y + 20}" text-anchor="middle" font-size="8" fill="${categoryColors[spot.category]}">${spot.name}</text>
-                        `;
-                    }).join('')}
-                    
-                    <!-- 图例 -->
-                    <g transform="translate(20, 20)">
-                        <rect x="0" y="0" width="150" height="120" fill="white" rx="8" stroke="#e2e8f0"/>
-                        <text x="75" y="20" text-anchor="middle" font-size="12" font-weight="bold" fill="#1e293b">Day ${day} 路线</text>
-                        ${Object.entries(categoryColors).map(([category, color], i) => `
-                            <circle cx="20" cy="${40 + i * 20}" r="6" fill="${color}"/>
-                            <text x="35" y="${44 + i * 20}" font-size="10" fill="#64748b">${category}</text>
-                        `).join('')}
-                    </g>
-                    
-                    <!-- 提示 -->
-                    <text x="400" y="580" text-anchor="middle" font-size="12" fill="#94a3b8">💡 点击左侧卡片查看详细位置 | 配置腾讯地图API key后可显示交互式地图</text>
-                </svg>
-            `;
-            
-            mapContainer.innerHTML = svg;
+        function switchDay(d){
+            document.querySelectorAll('.day-tab').forEach(function(t,i){t.classList.toggle('active',i===d-1)});
+            document.querySelectorAll('.day-content').forEach(function(c){c.style.display='none'});
+            var dc=document.querySelector('.day-content[data-day="'+d+'"]');if(dc)dc.style.display='block';
+            currentDay=d; if(map) drawRoutes(d);
         }
-        
-        // 初始化地图
-        async function initMap() {
-            const mapLoading = document.getElementById('map-loading');
-            const debugOverlay = document.getElementById('debug-overlay');
-            const debugInfo = document.getElementById('debug-info');
-            
-            try {
-                // 显示加载动画
-                mapLoading.style.display = 'flex';
-                
-                // 动态加载腾讯地图API
-                debugInfo.innerHTML = '<span class="info">🔄 开始加载腾讯地图API...</span>\n';
-                await loadTencentMap();
-                debugInfo.innerHTML += '<span class="success">✅ API脚本加载完成</span>\n';
-                
-                // 等待TMap对象可用
-                debugInfo.innerHTML += '<span class="info">⏳ 等待TMap对象初始化...</span>\n';
-                await new Promise(resolve => {
-                    if (typeof TMap !== 'undefined') {
-                        resolve();
-                    } else {
-                        const checkTMap = setInterval(() => {
-                            if (typeof TMap !== 'undefined') {
-                                clearInterval(checkTMap);
-                                resolve();
-                            }
-                        }, 100);
-                        // 超时10秒
-                        setTimeout(() => {
-                            clearInterval(checkTMap);
-                            resolve();
-                        }, 10000);
-                    }
-                });
-                
-                // 检查腾讯地图API是否加载
-                if (typeof TMap === 'undefined') {
-                    debugInfo.innerHTML += '<span class="error">❌ TMap对象未定义，API加载失败</span>\n';
-                    debugInfo.innerHTML += '<span class="info">💡 可能原因：</span>\n';
-                    debugInfo.innerHTML += '<span class="info">1. API key未分配功能额度</span>\n';
-                    debugInfo.innerHTML += '<span class="info">2. 域名白名单限制</span>\n';
-                    debugInfo.innerHTML += '<span class="info">3. API key格式错误</span>\n';
-                    
-                    console.error('腾讯地图API加载失败，使用备用SVG地图');
-                    createFallbackMap(1);
-                    
-                    // 隐藏加载动画，显示调试信息
-                    mapLoading.classList.add('hidden');
-                    setTimeout(() => {
-                        mapLoading.style.display = 'none';
-                        debugOverlay.style.display = 'flex';
-                    }, 500);
-                    return;
+
+        function loadMap(){
+            var s=document.createElement('script');
+            s.src='https://map.qq.com/api/js?v=2.exp&key='+TENCENT_MAP_KEY+'&callback=onMapLoaded';
+            s.onerror=function(){fallbackMap()}; document.head.appendChild(s);
+        }
+
+        function onMapLoaded(){
+            document.getElementById('map-loading').style.display='none';
+            map=new qq.maps.Map(document.getElementById('map'),{center:new qq.maps.LatLng(37.5,121.5),zoom:10});
+            var cc={'景点':'#10b981','美食':'#e74c3c','文化':'#8b5cf6','交通':'#6366f1','住宿':'#ec4899','购物':'#f59e0b'};
+            var cards=document.querySelectorAll('.timeline-card');
+            for(var i=0;i<cards.length;i++){(function(card){
+                var la=parseFloat(card.getAttribute('data-lat')),lo=parseFloat(card.getAttribute('data-lng'));
+                var cat=card.getAttribute('data-cat'),t=card.querySelector('.card-title').textContent;
+                if(!isNaN(la)&&!isNaN(lo)){
+                    var m=new qq.maps.Marker({position:new qq.maps.LatLng(la,lo),map:map,title:t,
+                        icon:new qq.maps.MarkerImage('data:image/svg+xml,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="28" height="36"><circle cx="14" cy="14" r="12" fill="'+(cc[cat]||'#10b981')+'" stroke="#fff" stroke-width="2"/><polygon points="14,34 8,24 20,24" fill="'+(cc[cat]||'#10b981')+'"/></svg>'),new qq.maps.Size(28,36),new qq.maps.Point(0,0),new qq.maps.Point(14,36))});
+                    markers.push({marker:m,card:card,title:t,lat:la,lng:lo});
+                    qq.maps.event.addListener(m,'click',(function(idx){return function(){highlightCard(idx)}})(markers.length-1));
                 }
-                
-                debugInfo.innerHTML += '<span class="success">✅ TMap对象加载成功</span>\n';
-                debugInfo.innerHTML += '<span class="info">🗺️ 初始化地图...</span>\n';
-                
-                // 初始化地图
-                map = new TMap.Map(document.getElementById('map'), {
-                    center: new TMap.LatLng(37.5, 121.5), // 烟台中心
-                    zoom: 11,
-                    viewMode: '2D'
-                });
-                
-                debugInfo.innerHTML += '<span class="success">✅ 地图初始化成功</span>\n';
-                debugInfo.innerHTML += '<span class="info">📍 添加标记和连线...</span>\n';
-                
-                // 添加标记和连线
-                updateMap(1);
-                
-                debugInfo.innerHTML += '<span class="success">✅ 标记和连线添加完成</span>\n';
-                
-                // 绑定卡片点击事件
-                bindCardEvents();
-                
-                debugInfo.innerHTML += '<span class="success">✅ 所有功能就绪</span>\n';
-                
-                // 隐藏加载动画
-                mapLoading.classList.add('hidden');
-                setTimeout(() => {
-                    mapLoading.style.display = 'none';
-                }, 500);
-                
-                console.log('腾讯地图初始化完成');
-                
-            } catch (error) {
-                debugInfo.innerHTML += `<span class="error">❌ 初始化失败: ${error.message}</span>\n`;
-                debugInfo.innerHTML += '<span class="info">💡 请检查：</span>\n';
-                debugInfo.innerHTML += '<span class="info">1. 网络连接是否正常</span>\n';
-                debugInfo.innerHTML += '<span class="info">2. API key是否有效</span>\n';
-                debugInfo.innerHTML += '<span class="info">3. 是否配置了功能额度</span>\n';
-                
-                console.error('地图初始化失败:', error);
-                createFallbackMap(1);
-                
-                // 隐藏加载动画，显示调试信息
-                mapLoading.classList.add('hidden');
-                setTimeout(() => {
-                    mapLoading.style.display = 'none';
-                    debugOverlay.style.display = 'flex';
-                }, 500);
-            }
+            })(cards[i])}
+            for(var j=0;j<cards.length;j++){(function(card,idx){
+                card.addEventListener('click',function(){
+                    var la=parseFloat(card.getAttribute('data-lat')),lo=parseFloat(card.getAttribute('data-lng'));
+                    if(!isNaN(la)&&!isNaN(lo)){map.setZoom(15);map.panTo(new qq.maps.LatLng(la,lo));highlightCard(idx)}
+                })
+            })(cards[j],j)}
+            drawRoutes(1);
         }
-        
-        // 更新地图显示
-        function updateMap(day) {
-            if (!map) {
-                createFallbackMap(day);
-                return;
-            }
-            
-            // 清除现有标记
-            markers.forEach(marker => marker.setMap(null));
-            markers = [];
-            
-            // 清除现有连线
-            if (polyline) {
-                polyline.setMap(null);
-                polyline = null;
-            }
-            
-            // 获取当天景点
-            const daySpots = spots[day];
-            
-            // 定义各类别标记样式
-            const markerStyles = {
-                '景点': { color: '#2563eb', icon: '🏖️' },
-                '美食': { color: '#f97316', icon: '🍽️' },
-                '文化': { color: '#8b5cf6', icon: '🎭' },
-                '购物': { color: '#10b981', icon: '🛍️' },
-                '住宿': { color: '#ec4899', icon: '🏨' },
-                '交通': { color: '#6366f1', icon: '🚄' }
-            };
-            
-            // 创建标记
-            daySpots.forEach((spot, index) => {
-                const { color, icon } = markerStyles[spot.category] || { color: '#6b7280', icon: '📍' };
-                
-                const marker = new TMap.MultiMarker({
-                    id: `marker-${day}-${index}`,
-                    map: map,
-                    styles: {
-                        [`marker-style-${spot.category}`]: new TMap.MarkerStyle({
-                            width: 40,
-                            height: 50,
-                            anchor: { x: 20, y: 50 },
-                            src: `data:image/svg+xml;charset=utf-8,${encodeURIComponent(`
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 50">
-                                    <path d="M20 0C9 0 0 9 0 20c0 15 20 30 20 30s20-15 20-30C40 9 31 0 20 0z" fill="${color}"/>
-                                    <circle cx="20" cy="18" r="12" fill="white"/>
-                                    <text x="20" y="22" text-anchor="middle" font-size="14">${icon}</text>
-                                </svg>
-                            `)}`
-                        })
-                    },
-                    geometries: [{
-                        id: `spot-${day}-${index}`,
-                        styleId: `marker-style-${spot.category}`,
-                        position: new TMap.LatLng(spot.lat, spot.lng),
-                        properties: {
-                            title: spot.name,
-                            category: spot.category
-                        }
-                    }]
-                });
-                markers.push(marker);
-            });
-            
-            // 创建连线
-            const path = daySpots.map(spot => new TMap.LatLng(spot.lat, spot.lng));
-            polyline = new TMap.MultiPolyline({
-                id: `polyline-${day}`,
-                map: map,
-                styles: {
-                    'polyline-style': new TMap.PolylineStyle({
-                        'color': categoryColors[daySpots[0].category] || '#2563eb',
-                        'width': 4,
-                        'borderWidth': 2,
-                        'borderColor': '#ffffff',
-                        'lineCap': 'round'
-                    })
-                },
-                geometries: [{
-                    styleId: 'polyline-style',
-                    paths: path
-                }]
-            });
-            
-            // 调整视野
-            const bounds = new TMap.LatLngBounds();
-            path.forEach(latLng => bounds.extend(latLng));
-            map.fitBounds(bounds, { padding: 50 });
+
+        function drawRoutes(day){
+            routeLines.forEach(function(l){l.setMap(null)}); routeLines=[];
+            var pts=routes[day]; if(!pts||pts.length<2)return;
+            var path=pts.map(function(p){return new qq.maps.LatLng(p.lat,p.lng)});
+            var line=new qq.maps.Polyline({path:path,map:map,strokeColor:day===1?'#e74c3c':'#6366f1',strokeWeight:3,strokeOpacity:.7,strokeDashStyle:day===1?'solid':'dash'});
+            routeLines.push(line);
+            var bounds=new qq.maps.LatLngBounds();path.forEach(function(p){bounds.extend(p)});map.fitBounds(bounds);
         }
-        
-        // 绑定卡片点击事件
-        function bindCardEvents() {
-            const cards = document.querySelectorAll('.timeline-card');
-            cards.forEach(card => {
-                card.addEventListener('click', function() {
-                    const lat = parseFloat(this.dataset.lat);
-                    const lng = parseFloat(this.dataset.lng);
-                    const title = this.querySelector('.card-title').textContent;
-                    
-                    // 飞到对应位置
-                    if (map) {
-                        map.setZoom(17);
-                        setTimeout(() => { map.panTo(new TMap.LatLng(lat, lng)); }, 100);
-                        addPulseEffect(lat, lng, title);
-                    }
-                    
-                    // 高亮当前卡片
-                    cards.forEach(c => c.classList.remove('active'));
-                    this.classList.add('active');
-                    
-                    // 滚动到对应卡片位置
-                    this.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-                });
+
+        function highlightCard(idx){
+            document.querySelectorAll('.timeline-card').forEach(function(c){c.classList.remove('highlight')});
+            var cards=document.querySelectorAll('.timeline-card');
+            if(cards[idx]){cards[idx].classList.add('highlight');cards[idx].scrollIntoView({behavior:'smooth',block:'center'})}
+            if(!map)return;
+            if(highlightMarker){highlightMarker.setMap(null);highlightMarker=null}
+            if(highlightLabel){highlightLabel.setMap(null);highlightLabel=null}
+            var target=null;
+            for(var k=0;k<markers.length;k++){if(markers[k].card===cards[idx]){target=markers[k];break}}
+            if(!target)return;
+            highlightMarker=new qq.maps.Marker({
+                position:new qq.maps.LatLng(target.lat,target.lng),map:map,title:target.title,zIndex:999,
+                icon:new qq.maps.MarkerImage('data:image/svg+xml,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="44" height="54"><circle cx="22" cy="20" r="16" fill="#e74c3c" stroke="#fff" stroke-width="3"/><circle cx="22" cy="20" r="22" fill="none" stroke="#e74c3c" stroke-width="2" opacity="0.4"><animate attributeName="r" from="16" to="28" dur="1s" repeatCount="indefinite"/><animate attributeName="opacity" from="0.5" to="0" dur="1s" repeatCount="indefinite"/></circle><polygon points="22,52 12,34 32,34" fill="#e74c3c"/></svg>'),new qq.maps.Size(44,54),new qq.maps.Point(0,0),new qq.maps.Point(22,54))
             });
+            highlightLabel=new qq.maps.Label({position:new qq.maps.LatLng(target.lat+0.005,target.lng),map:map,content:'<div style="background:rgba(0,0,0,.75);color:#fff;padding:4px 10px;border-radius:6px;font-size:12px;font-weight:600;white-space:nowrap">'+target.title+'</div>'});
         }
-        
-        // 添加脉冲动画效果
-        var ytPulseLabel = null;
-        function addPulseEffect(lat, lng, title) {
-            if (ytPulseMarker) { ytPulseMarker.setMap(null); ytPulseMarker = null; }
-            if (ytPulseLabel) { ytPulseLabel.close(); ytPulseLabel = null; }
-            
-            // 创建脉冲标记
-            ytPulseMarker = new TMap.MultiMarker({
-                id: 'pulse-marker',
-                map: map,
-                styles: {
-                    'pulse-style': new TMap.MarkerStyle({
-                        width: 60,
-                        height: 60,
-                        anchor: { x: 30, y: 30 },
-                        src: `data:image/svg+xml;charset=utf-8,${encodeURIComponent(`
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 60">
-                                <circle cx="30" cy="30" r="25" fill="#3b82f6" opacity="0.3">
-                                    <animate attributeName="r" values="15;30;15" dur="1s" repeatCount="indefinite"/>
-                                    <animate attributeName="opacity" values="0.8;0;0.8" dur="1s" repeatCount="indefinite"/>
-                                </circle>
-                                <circle cx="30" cy="30" r="8" fill="#3b82f6"/>
-                            </svg>
-                        `)}`
-                    })
-                },
-                geometries: [{
-                    id: 'pulse-point',
-                    styleId: 'pulse-style',
-                    position: new TMap.LatLng(lat, lng)
-                }]
-            });
-            
-            // 文字标签
-            ytPulseLabel = new TMap.InfoWindow({
-                map: map, position: new TMap.LatLng(lat, lng), offset: { x: 0, y: -40 },
-                content: '<div style="background:rgba(0,0,0,.78);color:#fff;padding:3px 10px;border-radius:6px;font-size:12px;font-weight:600;white-space:nowrap">'+title+'</div>'
-            });
-            ytPulseLabel.open();
+
+        function fallbackMap(){
+            document.getElementById('map-loading').style.display='none';
+            document.getElementById('map').innerHTML='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 500" style="width:100%;height:100%"><rect width="600" height="500" fill="#f0f4f0"/><text x="300" y="200" text-anchor="middle" font-size="18" fill="#888">🗺 地图加载失败</text><text x="300" y="230" text-anchor="middle" font-size="12" fill="#aaa">请检查API Key</text><circle cx="200" cy="300" r="5" fill="#10b981"/><text x="215" y="304" font-size="10" fill="#555">烟台山</text><circle cx="350" cy="300" r="5" fill="#e74c3c"/><text x="365" y="304" font-size="10" fill="#555">蓬莱春</text><circle cx="480" cy="350" r="5" fill="#6366f1"/><text x="495" y="354" font-size="10" fill="#555">养马岛</text><circle cx="80" cy="200" r="5" fill="#6366f1"/><text x="95" y="204" font-size="10" fill="#555">济南</text><line x1="80" y1="200" x2="480" y2="350" stroke="#10b981" stroke-width="2" stroke-dasharray="5"/></svg>';
         }
+
+        window.addEventListener('DOMContentLoaded', loadMap);
         
-        // 隐藏调试信息覆盖层
-        function hideDebugOverlay() {
-            const debugOverlay = document.getElementById('debug-overlay');
-            debugOverlay.style.display = 'none';
-        }
-        
-        // Tab切换
-        function setupTabs() {
-            const tabs = document.querySelectorAll('.day-tab');
-            tabs.forEach(tab => {
-                tab.addEventListener('click', function() {
-                    const day = parseInt(this.dataset.day);
-                    
-                    // 更新tab样式
-                    tabs.forEach(t => t.classList.remove('active'));
-                    this.classList.add('active');
-                    
-                    // 更新内容显示
-                    document.querySelectorAll('.day-content').forEach(content => {
-                        content.style.display = 'none';
-                    });
-                    document.querySelector(`.day-content[data-day="${day}"]`).style.display = 'block';
-                    
-                    // 更新地图
-                    currentDay = day;
-                    updateMap(day);
-                    
-                    // 重置卡片高亮
-                    document.querySelectorAll('.timeline-card').forEach(card => {
-                        card.classList.remove('active');
-                    });
-                });
-            });
-        }
-        
-        // 页面加载完成后初始化
-        window.addEventListener('DOMContentLoaded', function() {
-            setupTabs();
-            // 初始化地图（异步）
-            initMap().catch(error => {
-                console.error('地图初始化失败:', error);
-                createFallbackMap(1);
-            });
-        });
-        
-        
+
         // ============================================================
         // 实时天气预报 + 每张卡片天气标签（腾讯位置服务 WebService API - JSONP）
         // ============================================================
