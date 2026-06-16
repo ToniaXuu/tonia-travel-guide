@@ -27,11 +27,12 @@ body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Noto Sans SC',s
 .back-btn:hover{background:#fff;transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,0,0,0.1)}
 
 /* Banner */
-.banner{background:linear-gradient(135deg,var(--color-banner-start) 0%,#c0392b 50%,var(--color-banner-end) 100%) url('../assets/zibo-bg.jpg') center/cover;background-blend-mode:overlay;color:#fff;text-align:center;padding:70px 20px 40px;position:relative;overflow:hidden}
-.banner::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 30% 70%,rgba(255,255,255,0.08) 0%,transparent 60%),radial-gradient(circle at 70% 30%,rgba(255,255,255,0.05) 0%,transparent 60%)}
-.banner h1{font-size:clamp(1.8rem,4vw,2.5rem);font-weight:800;position:relative}
-.banner p{font-size:1rem;opacity:0.85;margin-top:8px;position:relative}
-.banner-meta{display:flex;justify-content:center;gap:16px;margin-top:14px;flex-wrap:wrap;position:relative}
+.banner{background:url('../assets/zibo-bg.jpg') center/cover;color:#fff;text-align:center;padding:70px 20px 40px;position:relative;overflow:hidden}
+.banner::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(230,126,34,.55) 0%,rgba(192,57,43,.50) 50%,rgba(142,68,173,.55) 100%);z-index:1}
+.banner::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 30% 70%,rgba(255,255,255,0.08) 0%,transparent 60%),radial-gradient(circle at 70% 30%,rgba(255,255,255,0.05) 0%,transparent 60%);z-index:2}
+.banner h1{font-size:clamp(1.8rem,4vw,2.5rem);font-weight:800;position:relative;z-index:3}
+.banner p{font-size:1rem;opacity:0.85;margin-top:8px;position:relative;z-index:3}
+.banner-meta{display:flex;justify-content:center;gap:16px;margin-top:14px;flex-wrap:wrap;position:relative;z-index:3}
 .banner-meta span{background:rgba(255,255,255,0.18);padding:4px 16px;border-radius:20px;font-size:0.82rem}
 
 /* 主布局 */
