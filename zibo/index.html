@@ -416,7 +416,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Noto Sans SC',s
 <!-- 腾讯地图 -->
 <script>
 const TENCENT_MAP_KEY = 'PBOBZ-S4XEN-YOVFW-STAR3-KJOME-4QBOO';
-var map = null, markers = [], routeLines = [], isSatellite = false, currentDay = 1;
+var map = null, markers = [], markerCards = [], routeLines = [], isSatellite = false, currentDay = 1;
+var highlightMarker = null, highlightLabel = null;
 var routes = {
     1: [{lat:36.675,lng:117.020},{lat:36.8045,lng:118.0575},{lat:36.8130,lng:118.0180},{lat:36.8180,lng:118.0150},{lat:36.8200,lng:118.0120},{lat:36.8190,lng:118.0130},{lat:36.8070,lng:118.0540},{lat:36.8065,lng:118.0565}],
     2: [{lat:36.8065,lng:118.0565},{lat:36.8020,lng:117.8550},{lat:36.675,lng:117.020}]
@@ -452,7 +453,7 @@ function onMapLoaded(){
         if(!isNaN(la)&&!isNaN(lo)){
             var m=new qq.maps.Marker({position:new qq.maps.LatLng(la,lo),map:map,title:t,
                 icon:new qq.maps.MarkerImage('data:image/svg+xml,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="28" height="36"><circle cx="14" cy="14" r="12" fill="'+(cc[cat]||'#10b981')+'" stroke="#fff" stroke-width="2"/><polygon points="14,34 8,24 20,24" fill="'+(cc[cat]||'#10b981')+'"/></svg>'),new qq.maps.Size(28,36),new qq.maps.Point(0,0),new qq.maps.Point(14,36))});
-            markers.push({marker:m,card:card});
+            markers.push({marker:m,card:card,title:t,lat:la,lng:lo});
             qq.maps.event.addListener(m,'click',(function(idx){return function(){highlightCard(idx)}})(markers.length-1));
         }
     })(cards[i])}
@@ -478,6 +479,21 @@ function highlightCard(idx){
     document.querySelectorAll('.timeline-card').forEach(function(c){c.classList.remove('highlight')});
     var cards=document.querySelectorAll('.timeline-card');
     if(cards[idx]){cards[idx].classList.add('highlight');cards[idx].scrollIntoView({behavior:'smooth',block:'center'})}
+    if(!map)return;
+    // 清除旧的高亮标记
+    if(highlightMarker){highlightMarker.setMap(null);highlightMarker=null}
+    if(highlightLabel){highlightLabel.setMap(null);highlightLabel=null}
+    // 找到对应 marker
+    var target=null;
+    for(var k=0;k<markers.length;k++){if(markers[k].card===cards[idx]){target=markers[k];break}}
+    if(!target)return;
+    // 高亮脉冲标记（更大）
+    highlightMarker=new qq.maps.Marker({
+        position:new qq.maps.LatLng(target.lat,target.lng),map:map,title:target.title,zIndex:999,
+        icon:new qq.maps.MarkerImage('data:image/svg+xml,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="44" height="54"><circle cx="22" cy="20" r="16" fill="#e74c3c" stroke="#fff" stroke-width="3"/><circle cx="22" cy="20" r="22" fill="none" stroke="#e74c3c" stroke-width="2" opacity="0.4"><animate attributeName="r" from="16" to="28" dur="1s" repeatCount="indefinite"/><animate attributeName="opacity" from="0.5" to="0" dur="1s" repeatCount="indefinite"/></circle><polygon points="22,52 12,34 32,34" fill="#e74c3c"/></svg>'),new qq.maps.Size(44,54),new qq.maps.Point(0,0),new qq.maps.Point(22,54))
+    });
+    // 文字标签
+    highlightLabel=new qq.maps.Label({position:new qq.maps.LatLng(target.lat+0.005,target.lng),map:map,content:'<div style="background:rgba(0,0,0,.75);color:#fff;padding:4px 10px;border-radius:6px;font-size:12px;font-weight:600;white-space:nowrap">'+target.title+'</div>'});
 }
 
 function fallbackMap(){

@@ -1352,7 +1352,7 @@
         let markers = [];
         let polyline = null;
         let currentDay = 1;
-        let pulseMarker = null; // 脉冲动画标记
+        let ytPulseMarker = null; // 脉冲动画标记
         
         // 景点数据
         const spots = {
@@ -1664,20 +1664,13 @@
                 card.addEventListener('click', function() {
                     const lat = parseFloat(this.dataset.lat);
                     const lng = parseFloat(this.dataset.lng);
-                    const index = parseInt(this.dataset.index);
+                    const title = this.querySelector('.card-title').textContent;
                     
-                    // 飞到对应位置，使用动画效果
+                    // 飞到对应位置
                     if (map) {
-                        // 先设置缩放级别，确保精确定位
                         map.setZoom(17);
-                        
-                        // 然后平滑移动到目标位置
-                        setTimeout(() => {
-                            map.panTo(new TMap.LatLng(lat, lng));
-                        }, 100);
-                        
-                        // 添加脉冲动画效果
-                        addPulseEffect(lat, lng, this.dataset.category);
+                        setTimeout(() => { map.panTo(new TMap.LatLng(lat, lng)); }, 100);
+                        addPulseEffect(lat, lng, title);
                     }
                     
                     // 高亮当前卡片
@@ -1691,14 +1684,13 @@
         }
         
         // 添加脉冲动画效果
-        function addPulseEffect(lat, lng, category) {
-            // 移除现有脉冲标记
-            if (pulseMarker) {
-                pulseMarker.setMap(null);
-            }
+        var ytPulseLabel = null;
+        function addPulseEffect(lat, lng, title) {
+            if (ytPulseMarker) { ytPulseMarker.setMap(null); ytPulseMarker = null; }
+            if (ytPulseLabel) { ytPulseLabel.close(); ytPulseLabel = null; }
             
             // 创建脉冲标记
-            pulseMarker = new TMap.MultiMarker({
+            ytPulseMarker = new TMap.MultiMarker({
                 id: 'pulse-marker',
                 map: map,
                 styles: {
@@ -1724,13 +1716,12 @@
                 }]
             });
             
-            // 3秒后移除脉冲标记
-            setTimeout(() => {
-                if (pulseMarker) {
-                    pulseMarker.setMap(null);
-                    pulseMarker = null;
-                }
-            }, 3000);
+            // 文字标签
+            ytPulseLabel = new TMap.InfoWindow({
+                map: map, position: new TMap.LatLng(lat, lng), offset: { x: 0, y: -40 },
+                content: '<div style="background:rgba(0,0,0,.78);color:#fff;padding:3px 10px;border-radius:6px;font-size:12px;font-weight:600;white-space:nowrap">'+title+'</div>'
+            });
+            ytPulseLabel.open();
         }
         
         // 隐藏调试信息覆盖层
