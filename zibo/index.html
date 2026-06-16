@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>淄博烧烤之旅 · 两日自驾游攻略 | Tonia's Travel Journal</title>
+<style>
+    :root {
+        --bg: #fef9f4; --card-bg: #fff; --text: #1a1a2e; --text-light: #555;
+        --amber: #f59e0b; --orange: #ea580c; --coral: #e74c3c; --night: #6366f1;
+        --green: #10b981; --purple: #8b5cf6; --gray-100: #f8f9fa;
+        --shadow: 0 2px 16px rgba(0,0,0,0.06);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Noto Sans SC', sans-serif;
+        background: var(--bg); color: var(--text); line-height: 1.6;
+    }
+    
+    /* 返回按钮 */
+    .back-btn {
+        position: fixed; top: 20px; left: 20px; z-index: 100;
+        background: rgba(255,255,255,0.9); backdrop-filter: blur(10px);
+        border: 1px solid #e5e7eb; border-radius: 30px; padding: 8px 18px;
+        text-decoration: none; color: var(--text); font-size: 0.85rem;
+        font-weight: 500; box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        transition: all 0.2s; display: flex; align-items: center; gap: 6px;
+    }
+    .back-btn:hover { background: #fff; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+    
+    /* Banner */
+    .banner {
+        background: linear-gradient(135deg, #e67e22 0%, #c0392b 60%, #8e44ad 100%);
+        color: white; text-align: center; padding: 80px 20px 50px; position: relative;
+        overflow: hidden;
+    }
+    .banner::before {
+        content: ''; position: absolute; inset: 0;
+        background: radial-gradient(circle at 30% 70%, rgba(255,255,255,0.08) 0%, transparent 60%),
+                    radial-gradient(circle at 70% 30%, rgba(255,255,255,0.05) 0%, transparent 60%);
+    }
+    .banner h1 { font-size: clamp(1.8rem,4vw,2.8rem); font-weight: 800; position: relative; }
+    .banner p { font-size: 1rem; opacity: 0.85; margin-top: 8px; position: relative; }
+    .banner-meta { display: flex; justify-content: center; gap: 24px; margin-top: 16px; flex-wrap: wrap; position: relative; }
+    .banner-meta span { background: rgba(255,255,255,0.18); padding: 4px 16px; border-radius: 20px; font-size: 0.85rem; }
+    
+    /* 主布局 */
+    .main-layout { max-width: 1200px; margin: 0 auto; padding: 30px 20px; display: flex; gap: 30px; }
+    .left-panel { flex: 1; min-width: 0; }
+    
+    /* 天气 */
+    .weather-widget {
+        background: var(--card-bg); border-radius: 16px; padding: 20px;
+        box-shadow: var(--shadow); margin-bottom: 24px;
+    }
+    .weather-title { font-size: 1rem; font-weight: 600; margin-bottom: 16px; }
+    .weather-grid { display: flex; gap: 16px; }
+    .weather-day {
+        flex: 1; text-align: center; padding: 16px 12px;
+        background: var(--gray-100); border-radius: 12px;
+    }
+    .weather-icon { font-size: 2rem; margin-bottom: 4px; }
+    .weather-temp { font-size: 1.1rem; font-weight: 700; color: var(--orange); }
+    .weather-desc { font-size: 0.8rem; color: var(--text-light); margin-top: 4px; }
+    .weather-date { font-size: 0.8rem; color: var(--text-light); margin-bottom: 8px; }
+    
+    /* 时间轴 */
+    .timeline { position: relative; padding-left: 0; }
+    .timeline-card {
+        background: var(--card-bg); border-radius: 14px; padding: 20px;
+        box-shadow: var(--shadow); margin-bottom: 16px;
+        border-left: 4px solid #e5e7eb; transition: all 0.2s;
+    }
+    .timeline-card:hover { transform: translateX(4px); box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
+    .timeline-card[data-cat="景点"] { border-left-color: var(--green); }
+    .timeline-card[data-cat="美食"] { border-left-color: var(--coral); }
+    .timeline-card[data-cat="文化"] { border-left-color: var(--purple); }
+    .timeline-card[data-cat="交通"] { border-left-color: var(--night); }
+    .timeline-card[data-cat="住宿"] { border-left-color: #ec4899; }
+    .timeline-card[data-cat="购物"] { border-left-color: var(--amber); }
+    
+    .card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px; }
+    .card-time { font-size: 0.85rem; color: var(--text-light); font-weight: 500; }
+    .card-cat {
+        font-size: 0.7rem; padding: 2px 8px; border-radius: 10px;
+        font-weight: 600;
+    }
+    .card-cat[data-cat="景点"] { background: rgba(16,185,129,0.12); color: var(--green); }
+    .card-cat[data-cat="美食"] { background: rgba(234,88,12,0.12); color: var(--coral); }
+    .card-cat[data-cat="文化"] { background: rgba(139,92,246,0.12); color: var(--purple); }
+    .card-cat[data-cat="交通"] { background: rgba(99,102,241,0.12); color: var(--night); }
+    .card-cat[data-cat="住宿"] { background: rgba(236,72,153,0.12); color: #ec4899; }
+    .card-cat[data-cat="购物"] { background: rgba(245,158,11,0.12); color: var(--amber); }
+    
+    .card-title { font-size: 1.05rem; font-weight: 600; margin-bottom: 4px; }
+    .card-subtitle { font-size: 0.85rem; color: var(--text-light); margin-bottom: 8px; }
+    .card-desc { font-size: 0.88rem; color: var(--text-light); line-height: 1.7; margin-bottom: 10px; }
+    .card-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+    .tag { font-size: 0.72rem; padding: 2px 8px; border-radius: 8px; background: var(--gray-100); color: var(--text-light); }
+    
+    /* Day Tab */
+    .day-tabs { display: flex; gap: 8px; margin-bottom: 24px; }
+    .day-tab {
+        flex: 1; text-align: center; padding: 10px; border-radius: 10px;
+        background: white; cursor: pointer; font-weight: 600; font-size: 0.9rem;
+        box-shadow: var(--shadow); transition: all 0.2s; border: 2px solid transparent;
+    }
+    .day-tab.active { border-color: var(--orange); color: var(--orange); background: rgba(234,88,12,0.05); }
+    .day-content { display: none; }
+    .day-content.active { display: block; }
+    
+    /* 详情区域 */
+    .section-card {
+        background: var(--card-bg); border-radius: 16px; padding: 28px;
+        box-shadow: var(--shadow); margin-bottom: 20px;
+    }
+    .section-title { font-size: 1.2rem; font-weight: 700; margin-bottom: 20px; display: flex; align-items: center; gap: 8px; }
+    
+    /* 酒店卡片 */
+    .hotel-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+    .hotel-card { border: 1px solid #e5e7eb; border-radius: 14px; padding: 18px; transition: all 0.2s; }
+    .hotel-card:hover { border-color: var(--orange); box-shadow: 0 4px 12px rgba(234,88,12,0.1); }
+    .hotel-card h4 { font-size: 1rem; font-weight: 600; }
+    .hotel-card .stars { color: var(--amber); margin: 4px 0; }
+    .hotel-card .price { font-size: 1.1rem; font-weight: 700; color: var(--coral); margin-top: 6px; }
+    .hotel-card .addr { font-size: 0.78rem; color: var(--text-light); margin-top: 4px; }
+    
+    /* 预算表格 */
+    .budget-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+    .budget-table th, .budget-table td { padding: 10px 14px; text-align: left; border-bottom: 1px solid #f3f4f6; }
+    .budget-table th { background: var(--gray-100); font-weight: 600; }
+    .budget-table tr:last-child { font-weight: 700; }
+    .budget-table tr:last-child td { border-top: 2px solid var(--orange); }
+    
+    /* 避坑 */
+    .tips-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .tips-box { border-radius: 14px; padding: 18px; }
+    .tips-box.bad { background: #fef2f2; border: 1px solid #fecaca; }
+    .tips-box.good { background: #f0fdf4; border: 1px solid #bbf7d0; }
+    .tips-box h4 { margin-bottom: 10px; font-size: 0.95rem; }
+    .tips-box ul { padding-left: 18px; font-size: 0.85rem; color: var(--text-light); }
+    .tips-box li { margin-bottom: 6px; }
+    
+    @media (max-width: 768px) {
+        .main-layout { flex-direction: column; }
+        .tips-grid { grid-template-columns: 1fr; }
+        .weather-grid { flex-direction: column; }
+    }
+</style>
+</head>
+<body>
+
+<a href="../" class="back-btn">← 返回旅行手记</a>
+
+<!-- Banner -->
+<div class="banner">
+    <h1>🍖 淄博烧烤之旅</h1>
+    <p>齐文化发源地 · 人间烟火气 · 自驾两日游</p>
+    <div class="banner-meta">
+        <span>🚗 自驾约118km</span>
+        <span>📅 2天1晚</span>
+        <span>💰 人均约 ¥600</span>
+        <span>⏱ 1.5小时车程</span>
+    </div>
+</div>
+
+<div class="main-layout">
+    <div class="left-panel">
+        
+        <!-- 天气 -->
+        <div class="weather-widget">
+            <div class="weather-title">🌤️ 出行天气建议</div>
+            <div class="weather-grid">
+                <div class="weather-day">
+                    <div class="weather-date">建议出发日</div>
+                    <div class="weather-icon">☀️</div>
+                    <div class="weather-temp">22~33°C</div>
+                    <div class="weather-desc">夏季高温，注意防晒</div>
+                </div>
+                <div class="weather-day">
+                    <div class="weather-date">次日</div>
+                    <div class="weather-icon">⛅</div>
+                    <div class="weather-temp">23~34°C</div>
+                    <div class="weather-desc">晴间多云</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Day Tabs -->
+        <div class="day-tabs">
+            <div class="day-tab active" onclick="switchDay(1)">Day 1 · 抵达 + 文化探索</div>
+            <div class="day-tab" onclick="switchDay(2)">Day 2 · 古商城 + 返程</div>
+        </div>
+        
+        <!-- 时间轴 -->
+        <div class="timeline">
+            <!-- Day 1 -->
+            <div class="day-content active" id="day1">
+                <div class="timeline-card" data-cat="交通">
+                    <div class="card-header"><div class="card-time">07:00 出发</div><div class="card-cat" data-cat="交通">交通</div></div>
+                    <div class="card-title">济南出发 · 自驾前往淄博</div>
+                    <div class="card-subtitle">京沪/青银高速 → 约118公里</div>
+                    <div class="card-desc">从济南市区出发，走京沪高速转青银高速，全程约118公里，预计1小时40分钟到达。高速过路费约¥38。</div>
+                    <div class="card-tags"><span class="tag">自驾</span><span class="tag">高速¥38</span><span class="tag">约1.5h</span></div>
+                </div>
+                
+                <div class="timeline-card" data-cat="美食">
+                    <div class="card-header"><div class="card-time">08:30 - 10:00</div><div class="card-cat" data-cat="美食">美食</div></div>
+                    <div class="card-title">八大局便民市场</div>
+                    <div class="card-subtitle">淄博烟火气第一站 · 早市寻味</div>
+                    <div class="card-desc">淄博必打卡的网红早市，炒锅饼、紫米饼、牛奶棒、肥肠包……几十种小吃集中于此。建议空腹来，边走边吃，人均¥30-50能吃撑。紫米饼和炒锅饼是必买伴手礼。</div>
+                    <div class="card-tags"><span class="tag">网红市场</span><span class="tag">人均¥40</span><span class="tag">伴手礼</span></div>
+                </div>
+                
+                <div class="timeline-card" data-cat="文化">
+                    <div class="card-header"><div class="card-time">10:00 - 11:30</div><div class="card-cat" data-cat="文化">文化</div></div>
+                    <div class="card-title">中国陶瓷琉璃馆</div>
+                    <div class="card-subtitle">国家级博物馆 · 陶琉艺术殿堂</div>
+                    <div class="card-desc">淄博是"中国陶瓷之都"，馆内陈列从新石器时代到当代的陶瓷琉璃珍品。鸡油黄琉璃、博山内画壶等都是国宝级展品。免费参观，需提前预约。</div>
+                    <div class="card-tags"><span class="tag">博物馆</span><span class="tag">免费</span><span class="tag">需预约</span></div>
+                </div>
+                
+                <div class="timeline-card" data-cat="美食">
+                    <div class="card-header"><div class="card-time">11:30 - 13:00</div><div class="card-cat" data-cat="美食">美食</div></div>
+                    <div class="card-title">淄博烧烤 · 灵魂三件套</div>
+                    <div class="card-subtitle">牧羊村烧烤 / 赵一家烧烤 / 玉米地烧烤</div>
+                    <div class="card-desc">淄博烧烤的灵魂：小饼+小葱+蘸料。推荐牧羊村烧烤（海岱楼附近），人均¥60-80。必点：五花肉、蒜瓣肉、烤面包片。记得提前排队或错峰用餐！</div>
+                    <div class="card-tags"><span class="tag">灵魂三件套</span><span class="tag">人均¥70</span><span class="tag">网红餐厅</span></div>
+                </div>
+                
+                <div class="timeline-card" data-cat="景点">
+                    <div class="card-header"><div class="card-time">13:00 - 15:30</div><div class="card-cat" data-cat="景点">景点</div></div>
+                    <div class="card-title">海岱楼 · 钟书阁</div>
+                    <div class="card-subtitle">60米地标 · 森林书屋 · 360°观景</div>
+                    <div class="card-desc">位于齐盛湖中央，楼高60米，登顶俯瞰淄博全城。楼内钟书阁以"森林书屋"为主题，藏书超10万册，U型书架+镜面天花是网红机位。一楼可免费参观，登顶观景台¥20。</div>
+                    <div class="card-tags"><span class="tag">地标建筑</span><span class="tag">拍照圣地</span><span class="tag">观景台¥20</span></div>
+                </div>
+                
+                <div class="timeline-card" data-cat="景点">
+                    <div class="card-header"><div class="card-time">15:30 - 17:00</div><div class="card-cat" data-cat="景点">景点</div></div>
+                    <div class="card-title">齐盛湖公园</div>
+                    <div class="card-subtitle">城市绿肺 · 泛舟赏荷</div>
+                    <div class="card-desc">环绕海岱楼的湿地公园，夏日荷花盛开，湖面可泛舟（电动船¥60/小时）。环湖步道约3公里，适合散步消食。傍晚时分光线柔美，是拍摄海岱楼倒影的最佳时刻。</div>
+                    <div class="card-tags"><span class="tag">公园</span><span class="tag">免费</span><span class="tag">泛舟¥60</span></div>
+                </div>
+                
+                <div class="timeline-card" data-cat="美食">
+                    <div class="card-header"><div class="card-time">17:30 - 19:00</div><div class="card-cat" data-cat="美食">美食</div></div>
+                    <div class="card-title">博山菜 · 鲁菜经典</div>
+                    <div class="card-subtitle">聚友斋 / 知味斋 / 又一村</div>
+                    <div class="card-desc">博山是鲁菜发源地之一。必点：博山酥锅、豆腐箱、爆炒腰花、炸春卷。聚友斋和知味斋是本地人常去的博山菜馆，人均¥60-90。</div>
+                    <div class="card-tags"><span class="tag">鲁菜</span><span class="tag">博山菜</span><span class="tag">人均¥75</span></div>
+                </div>
+                
+                <div class="timeline-card" data-cat="住宿">
+                    <div class="card-header"><div class="card-time">19:30 入住</div><div class="card-cat" data-cat="住宿">住宿</div></div>
+                    <div class="card-title">入住酒店 · 张店区</div>
+                    <div class="card-subtitle">八大局 / 万象汇附近</div>
+                    <div class="card-desc">推荐入住张店区八大局或万象汇附近，交通便利，周边美食多。散步可到八大局夜市继续觅食，或前往万象汇逛街消食。</div>
+                    <div class="card-tags"><span class="tag">张店区</span><span class="tag">¥150-300</span></div>
+                </div>
+            </div>
+            
+            <!-- Day 2 -->
+            <div class="day-content" id="day2">
+                <div class="timeline-card" data-cat="美食">
+                    <div class="card-header"><div class="card-time">08:00 - 09:00</div><div class="card-cat" data-cat="美食">美食</div></div>
+                    <div class="card-title">酒店早餐 / 八大局再刷</div>
+                    <div class="card-subtitle">焦庄烧饼 · 豆腐脑 · 油粉</div>
+                    <div class="card-desc">酒店早餐或步行到八大局，品尝焦庄烧饼（¥3/个）、豆腐脑、博山油粉等本地特色早餐。吃饱再出发。</div>
+                    <div class="card-tags"><span class="tag">早餐</span><span class="tag">人均¥15</span></div>
+                </div>
+                
+                <div class="timeline-card" data-cat="景点">
+                    <div class="card-header"><div class="card-time">09:00 - 12:30</div><div class="card-cat" data-cat="景点">景点</div></div>
+                    <div class="card-title">周村古商城</div>
+                    <div class="card-subtitle">"天下第一村" · 鲁商发源地</div>
+                    <div class="card-desc">从张店区驾车约30分钟到达。千年古商城，保留明清建筑风貌，石板路+老字号林立。大染坊、状元府、票号展览馆是必看点。周村烧饼博物馆可现场体验制作。门票：大街免费，部分展馆联票¥70。</div>
+                    <div class="card-tags"><span class="tag">古商城</span><span class="tag">千年历史</span><span class="tag">联票¥70</span></div>
+                </div>
+                
+                <div class="timeline-card" data-cat="美食">
+                    <div class="card-header"><div class="card-time">12:30 - 13:30</div><div class="card-cat" data-cat="美食">美食</div></div>
+                    <div class="card-title">周村煮锅 · 丁家煮锅</div>
+                    <div class="card-subtitle">百年老字号 · 周村特色</div>
+                    <div class="card-desc">周村古商城内必吃的百年老店。大锅煮各种食材（肉丸、豆腐、肥肠等），配上周村烧饼，人均¥30-40。丁家煮锅是当地最有名的，央视多次报道。</div>
+                    <div class="card-tags"><span class="tag">百年老店</span><span class="tag">人均¥35</span><span class="tag">央视推荐</span></div>
+                </div>
+                
+                <div class="timeline-card" data-cat="文化">
+                    <div class="card-header"><div class="card-time">14:00 - 15:30</div><div class="card-cat" data-cat="文化">文化</div></div>
+                    <div class="card-title">齐文化博物院</div>
+                    <div class="card-subtitle">泱泱齐风 · 春秋霸主文化</div>
+                    <div class="card-desc">位于临淄区（齐国故都），展示齐文化800年灿烂历史。蹴鞠（足球起源）、齐桓公、管仲等历史展品丰富。免费参观需预约。从周村驾车约50分钟。</div>
+                    <div class="card-tags"><span class="tag">博物馆</span><span class="tag">免费</span><span class="tag">需预约</span></div>
+                </div>
+                
+                <div class="timeline-card" data-cat="购物">
+                    <div class="card-header"><div class="card-time">15:30 - 16:30</div><div class="card-cat" data-cat="购物">购物</div></div>
+                    <div class="card-title">特产采购</div>
+                    <div class="card-subtitle">周村烧饼 · 陶瓷琉璃 · 炒锅饼</div>
+                    <div class="card-desc">推荐购买：周村烧饼（¥15-30/盒）、炒锅饼（¥10-20/袋）、博山陶瓷小摆件（¥20-100）、淄博琉璃工艺品。八大局和古商城都有卖。</div>
+                    <div class="card-tags"><span class="tag">伴手礼</span><span class="tag">烧饼</span><span class="tag">陶瓷</span></div>
+                </div>
+                
+                <div class="timeline-card" data-cat="交通">
+                    <div class="card-header"><div class="card-time">16:30 出发</div><div class="card-cat" data-cat="交通">交通</div></div>
+                    <div class="card-title">返程 · 淄博 → 济南</div>
+                    <div class="card-subtitle">自驾约118公里 · 约1.5小时</div>
+                    <div class="card-desc">从淄博出发返程回济南，建议走青银高速。预计18:00前到达济南，结束愉快的淄博烧烤之旅。</div>
+                    <div class="card-tags"><span class="tag">自驾</span><span class="tag">高速¥38</span><span class="tag">约1.5h</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 详细内容 -->
+<div style="max-width:1200px;margin:0 auto;padding:0 20px 40px;">
+    
+    <!-- 住宿推荐 -->
+    <div class="section-card">
+        <h2 class="section-title">🏨 住宿推荐 · 八大局周边</h2>
+        <div class="hotel-grid">
+            <div class="hotel-card">
+                <h4>柏曼酒店（八大局海岱楼店）</h4>
+                <div class="stars">⭐⭐⭐⭐</div>
+                <div class="price">¥220-350/晚</div>
+                <div class="addr">📍 张店区商业步行街 · 距八大局步行5分钟</div>
+                <p style="font-size:0.85rem;color:#555;margin-top:8px;">2024年新开业，亲子友好，有家庭房。距海岱楼车程10分钟。免费停车。</p>
+            </div>
+            <div class="hotel-card">
+                <h4>全季酒店（淄博万象汇店）</h4>
+                <div class="stars">⭐⭐⭐⭐</div>
+                <div class="price">¥250-380/晚</div>
+                <div class="addr">📍 张店区华光路 · 万象汇商圈</div>
+                <p style="font-size:0.85rem;color:#555;margin-top:8px;">华住旗下中端品牌，干净舒适。紧邻万象汇购物中心，购物餐饮便利。免费停车。</p>
+            </div>
+            <div class="hotel-card">
+                <h4>汉庭酒店（淄博八大局店）</h4>
+                <div class="stars">⭐⭐⭐</div>
+                <div class="price">¥150-220/晚</div>
+                <div class="addr">📍 张店区共青团东路 · 八大局正对面</div>
+                <p style="font-size:0.85rem;color:#555;margin-top:8px;">性价比之选，位置极佳。出酒店门就是八大局，早市不用赶路。含停车位。</p>
+            </div>
+            <div class="hotel-card">
+                <h4>淄博喜来登酒店</h4>
+                <div class="stars">⭐⭐⭐⭐⭐</div>
+                <div class="price">¥450-650/晚</div>
+                <div class="addr">📍 张店区金晶大道 · 市中心地标</div>
+                <p style="font-size:0.85rem;color:#555;margin-top:8px;">淄博最高端酒店，高层可俯瞰全城。距八大局车程8分钟。预算充足的推荐。</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 预算 -->
+    <div class="section-card">
+        <h2 class="section-title">💰 预算估算（两人）</h2>
+        <table class="budget-table">
+            <tr><th>项目</th><th>明细</th><th>金额</th></tr>
+            <tr><td>🚗 交通</td><td>往返约236公里，油费+高速</td><td>约 ¥175</td></tr>
+            <tr><td>🏨 住宿</td><td>张店区酒店1晚</td><td>¥150 - 350</td></tr>
+            <tr><td>🍖 餐饮</td><td>烧烤 + 博山菜 + 小吃 + 早餐</td><td>¥300 - 450</td></tr>
+            <tr><td>🎫 门票</td><td>海岱楼登顶 + 周村展览馆</td><td>¥180</td></tr>
+            <tr><td>🎁 伴手礼</td><td>烧饼 + 炒锅饼 + 陶琉</td><td>¥100 - 200</td></tr>
+            <tr><td colspan="2"><strong>总计（两人）</strong></td><td><strong>¥905 - 1,355</strong></td></tr>
+        </table>
+    </div>
+    
+    <!-- 避坑 -->
+    <div class="section-card">
+        <h2 class="section-title">⚠️ 避坑指南</h2>
+        <div class="tips-grid">
+            <div class="tips-box bad">
+                <h4>❌ 千万别做</h4>
+                <ul>
+                    <li>不要在八大局买"网红炒锅饼"高价版，每家口味差不多</li>
+                    <li>不要在中午高峰去牧羊村，排队1小时起</li>
+                    <li>不要周村古商城买高价纪念品，货比三家</li>
+                    <li>不要在高速服务区加满油，市区加油站更便宜</li>
+                    <li>不要周一去陶瓷琉璃馆和齐文化博物院（闭馆）</li>
+                    <li>不要在八大局开车进去，步行街禁机动车</li>
+                    <li>不要轻易尝试路边摊的毛蛋/蚕蛹（肠胃不适风险）</li>
+                </ul>
+            </div>
+            <div class="tips-box good">
+                <h4>✅ 聪明做法</h4>
+                <ul>
+                    <li>提前一天预约陶瓷琉璃馆和齐文化博物院</li>
+                    <li>烧烤错峰吃：11:00或13:30后人少</li>
+                    <li>八大局早8点前人少，逛得舒服</li>
+                    <li>周村烧饼买"周村"牌原产地，不买景区贴牌</li>
+                    <li>自驾车停万象汇停车场（免费），换步行/打车逛</li>
+                    <li>备肠胃药！烧烤+小吃连续吃容易上火腹泻</li>
+                    <li>带空袋子！八大局的小吃根本停不下来</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 美食推荐 -->
+    <div class="section-card">
+        <h2 class="section-title">🍽 必吃美食清单</h2>
+        <table class="budget-table">
+            <tr><th>美食</th><th>推荐店</th><th>价格</th><th>备注</th></tr>
+            <tr><td>淄博烧烤</td><td>牧羊村 / 赵一家 / 玉米地</td><td>¥60-80/人</td><td>灵魂：小饼+葱+蘸料</td></tr>
+            <tr><td>博山酥锅</td><td>聚友斋 / 知味斋</td><td>¥38-58/份</td><td>鲁菜经典，冷热皆宜</td></tr>
+            <tr><td>豆腐箱</td><td>聚友斋 / 又一村</td><td>¥28-48/份</td><td>博山名菜，形如宝箱</td></tr>
+            <tr><td>炒锅饼</td><td>八大局各摊位</td><td>¥10-20/袋</td><td>网红小吃，香脆上瘾</td></tr>
+            <tr><td>紫米饼</td><td>八大局麦香面食</td><td>¥5-8/块</td><td>糯叽叽，趁热吃</td></tr>
+            <tr><td>周村烧饼</td><td>周村烧饼博物馆</td><td>¥15-30/盒</td><td>薄如纸，芝麻香</td></tr>
+            <tr><td>焦庄烧饼</td><td>八大局早餐摊</td><td>¥3/个</td><td>现烤现吃，肉馅饱满</td></tr>
+            <tr><td>周村煮锅</td><td>丁家煮锅（周村）</td><td>¥30-40/人</td><td>百年老字号</td></tr>
+        </table>
+    </div>
+    
+</div>
+
+<script>
+function switchDay(day) {
+    document.querySelectorAll('.day-tab').forEach(function(t,i){ t.classList.toggle('active', i===day-1); });
+    document.getElementById('day1').classList.toggle('active', day===1);
+    document.getElementById('day2').classList.toggle('active', day===2);
+}
+</script>
+
+</body>
+</html>

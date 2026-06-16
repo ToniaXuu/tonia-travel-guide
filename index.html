@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tonia's Travel Journal · 旅行手记</title>
+<style>
+    :root {
+        --green-light: #a8e6cf;
+        --green-mid: #88d8b0;
+        --purple-light: #d5c6e0;
+        --purple-mid: #c9b1db;
+        --bg: #f8f6f9;
+        --text: #2c3e50;
+        --text-light: #5a6c7d;
+        --white: #ffffff;
+        --shadow: 0 4px 24px rgba(0,0,0,0.06);
+        --shadow-hover: 0 12px 40px rgba(0,0,0,0.1);
+    }
+    
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Noto Sans SC', sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        min-height: 100vh;
+        overflow-x: hidden;
+    }
+    
+    /* 粒子画布 */
+    #particles {
+        position: fixed;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        z-index: 0;
+        pointer-events: none;
+    }
+    
+    /* 主容器 */
+    .container {
+        position: relative;
+        z-index: 1;
+        max-width: 960px;
+        margin: 0 auto;
+        padding: 0 24px;
+    }
+    
+    /* Hero */
+    .hero {
+        text-align: center;
+        padding: 80px 20px 40px;
+    }
+    .hero h1 {
+        font-size: clamp(2rem, 5vw, 3.2rem);
+        font-weight: 800;
+        background: linear-gradient(135deg, #66bb6a, #7e57c2);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 12px;
+        letter-spacing: -0.5px;
+    }
+    .hero .subtitle {
+        font-size: 1.1rem;
+        color: var(--text-light);
+        font-weight: 400;
+        letter-spacing: 2px;
+    }
+    .hero .divider {
+        width: 60px; height: 3px;
+        background: linear-gradient(90deg, var(--green-mid), var(--purple-mid));
+        border-radius: 2px;
+        margin: 20px auto;
+    }
+    
+    /* 旅行卡片网格 */
+    .travel-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+        gap: 32px;
+        padding: 20px 0 60px;
+    }
+    
+    .travel-card {
+        background: var(--white);
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: var(--shadow);
+        transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1.2);
+        cursor: pointer;
+        text-decoration: none;
+        color: inherit;
+        display: block;
+        position: relative;
+    }
+    .travel-card:hover {
+        transform: translateY(-8px);
+        box-shadow: var(--shadow-hover);
+    }
+    .travel-card:active {
+        transform: translateY(-4px);
+    }
+    
+    /* 卡片头部渐变 */
+    .card-header-img {
+        height: 200px;
+        position: relative;
+        overflow: hidden;
+    }
+    .card-header-img.yantai {
+        background: linear-gradient(135deg, #1D9E75 0%, #0d6b4f 30%, #1a6b8a 70%, #0d4f6b 100%);
+    }
+    .card-header-img.zibo {
+        background: linear-gradient(135deg, #e67e22 0%, #d35400 30%, #c0392b 70%, #8e44ad 100%);
+    }
+    
+    /* 卡片头部装饰 */
+    .card-pattern {
+        position: absolute;
+        inset: 0;
+        opacity: 0.15;
+    }
+    .card-header-img .card-emoji {
+        position: absolute;
+        font-size: 4rem;
+        bottom: 16px;
+        right: 24px;
+        opacity: 0.7;
+        animation: float 3s ease-in-out infinite;
+    }
+    @keyframes float {
+        0%,100% { transform: translateY(0); }
+        50% { transform: translateY(-10px); }
+    }
+    
+    .card-header-img .card-city {
+        position: absolute;
+        bottom: 20px;
+        left: 24px;
+        color: rgba(255,255,255,0.95);
+        font-size: 1.8rem;
+        font-weight: 700;
+        text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+    .card-header-img .card-date {
+        position: absolute;
+        top: 20px;
+        left: 24px;
+        color: rgba(255,255,255,0.8);
+        font-size: 0.85rem;
+        background: rgba(255,255,255,0.15);
+        padding: 4px 12px;
+        border-radius: 20px;
+        backdrop-filter: blur(4px);
+    }
+    
+    /* 卡片内容 */
+    .card-body {
+        padding: 24px;
+    }
+    .card-body .trip-type {
+        display: inline-block;
+        font-size: 0.75rem;
+        font-weight: 600;
+        padding: 3px 10px;
+        border-radius: 12px;
+        margin-bottom: 8px;
+    }
+    .trip-type.self-drive {
+        background: rgba(255,152,0,0.12);
+        color: #e67e22;
+    }
+    .trip-type.train {
+        background: rgba(29,158,117,0.12);
+        color: #1D9E75;
+    }
+    
+    .card-body h3 {
+        font-size: 1.25rem;
+        font-weight: 700;
+        margin-bottom: 8px;
+        color: var(--text);
+    }
+    .card-body p {
+        font-size: 0.9rem;
+        color: var(--text-light);
+        line-height: 1.6;
+        margin-bottom: 16px;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+    .card-meta {
+        display: flex;
+        gap: 16px;
+        font-size: 0.8rem;
+        color: var(--text-light);
+        flex-wrap: wrap;
+    }
+    .card-meta span {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+    }
+    .card-arrow {
+        position: absolute;
+        bottom: 24px;
+        right: 24px;
+        width: 36px; height: 36px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--green-light), var(--purple-light));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 1.1rem;
+        transition: transform 0.3s;
+    }
+    .travel-card:hover .card-arrow {
+        transform: translateX(4px);
+    }
+    
+    /* Footer */
+    .footer {
+        text-align: center;
+        padding: 40px 20px;
+        font-size: 0.8rem;
+        color: var(--text-light);
+        opacity: 0.7;
+    }
+    
+    /* 响应式 */
+    @media (max-width: 768px) {
+        .hero { padding: 50px 16px 30px; }
+        .hero h1 { font-size: 1.8rem; }
+        .travel-grid { grid-template-columns: 1fr; padding: 10px 0 40px; }
+    }
+</style>
+</head>
+<body>
+
+<canvas id="particles"></canvas>
+
+<div class="container">
+    <header class="hero">
+        <h1>Tonia's Travel Journal</h1>
+        <p class="subtitle">✈ 旅行手记</p>
+        <div class="divider"></div>
+    </header>
+    
+    <div class="travel-grid">
+        
+        <!-- 烟台卡片 -->
+        <a href="yantai/" class="travel-card">
+            <div class="card-header-img yantai">
+                <div class="card-date">2026.06.19 — 06.20</div>
+                <div class="card-city">烟 台 养 马 岛</div>
+                <div class="card-emoji">🏝️</div>
+            </div>
+            <div class="card-body">
+                <span class="trip-type train">🚄 高铁出行</span>
+                <h3>端午情侣游 · 果冻海与橘子日落</h3>
+                <p>从济南出发，高铁 2 小时 45 分直达。养马岛的果冻海和秦风崖橘子日落，海岛日记咖啡馆打卡……两天一夜沉浸式环岛浪漫。</p>
+                <div class="card-meta">
+                    <span>📅 2天1晚</span>
+                    <span>🚄 高铁往返</span>
+                    <span>💰 约 ¥1,600</span>
+                </div>
+            </div>
+            <div class="card-arrow">→</div>
+        </a>
+        
+        <!-- 淄博卡片 -->
+        <a href="zibo/" class="travel-card">
+            <div class="card-header-img zibo">
+                <div class="card-date">即将出发</div>
+                <div class="card-city">淄 博</div>
+                <div class="card-emoji">🍖</div>
+            </div>
+            <div class="card-body">
+                <span class="trip-type self-drive">🚗 自驾出行</span>
+                <h3>淄博烧烤之旅 · 齐文化与烟火气</h3>
+                <p>济南自驾 1.5 小时即到。八大局早市寻味、海岱楼钟书阁打卡、周村古商城穿越、地道淄博烧烤灵魂三件套……两天一夜舌尖上的淄博。</p>
+                <div class="card-meta">
+                    <span>📅 2天1晚</span>
+                    <span>🚗 自驾约118km</span>
+                    <span>💰 约 ¥1,200</span>
+                </div>
+            </div>
+            <div class="card-arrow">→</div>
+        </a>
+        
+    </div>
+    
+    <footer class="footer">
+        Made with 💚💜 · Tonia's Travel Journal · 2026
+    </footer>
+</div>
+
+<script>
+(function() {
+    var c = document.getElementById('particles');
+    var ctx = c.getContext('2d');
+    var particles = [];
+    var w, h;
+    var mouse = { x: -999, y: -999 };
+    
+    function resize() {
+        w = c.width = window.innerWidth;
+        h = c.height = window.innerHeight;
+    }
+    resize();
+    window.addEventListener('resize', resize);
+    
+    // 鼠标跟踪（仅桌面端）
+    if (window.matchMedia('(pointer: fine)').matches) {
+        document.addEventListener('mousemove', function(e) {
+            mouse.x = e.clientX;
+            mouse.y = e.clientY;
+        });
+        document.addEventListener('mouseleave', function() {
+            mouse.x = -999;
+            mouse.y = -999;
+        });
+    }
+    
+    // 颜色
+    var greens = ['#a8e6cf','#88d8b0','#b8f0d8','#dcedc1','#7ecba1'];
+    var purples = ['#d5c6e0','#c9b1db','#e8d5f5','#b39ddb','#dcc8e8'];
+    
+    function Particle() {
+        this.x = Math.random() * w;
+        this.y = Math.random() * h;
+        this.size = Math.random() * 3 + 1.5;
+        this.speedX = (Math.random() - 0.5) * 0.6;
+        this.speedY = (Math.random() - 0.5) * 0.6;
+        this.isGreen = Math.random() > 0.5;
+        this.color = this.isGreen ? greens[Math.floor(Math.random()*greens.length)] : purples[Math.floor(Math.random()*purples.length)];
+        this.opacity = Math.random() * 0.5 + 0.2;
+        this.pulseSpeed = Math.random() * 0.02 + 0.005;
+        this.pulseDir = Math.random() > 0.5 ? 1 : -1;
+    }
+    
+    Particle.prototype.update = function() {
+        // 呼吸效果
+        this.opacity += this.pulseSpeed * this.pulseDir;
+        if (this.opacity >= 0.7) this.pulseDir = -1;
+        if (this.opacity <= 0.15) this.pulseDir = 1;
+        
+        // 鼠标吸引力
+        var dx = mouse.x - this.x;
+        var dy = mouse.y - this.y;
+        var dist = Math.sqrt(dx*dx + dy*dy);
+        if (dist < 150 && dist > 0) {
+            var force = 0.3 / (dist * 0.03 + 1);
+            this.speedX += dx * force * 0.01;
+            this.speedY += dy * force * 0.01;
+        }
+        
+        // 移动
+        this.x += this.speedX;
+        this.y += this.speedY;
+        
+        // 阻尼
+        this.speedX *= 0.999;
+        this.speedY *= 0.999;
+        
+        // 环绕
+        if (this.x > w + 20) this.x = -20;
+        if (this.x < -20) this.x = w + 20;
+        if (this.y > h + 20) this.y = -20;
+        if (this.y < -20) this.y = h + 20;
+    };
+    
+    Particle.prototype.draw = function() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fillStyle = this.color;
+        ctx.globalAlpha = this.opacity;
+        ctx.fill();
+        ctx.globalAlpha = 1;
+    };
+    
+    // 初始化粒子
+    var count = Math.min(Math.floor((w * h) / 14000), 100);
+    for (var i = 0; i < count; i++) {
+        particles.push(new Particle());
+    }
+    
+    function animate() {
+        ctx.clearRect(0, 0, w, h);
+        
+        // 绘制连线（相邻粒子）
+        for (var i = 0; i < particles.length; i++) {
+            particles[i].update();
+            particles[i].draw();
+            
+            for (var j = i + 1; j < particles.length; j++) {
+                var dx = particles[i].x - particles[j].x;
+                var dy = particles[i].y - particles[j].y;
+                var dist = dx*dx + dy*dy;
+                if (dist < 10000) {
+                    ctx.beginPath();
+                    ctx.moveTo(particles[i].x, particles[i].y);
+                    ctx.lineTo(particles[j].x, particles[j].y);
+                    ctx.strokeStyle = dist < 5000 ? 'rgba(168,230,207,0.12)' : 'rgba(213,198,224,0.05)';
+                    ctx.lineWidth = 0.5;
+                    ctx.stroke();
+                }
+            }
+        }
+        
+        requestAnimationFrame(animate);
+    }
+    
+    animate();
+})();
+</script>
+
+</body>
+</html>

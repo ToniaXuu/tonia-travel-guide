@@ -1,0 +1,3019 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>烟台养马岛端午情侣游 · 两日攻略</title>
+    <!-- 腾讯地图API -->
+    <!-- 请替换为您的腾讯地图API key，申请地址: https://lbs.qq.com/ -->
+    <!-- 如果没有key，将显示备用SVG地图 -->
+    <script>
+        // 腾讯地图API配置
+        const TENCENT_MAP_KEY = 'PBOBZ-S4XEN-YOVFW-STAR3-KJOME-4QBOO';
+        const TENCENT_MAP_SK = 'zT0wEn1bx9m8TPKBx5FJtQXa5EeBMUFq';
+        
+        // 动态加载腾讯地图API
+        function loadTencentMap() {
+            return new Promise((resolve, reject) => {
+                // 腾讯地图JavaScript API只支持key鉴权，不支持签名验证
+                // 签名验证用于WebService API，不适用于JavaScript API
+                const url = `https://map.qq.com/api/gljs?v=2.exp&key=${TENCENT_MAP_KEY}`;
+                
+                console.log('腾讯地图API URL:', url);
+                console.log('注意：JavaScript API只支持key鉴权，不支持签名验证');
+                
+                const script = document.createElement('script');
+                script.src = url;
+                script.onload = () => resolve();
+                script.onerror = () => reject(new Error('腾讯地图API加载失败'));
+                document.head.appendChild(script);
+            });
+        }
+    </script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --ocean: #2563eb;
+            --ocean-light: #3b82f6;
+            --ocean-dark: #1d4ed8;
+            --coral: #f97316;
+            --coral-light: #fb923c;
+            --coral-dark: #ea580c;
+            --emerald: #10b981;
+            --emerald-light: #34d399;
+            --emerald-dark: #059669;
+            --violet: #8b5cf6;
+            --violet-light: #a78bfa;
+            --violet-dark: #7c3aed;
+            --pink: #ec4899;
+            --pink-light: #f472b6;
+            --pink-dark: #db2777;
+            --gray-50: #f8fafc;
+            --gray-100: #f1f5f9;
+            --gray-200: #e2e8f0;
+            --gray-300: #cbd5e1;
+            --gray-400: #94a3b8;
+            --gray-500: #64748b;
+            --gray-600: #475569;
+            --gray-700: #334155;
+            --gray-800: #1e293b;
+            --gray-900: #0f172a;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--gray-800);
+            background: var(--gray-50);
+        }
+        
+        /* Banner */
+        .banner {
+            position: relative;
+            height: 200px;
+            background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 30%, #1e3a8a 70%, #1e1b4b 100%);
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 40px;
+        }
+        
+        .banner::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(ellipse 600px 400px at 20% 50%, rgba(59, 130, 246, 0.3) 0%, transparent 70%),
+                radial-gradient(ellipse 500px 300px at 80% 30%, rgba(139, 92, 246, 0.2) 0%, transparent 70%),
+                radial-gradient(ellipse 400px 250px at 60% 70%, rgba(16, 185, 129, 0.15) 0%, transparent 70%);
+            z-index: 1;
+        }
+        
+        .banner-content {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            max-width: 1200px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .banner-title {
+            color: white;
+            font-size: 2.5rem;
+            font-weight: 700;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        .banner-title span {
+            display: block;
+            font-size: 1rem;
+            font-weight: 400;
+            opacity: 0.9;
+            margin-top: 8px;
+        }
+        
+        .badges {
+            display: flex;
+            gap: 12px;
+        }
+        
+        .badge {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            padding: 12px 20px;
+            color: white;
+            text-align: center;
+            min-width: 100px;
+        }
+        
+        .badge-icon {
+            font-size: 1.5rem;
+            margin-bottom: 4px;
+        }
+        
+        .badge-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            line-height: 1;
+        }
+        
+        .badge-label {
+            font-size: 0.75rem;
+            opacity: 0.9;
+            margin-top: 2px;
+        }
+        
+        /* Main Layout */
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px 40px;
+            display: flex;
+            gap: 30px;
+            min-height: calc(100vh - 200px);
+        }
+        
+        /* Left Panel - Timeline */
+        .left-panel {
+            flex: 1;
+            max-width: 50%;
+        }
+        
+        /* Day Tabs */
+        .day-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 24px;
+        }
+        
+        .day-tab {
+            padding: 10px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 2px solid var(--gray-200);
+            background: white;
+            color: var(--gray-600);
+        }
+        
+        .day-tab:hover {
+            border-color: var(--ocean-light);
+            color: var(--ocean);
+        }
+        
+        .day-tab.active {
+            background: var(--ocean);
+            border-color: var(--ocean);
+            color: white;
+        }
+        
+        /* Timeline Cards */
+        .timeline {
+            position: relative;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 20px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--gray-200);
+            z-index: 0;
+        }
+        
+        .timeline-card {
+            position: relative;
+            margin-left: 50px;
+            margin-bottom: 20px;
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            border-left: 4px solid var(--gray-300);
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        
+        .timeline-card:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            transform: translateY(-2px);
+        }
+        
+        .timeline-card.active {
+            border-left-color: var(--ocean);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+        }
+        
+        /* Category Colors */
+        .timeline-card[data-category="景点"] {
+            border-left-color: var(--ocean);
+        }
+        
+        .timeline-card[data-category="美食"] {
+            border-left-color: var(--coral);
+        }
+        
+        .timeline-card[data-category="文化"] {
+            border-left-color: var(--violet);
+        }
+        
+        .timeline-card[data-category="购物"] {
+            border-left-color: var(--emerald);
+        }
+        
+        .timeline-card[data-category="住宿"] {
+            border-left-color: var(--pink);
+        }
+        
+        .timeline-card[data-category="交通"] {
+            border-left-color: #6366f1;
+        }
+        
+        .timeline-dot {
+            position: absolute;
+            left: -38px;
+            top: 24px;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: var(--gray-300);
+            border: 3px solid white;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .timeline-card[data-category="景点"] .timeline-dot {
+            background: var(--ocean);
+        }
+        
+        .timeline-card[data-category="美食"] .timeline-dot {
+            background: var(--coral);
+        }
+        
+        .timeline-card[data-category="文化"] .timeline-dot {
+            background: var(--violet);
+        }
+        
+        .timeline-card[data-category="购物"] .timeline-dot {
+            background: var(--emerald);
+        }
+        
+        .timeline-card[data-category="住宿"] .timeline-dot {
+            background: var(--pink);
+        }
+        
+        .timeline-card[data-category="交通"] .timeline-dot {
+            background: #6366f1;
+        }
+        
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 8px;
+        }
+        
+        .card-time {
+            font-size: 0.875rem;
+            color: var(--gray-500);
+            font-weight: 500;
+        }
+        
+        .card-category {
+            font-size: 0.75rem;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-weight: 600;
+        }
+        
+        .card-category[data-category="景点"] {
+            background: rgba(37, 99, 235, 0.1);
+            color: var(--ocean);
+        }
+        
+        .card-category[data-category="美食"] {
+            background: rgba(249, 115, 22, 0.1);
+            color: var(--coral);
+        }
+        
+        .card-category[data-category="文化"] {
+            background: rgba(139, 92, 246, 0.1);
+            color: var(--violet);
+        }
+        
+        .card-category[data-category="购物"] {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--emerald);
+        }
+        
+        .card-category[data-category="住宿"] {
+            background: rgba(236, 72, 153, 0.1);
+            color: var(--pink);
+        }
+        
+        .card-category[data-category="交通"] {
+            background: rgba(99, 102, 241, 0.1);
+            color: #6366f1;
+        }
+        
+        .card-weather {
+            font-size: 0.7rem;
+            padding: 1px 7px;
+            border-radius: 10px;
+            background: rgba(255, 193, 7, 0.12);
+            color: var(--amber);
+            font-weight: 500;
+            margin-left: auto;
+            margin-right: 8px;
+            white-space: nowrap;
+            display: inline-flex;
+            align-items: center;
+            gap: 2px;
+        }
+        .card-weather .weather-emoji {
+            font-size: 0.75rem;
+        }
+        .card-weather.card-weather-night {
+            background: rgba(99, 102, 241, 0.1);
+            color: #6366f1;
+        }
+        
+        .card-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--gray-800);
+            margin-bottom: 4px;
+        }
+        
+        .card-subtitle {
+            font-size: 0.875rem;
+            color: var(--gray-600);
+            margin-bottom: 8px;
+        }
+        
+        .card-description {
+            font-size: 0.875rem;
+            color: var(--gray-500);
+            line-height: 1.5;
+        }
+        
+        .card-tags {
+            display: flex;
+            gap: 6px;
+            margin-top: 12px;
+            flex-wrap: wrap;
+        }
+        
+        .tag {
+            font-size: 0.75rem;
+            padding: 2px 8px;
+            border-radius: 6px;
+            background: var(--gray-100);
+            color: var(--gray-600);
+        }
+        
+        /* Right Panel - Map */
+        .right-panel {
+            flex: 1;
+            max-width: 50%;
+            position: sticky;
+            top: 30px;
+            height: calc(100vh - 260px);
+        }
+        
+        .map-container {
+            width: 100%;
+            height: 100%;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+        
+        /* 地图加载动画 */
+        .map-loading {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            transition: opacity 0.5s ease;
+        }
+        
+        /* 调试信息覆盖层 */
+        .debug-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1001;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .debug-content {
+            background: #1e293b;
+            border-radius: 12px;
+            padding: 20px;
+            max-width: 90%;
+            max-height: 80%;
+            overflow-y: auto;
+            color: #e2e8f0;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+        
+        .debug-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #334155;
+            font-weight: bold;
+            color: #f8fafc;
+        }
+        
+        .debug-close {
+            background: none;
+            border: none;
+            color: #94a3b8;
+            font-size: 18px;
+            cursor: pointer;
+            padding: 0 5px;
+        }
+        
+        .debug-close:hover {
+            color: #f8fafc;
+        }
+        
+        .debug-info {
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+        
+        .debug-info .error {
+            color: #ef4444;
+            font-weight: bold;
+        }
+        
+        .debug-info .success {
+            color: #10b981;
+        }
+        
+        .debug-info .info {
+            color: #3b82f6;
+        }
+        
+        .map-loading.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        .loading-content {
+            text-align: center;
+            color: #475569;
+        }
+        
+        .loading-spinner {
+            width: 48px;
+            height: 48px;
+            border: 4px solid #e2e8f0;
+            border-top: 4px solid #3b82f6;
+            border-radius: 50%;
+            margin: 0 auto 16px;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .loading-text {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #1e293b;
+        }
+        
+        .loading-subtitle {
+            font-size: 14px;
+            color: #64748b;
+            animation: pulse 2s ease-in-out infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
+        }
+        
+        #map {
+            width: 100%;
+            height: 100%;
+        }
+        
+        .map-overlay {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: white;
+            border-radius: 8px;
+            padding: 10px 15px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 100;
+            font-size: 0.875rem;
+            color: var(--gray-700);
+        }
+        
+        .map-legend {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        
+        /* Weather Widget */
+        .weather-widget {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 24px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        .weather-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--gray-800);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .weather-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+        
+        .weather-day {
+            background: var(--gray-50);
+            border-radius: 8px;
+            padding: 12px;
+            text-align: center;
+        }
+        
+        .weather-date {
+            font-size: 0.75rem;
+            color: var(--gray-500);
+            margin-bottom: 4px;
+        }
+        
+        .weather-icon {
+            font-size: 2rem;
+            margin: 8px 0;
+        }
+        
+        .weather-temp {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--gray-800);
+        }
+        
+        .weather-desc {
+            font-size: 0.75rem;
+            color: var(--gray-500);
+            margin-top: 4px;
+        }
+        
+        .weather-update-time {
+            font-size: 0.65rem;
+            color: var(--gray-400);
+            font-weight: 400;
+            margin-left: 8px;
+        }
+        
+        .weather-loading-dot {
+            display: inline-block;
+            animation: weatherPulse 1.5s infinite;
+        }
+        
+        @keyframes weatherPulse {
+            0%, 100% { opacity: 0.4; }
+            50% { opacity: 1; }
+        }
+        
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .main-container {
+                flex-direction: column;
+                padding: 20px;
+            }
+            
+            .left-panel,
+            .right-panel {
+                max-width: 100%;
+                position: static;
+                height: auto;
+            }
+            
+            .right-panel {
+                height: 500px;
+                order: -1;
+            }
+            
+            .banner-title {
+                font-size: 2rem;
+            }
+            
+            .badges {
+                display: none;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .banner {
+                height: 150px;
+                padding: 0 20px;
+            }
+            
+            .banner-title {
+                font-size: 1.5rem;
+            }
+            
+            .main-container {
+                padding: 15px;
+            }
+            
+            .day-tabs {
+                flex-wrap: wrap;
+            }
+            
+            .day-tab {
+                padding: 8px 16px;
+                font-size: 0.875rem;
+            }
+        }
+        
+        /* Print styles */
+        @media print {
+            .right-panel {
+                display: none;
+            }
+            
+            .left-panel {
+                max-width: 100%;
+            }
+            
+            .banner {
+                background: var(--ocean) !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Banner -->
+    <div class="banner">
+        <div class="banner-content">
+            <div class="banner-title">
+                烟台养马岛端午情侣游
+                <span>2026年6月19日-20日 · 两日一晚深度攻略</span>
+            </div>
+            <div class="badges">
+                <div class="badge">
+                    <div class="badge-icon">📅</div>
+                    <div class="badge-value">2</div>
+                    <div class="badge-label">天</div>
+                </div>
+                <div class="badge">
+                    <div class="badge-icon">📍</div>
+                    <div class="badge-value">12</div>
+                    <div class="badge-label">个景点</div>
+                </div>
+                <div class="badge">
+                    <div class="badge-icon">💰</div>
+                    <div class="badge-value">¥1.8k</div>
+                    <div class="badge-label">总预算</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Main Content -->
+    <div class="main-container">
+        <!-- Left Panel - Timeline -->
+        <div class="left-panel">
+            <!-- Weather Widget -->
+            <div class="weather-widget">
+                <div class="weather-title">
+                    🌤️ 天气预报
+                    <span id="weather-update-time" class="weather-update-time"></span>
+                </div>
+                <div class="weather-grid" id="weather-grid">
+                    <div class="weather-day" id="weather-day1">
+                        <div class="weather-date">6月19日 加载中...</div>
+                        <div class="weather-icon">⏳</div>
+                        <div class="weather-temp">--</div>
+                        <div class="weather-desc">获取天气数据中</div>
+                    </div>
+                    <div class="weather-day" id="weather-day2">
+                        <div class="weather-date">6月20日 加载中...</div>
+                        <div class="weather-icon">⏳</div>
+                        <div class="weather-temp">--</div>
+                        <div class="weather-desc">获取天气数据中</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Day Tabs -->
+            <div class="day-tabs">
+                <div class="day-tab active" data-day="1">Day 1 · 6月19日</div>
+                <div class="day-tab" data-day="2">Day 2 · 6月20日</div>
+            </div>
+            
+            <!-- Timeline Cards -->
+            <div class="timeline" id="timeline">
+                <!-- Day 1 Cards -->
+                <div class="day-content active" data-day="1">
+                    <!-- Card 0: 济南东站 -->
+                    <div class="timeline-card" data-category="交通" data-lat="36.675" data-lng="117.125" data-index="0">
+                        <div class="timeline-dot">0</div>
+                        <div class="card-header">
+                            <div class="card-time">06:05 出发</div>
+                            <div class="card-category" data-category="交通">交通</div>
+                        </div>
+                        <div class="card-title">济南东站</div>
+                        <div class="card-subtitle">高铁出发 → 烟台站</div>
+                        <div class="card-description">
+                            06:05 济南东出发，08:50 到达烟台站。二等座约204元/人。
+                        </div>
+                        <div class="card-tags">
+                            <span class="tag">高铁</span>
+                            <span class="tag">¥204/人</span>
+                            <span class="tag">2小时45分</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Card 1: 烟台站 -->
+                    <div class="timeline-card" data-category="交通" data-lat="37.5535" data-lng="121.3914" data-index="1">
+                        <div class="timeline-dot">1</div>
+                        <div class="card-header">
+                            <div class="card-time">08:50 到达</div>
+                            <div class="card-category" data-category="交通">交通</div>
+                        </div>
+                        <div class="card-title">烟台站</div>
+                        <div class="card-subtitle">抵达烟台，开始旅程</div>
+                        <div class="card-description">
+                            08:50 到达烟台站，出站后前往朝阳街。
+                        </div>
+                        <div class="card-tags">
+                            <span class="tag">到达</span>
+                            <span class="tag">出站</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Card 2 -->
+                    <div class="timeline-card" data-category="景点" data-lat="37.5535" data-lng="121.3914" data-index="2">
+                        <div class="timeline-dot">2</div>
+                        <div class="card-header">
+                            <div class="card-time">09:30 - 11:00</div>
+                            <div class="card-category" data-category="景点">景点</div>
+                        </div>
+                        <div class="card-title">朝阳街历史文化街区</div>
+                        <div class="card-subtitle">巨型玫瑰花瀑墙 · 情侣合照绝佳</div>
+                        <div class="card-description">
+                            百年老街改造的网红街区，巨型玫瑰花瀑墙是必打卡点。红砖洋楼、咖啡馆林立，适合牵手漫步。
+                            <div class="transport-info">
+                                <strong>交通：</strong>从烟台站步行约2公里（20-30分钟）或乘坐公交10分钟。推荐步行，沿途可欣赏城市风光。
+                            </div>
+                        </div>
+                        <div class="card-tags">
+                            <span class="tag">拍照打卡</span>
+                            <span class="tag">历史建筑</span>
+                            <span class="tag">免费</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Card 2 -->
+                    <div class="timeline-card" data-category="景点" data-lat="37.5465" data-lng="121.3885" data-index="2">
+                        <div class="timeline-dot">2</div>
+                        <div class="card-header">
+                            <div class="card-time">11:00 - 12:00</div>
+                            <div class="card-category" data-category="景点">景点</div>
+                        </div>
+                        <div class="card-title">烟台山景区</div>
+                        <div class="card-subtitle">俯瞰城与海 · 灯塔地标</div>
+                        <div class="card-description">
+                            烟台城市地标，山上有多国领事馆旧址。灯塔下可俯瞰整个烟台港和城市天际线，是情侣合影的绝佳位置。
+                            <div class="transport-info">
+                                <strong>交通：</strong>从朝阳街步行约1公里（15分钟），沿途可欣赏海岸线风光。
+                            </div>
+                        </div>
+                        <div class="card-tags">
+                            <span class="tag">城市地标</span>
+                            <span class="tag">海景</span>
+                            <span class="tag">门票50元</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Card 3 -->
+                    <div class="timeline-card" data-category="美食" data-lat="37.5445" data-lng="121.3925" data-index="3">
+                        <div class="timeline-dot">3</div>
+                        <div class="card-header">
+                            <div class="card-time">12:00 - 13:00</div>
+                            <div class="card-category" data-category="美食">美食</div>
+                        </div>
+                        <div class="card-title">蓬莱春酒家 / 万盛合酒楼</div>
+                        <div class="card-subtitle">海肠捞饭必点 · 烟台老味道</div>
+                        <div class="card-description">
+                            本地人最爱的鲁菜馆，海肠捞饭是招牌，鲅鱼水饺、葱烧海参也是经典。人均80-100元。
+                            <div class="transport-info">
+                                <strong>交通：</strong>从烟台山步行约0.5公里（8分钟），位于烟台山脚下。
+                            </div>
+                        </div>
+                        <div class="card-tags">
+                            <span class="tag">鲁菜</span>
+                            <span class="tag">海鲜</span>
+                            <span class="tag">人均¥90</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Card 4 -->
+                    <div class="timeline-card" data-category="文化" data-lat="37.5485" data-lng="121.3905" data-index="4">
+                        <div class="timeline-dot">4</div>
+                        <div class="card-header">
+                            <div class="card-time">13:00 - 14:00</div>
+                            <div class="card-category" data-category="文化">文化</div>
+                        </div>
+                        <div class="card-title">所城里大街</div>
+                        <div class="card-subtitle">600年古民居 · 牵手漫步</div>
+                        <div class="card-description">
+                            明代古城遗址，青石板路配白墙灰瓦，文艺小店和咖啡馆散落其中。适合慢节奏散步，感受老烟台韵味。
+                            <div class="transport-info">
+                                <strong>交通：</strong>从午餐地点步行约0.8公里（12分钟），沿途可欣赏老城区风貌。
+                            </div>
+                        </div>
+                        <div class="card-tags">
+                            <span class="tag">历史街区</span>
+                            <span class="tag">文艺</span>
+                            <span class="tag">免费</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Card 5 -->
+                    <div class="timeline-card" data-category="景点" data-lat="37.4615" data-lng="121.6085" data-index="5">
+                        <div class="timeline-dot">5</div>
+                        <div class="card-header">
+                            <div class="card-time">14:00 - 15:30</div>
+                            <div class="card-category" data-category="景点">景点</div>
+                        </div>
+                        <div class="card-title">前往养马岛</div>
+                        <div class="card-subtitle">换乘中心 → 接驳车入岛</div>
+                        <div class="card-description">
+                            打车/617路公交到换乘中心，乘接驳车（25元/人）经跨海大桥入岛。接驳车逆时针环岛，20个站点随上随下。
+                            <div class="transport-info">
+                                <strong>交通：</strong>距离约30公里。推荐乘坐617路公交（约1小时，¥10/人）或打车（约40分钟，¥80-100）。端午节期间建议提前出发，避免拥堵。
+                            </div>
+                        </div>
+                        <div class="card-tags">
+                            <span class="tag">交通</span>
+                            <span class="tag">接驳车¥25</span>
+                            <span class="tag">约40分钟</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Card 6 -->
+                    <div class="timeline-card" data-category="景点" data-lat="37.4685" data-lng="121.6125" data-index="6">
+                        <div class="timeline-dot">6</div>
+                        <div class="card-header">
+                            <div class="card-time">15:30 - 16:30</div>
+                            <div class="card-category" data-category="景点">景点</div>
+                        </div>
+                        <div class="card-title">獐岛 · 果冻海</div>
+                        <div class="card-subtitle">红色木栈道 · 海螺洞穴</div>
+                        <div class="card-description">
+                            养马岛最美景点！红色木栈道延伸入海，"果冻海"清澈见底。海螺洞穴是退潮限定奇观，岩壁布满荧光绿海葵。
+                            <div class="transport-info">
+                                <strong>交通：</strong>从换乘中心乘接驳车约20分钟到达，在獐岛站下车。
+                            </div>
+                        </div>
+                        <div class="card-tags">
+                            <span class="tag">必打卡</span>
+                            <span class="tag">拍照圣地</span>
+                            <span class="tag">免费</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Card 7 -->
+                    <div class="timeline-card" data-category="景点" data-lat="37.4645" data-lng="121.6185" data-index="7">
+                        <div class="timeline-dot">7</div>
+                        <div class="card-header">
+                            <div class="card-time">16:30 - 18:00</div>
+                            <div class="card-category" data-category="景点">景点</div>
+                        </div>
+                        <div class="card-title">秦风崖 · 日落</div>
+                        <div class="card-subtitle">玻璃栈道 · 溶洞机位 · 橘子海</div>
+                        <div class="card-description">
+                            日落首选！玻璃栈道+溶洞机位，夕阳穿透洞口金光四射，橘子海+白风车，小阿那亚既视感。
+                            <div class="transport-info">
+                                <strong>交通：</strong>从獐岛乘接驳车约10分钟到达，在秦风崖站下车。
+                            </div>
+                        </div>
+                        <div class="card-tags">
+                            <span class="tag">日落</span>
+                            <span class="tag">玻璃栈道</span>
+                            <span class="tag">免费</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Card 8 -->
+                    <div class="timeline-card" data-category="景点" data-lat="37.4625" data-lng="121.6145" data-index="8">
+                        <div class="timeline-dot">8</div>
+                        <div class="card-header">
+                            <div class="card-time">18:00 - 19:00</div>
+                            <div class="card-category" data-category="景点">景点</div>
+                        </div>
+                        <div class="card-title">莲花夕照 · 网红洞穴</div>
+                        <div class="card-subtitle">海蚀拱门 · 荧光绿海葵</div>
+                        <div class="card-description">
+                            退潮时出现的天然海蚀拱门，洞穴内布满荧光绿色海葵，配合夕阳拍摄效果绝佳。
+                            <div class="transport-info">
+                                <strong>交通：</strong>从秦风崖乘接驳车约15分钟到达，在莲花夕照站下车。
+                            </div>
+                        </div>
+                        <div class="card-tags">
+                            <span class="tag">限定景点</span>
+                            <span class="tag">退潮可见</span>
+                            <span class="tag">免费</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Card 9 -->
+                    <div class="timeline-card" data-category="文化" data-lat="37.4635" data-lng="121.6165" data-index="9">
+                        <div class="timeline-dot">9</div>
+                        <div class="card-header">
+                            <div class="card-time">19:00 - 20:00</div>
+                            <div class="card-category" data-category="文化">文化</div>
+                        </div>
+                        <div class="card-title">海岛日记</div>
+                        <div class="card-subtitle">"想你的风吹到养马岛" 路牌打卡</div>
+                        <div class="card-description">
+                            纯白ins风民宿+咖啡馆，二楼露台面朝大海。可定制姓名剪影剪纸（20元），超有纪念意义的情侣手作。
+                            <div class="transport-info">
+                                <strong>交通：</strong>从莲花夕照乘接驳车约10分钟到达，在海岛日记站下车。
+                            </div>
+                        </div>
+                        <div class="card-tags">
+                            <span class="tag">咖啡馆</span>
+                            <span class="tag">拍照</span>
+                            <span class="tag">手作体验</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Card 10 -->
+                    <div class="timeline-card" data-category="美食" data-lat="37.4655" data-lng="121.6105" data-index="10">
+                        <div class="timeline-dot">10</div>
+                        <div class="card-header">
+                            <div class="card-time">20:00 - 21:30</div>
+                            <div class="card-category" data-category="美食">美食</div>
+                        </div>
+                        <div class="card-title">东辰望海渔家 / 鑫阳饭庄</div>
+                        <div class="card-subtitle">海鲜大餐 · 岛上晚餐</div>
+                        <div class="card-description">
+                            岛上性价比高的海鲜餐厅，推荐蒜蓉扇贝、清蒸海螺、辣炒蛤蜊。人均60-80元。
+                            <div class="transport-info">
+                                <strong>交通：</strong>从海岛日记步行约5分钟到达，位于养马岛中心区域。
+                            </div>
+                        </div>
+                        <div class="card-tags">
+                            <span class="tag">海鲜</span>
+                            <span class="tag">岛上餐厅</span>
+                            <span class="tag">人均¥70</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Card 11 -->
+                    <div class="timeline-card" data-category="住宿" data-lat="37.4675" data-lng="121.6095" data-index="11">
+                        <div class="timeline-dot">11</div>
+                        <div class="card-header">
+                            <div class="card-time">21:30 入住</div>
+                            <div class="card-category" data-category="住宿">住宿</div>
+                        </div>
+                        <div class="card-title">居巢民宿 ⭐强烈推荐</div>
+                        <div class="card-subtitle">4.8分 · 距岛8分钟 · 300-400元</div>
+                        <div class="card-description">
+                            2024年新开业，房间52平米，智能马桶+家庭影院。提前给车牌号可办入岛电子授权。阳台看海，可带宠物。
+                            <div class="transport-info">
+                                <strong>交通：</strong>从晚餐地点步行约10分钟到达，位于养马岛中心区域。
+                            </div>
+                        </div>
+                        <div class="card-tags">
+                            <span class="tag">民宿</span>
+                            <span class="tag">海景</span>
+                            <span class="tag">¥350/晚</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Day 2 Cards -->
+                <div class="day-content" data-day="2" style="display: none;">
+                    <!-- Card 12 -->
+                    <div class="timeline-card" data-category="景点" data-lat="37.4685" data-lng="121.6125" data-index="12">
+                        <div class="timeline-dot">12</div>
+                        <div class="card-header">
+                            <div class="card-time">09:00 - 11:30</div>
+                            <div class="card-category" data-category="景点">景点</div>
+                        </div>
+                        <div class="card-title">獐岛赶海</div>
+                        <div class="card-subtitle">退潮前1小时到达 · 海螺洞穴探秘</div>
+                        <div class="card-description">
+                            查"烟台潮汐表"小程序，退潮前1小时到达最佳。红色木栈道转角广角仰拍，可将海蚀拱门与果冻海同框。赶海工具民宿可免费借用。
+                            <div class="transport-info">
+                                <strong>交通：</strong>从住宿乘接驳车约15分钟到达，在獐岛站下车。
+                            </div>
+                        </div>
+                        <div class="card-tags">
+                            <span class="tag">赶海</span>
+                            <span class="tag">退潮限定</span>
+                            <span class="tag">免费</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Card 13 -->
+                    <div class="timeline-card" data-category="美食" data-lat="37.4665" data-lng="121.6115" data-index="13">
+                        <div class="timeline-dot">13</div>
+                        <div class="card-header">
+                            <div class="card-time">11:30 - 12:30</div>
+                            <div class="card-category" data-category="美食">美食</div>
+                        </div>
+                        <div class="card-title">老船长渔家乐</div>
+                        <div class="card-subtitle">蒜蓉海胆 · 赠海菜包子</div>
+                        <div class="card-description">
+                            岛上老牌渔家乐，蒜蓉海胆是招牌，老板热情会送海菜包子。加工费10-20元/道，人均70-90元。
+                            <div class="transport-info">
+                                <strong>交通：</strong>从獐岛步行约10分钟到达，位于养马岛中心区域。
+                            </div>
+                        </div>
+                        <div class="card-tags">
+                            <span class="tag">海鲜加工</span>
+                            <span class="tag">渔家乐</span>
+                            <span class="tag">人均¥80</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Card 14 -->
+                    <div class="timeline-card" data-category="景点" data-lat="37.4645" data-lng="121.6185" data-index="14">
+                        <div class="timeline-dot">14</div>
+                        <div class="card-header">
+                            <div class="card-time">12:30 - 14:30</div>
+                            <div class="card-category" data-category="景点">景点</div>
+                        </div>
+                        <div class="card-title">秦风崖日出（可选）</div>
+                        <div class="card-subtitle">早起党专属 · 4:50日出</div>
+                        <div class="card-description">
+                            夏季约4:50日出，5:30到达可看朝霞映海。后海礁石区+"象鼻石"逆光拍摄，电影级画面。如遇中雨则放弃，安全第一。
+                            <div class="transport-info">
+                                <strong>交通：</strong>从午餐地点乘接驳车约20分钟到达，在秦风崖站下车。
+                            </div>
+                        </div>
+                        <div class="card-tags">
+                            <span class="tag">日出</span>
+                            <span class="tag">早起</span>
+                            <span class="tag">天气依赖</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Card 15 -->
+                    <div class="timeline-card" data-category="景点" data-lat="37.5325" data-lng="121.4205" data-index="15">
+                        <div class="timeline-dot">15</div>
+                        <div class="card-header">
+                            <div class="card-time">14:30 - 16:30</div>
+                            <div class="card-category" data-category="景点">景点</div>
+                        </div>
+                        <div class="card-title">渔人码头 + 滨海中路</div>
+                        <div class="card-subtitle">左手城市右手大海</div>
+                        <div class="card-description">
+                            离岛后前往渔人码头，欧式建筑群+海景栈道。滨海中路是烟台最美海岸线，骑行或漫步都很惬意。
+                            <div class="transport-info">
+                                <strong>交通：</strong>距离约20公里。推荐乘接驳车到换乘中心，再转公交617路到渔人码头（约1小时，¥15/人）或打车（约30分钟，¥60-80）。
+                            </div>
+                        </div>
+                        <div class="card-tags">
+                            <span class="tag">海景</span>
+                            <span class="tag">欧式建筑</span>
+                            <span class="tag">免费</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Card 16 -->
+                    <div class="timeline-card" data-category="景点" data-lat="37.5385" data-lng="121.4065" data-index="16">
+                        <div class="timeline-dot">16</div>
+                        <div class="card-header">
+                            <div class="card-time">16:30 - 17:30</div>
+                            <div class="card-category" data-category="景点">景点</div>
+                        </div>
+                        <div class="card-title">月亮湾</div>
+                        <div class="card-subtitle">情侣圣地 · 月老见证</div>
+                        <div class="card-description">
+                            烟台最浪漫的海湾，月老雕塑是情侣必打卡点。夕阳西下时，整个海湾被染成金色，超适合求婚或表白。
+                            <div class="transport-info">
+                                <strong>交通：</strong>距离约8公里。推荐乘坐18路公交（约57分钟，¥2/人）或打车（约20分钟，¥25-30）。不推荐步行，距离较远。
+                            </div>
+                        </div>
+                        <div class="card-tags">
+                            <span class="tag">情侣圣地</span>
+                            <span class="tag">日落</span>
+                            <span class="tag">免费</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Card 17 -->
+                    <div class="timeline-card" data-category="美食" data-lat="37.5405" data-lng="121.3945" data-index="17">
+                        <div class="timeline-dot">17</div>
+                        <div class="card-header">
+                            <div class="card-time">17:30 - 19:00</div>
+                            <div class="card-category" data-category="美食">美食</div>
+                        </div>
+                        <div class="card-title">旺角小渔村</div>
+                        <div class="card-subtitle">烟台焖子收尾 · 本地人最爱</div>
+                        <div class="card-description">
+                            本地人聚餐首选，烟台焖子是必点，配蒜泥和芝麻酱。辣炒蛤蜊、烤海肠也是招牌。人均60-80元。
+                            <div class="transport-info">
+                                <strong>交通：</strong>从月亮湾步行约15分钟到达，沿途可欣赏海岸线夜景。
+                            </div>
+                        </div>
+                        <div class="card-tags">
+                            <span class="tag">本地美食</span>
+                            <span class="tag">烟台焖子</span>
+                            <span class="tag">人均¥70</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Card 18 -->
+                    <div class="timeline-card" data-category="购物" data-lat="37.5425" data-lng="121.3885" data-index="18">
+                        <div class="timeline-dot">18</div>
+                        <div class="card-header">
+                            <div class="card-time">19:00 - 20:00</div>
+                            <div class="card-category" data-category="购物">购物</div>
+                        </div>
+                        <div class="card-title">特产采购</div>
+                        <div class="card-subtitle">海鲜干货 · 烟台苹果</div>
+                        <div class="card-description">
+                            推荐购买有"SC认证"的海鲜干货，烟台苹果、海苔、鱿鱼丝都是不错的伴手礼。用大众点评搜"本地人常去"更靠谱。
+                            <div class="transport-info">
+                                <strong>交通：</strong>从晚餐地点步行约5分钟到达，位于烟台市中心商业区。
+                            </div>
+                        </div>
+                        <div class="card-tags">
+                            <span class="tag">伴手礼</span>
+                            <span class="tag">海鲜干货</span>
+                            <span class="tag">¥50-100</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Card 19: 烟台站 -->
+                    <div class="timeline-card" data-category="交通" data-lat="37.5535" data-lng="121.3914" data-index="19">
+                        <div class="timeline-dot">19</div>
+                        <div class="card-header">
+                            <div class="card-time">20:50 出发</div>
+                            <div class="card-category" data-category="交通">交通</div>
+                        </div>
+                        <div class="card-title">烟台站</div>
+                        <div class="card-subtitle">高铁返程 → 济南东站</div>
+                        <div class="card-description">
+                            20:50 烟台站出发，22:47 到达济南东站。二等座约163元/人。
+                            <div class="transport-info">
+                                <strong>交通：</strong>从特产采购步行约10分钟到达烟台站，沿途可欣赏城市夜景。
+                            </div>
+                        </div>
+                        <div class="card-tags">
+                            <span class="tag">高铁</span>
+                            <span class="tag">¥163/人</span>
+                            <span class="tag">1小时57分</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Card 20: 济南东站 -->
+                    <div class="timeline-card" data-category="交通" data-lat="36.675" data-lng="117.125" data-index="20">
+                        <div class="timeline-dot">20</div>
+                        <div class="card-header">
+                            <div class="card-time">22:47 到达</div>
+                            <div class="card-category" data-category="交通">交通</div>
+                        </div>
+                        <div class="card-title">济南东站</div>
+                        <div class="card-subtitle">抵达济南，旅程结束</div>
+                        <div class="card-description">
+                            22:47 到达济南东站，结束愉快的烟台之旅。
+                        </div>
+                        <div class="card-tags">
+                            <span class="tag">到达</span>
+                            <span class="tag">旅程结束</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Right Panel - Map -->
+        <div class="right-panel">
+            <div class="map-container">
+                <div id="map"></div>
+                <div class="map-overlay">
+                    <div class="map-legend">
+                        <div class="legend-item">
+                            <div class="legend-dot" style="background: var(--ocean);"></div>
+                            <span>景点</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-dot" style="background: var(--coral);"></div>
+                            <span>美食</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-dot" style="background: var(--violet);"></div>
+                            <span>文化</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-dot" style="background: var(--emerald);"></div>
+                            <span>购物</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-dot" style="background: var(--pink);"></div>
+                            <span>住宿</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-dot" style="background: #6366f1;"></div>
+                            <span>交通</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- 加载动画覆盖层 -->
+                <div id="map-loading" class="map-loading">
+                    <div class="loading-content">
+                        <div class="loading-spinner"></div>
+                        <div class="loading-text">地图加载中...</div>
+                        <div class="loading-subtitle">正在连接腾讯地图服务</div>
+                    </div>
+                </div>
+                <!-- 调试信息覆盖层 -->
+                <div id="debug-overlay" class="debug-overlay" style="display: none;">
+                    <div class="debug-content">
+                        <div class="debug-header">
+                            <span>🔧 地图加载调试信息</span>
+                            <button class="debug-close" onclick="hideDebugOverlay()">×</button>
+                        </div>
+                        <div id="debug-info" class="debug-info"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // 腾讯地图初始化
+        let map = null;
+        let markers = [];
+        let polyline = null;
+        let currentDay = 1;
+        let pulseMarker = null; // 脉冲动画标记
+        
+        // 景点数据
+        const spots = {
+            1: [
+                { lat: 36.675, lng: 117.125, name: "济南东站", category: "交通" },
+                { lat: 37.5535, lng: 121.3914, name: "烟台站", category: "交通" },
+                { lat: 37.5535, lng: 121.3914, name: "朝阳街", category: "景点" },
+                { lat: 37.5465, lng: 121.3885, name: "烟台山", category: "景点" },
+                { lat: 37.5445, lng: 121.3925, name: "蓬莱春酒家", category: "美食" },
+                { lat: 37.5485, lng: 121.3905, name: "所城里大街", category: "文化" },
+                { lat: 37.4615, lng: 121.6085, name: "养马岛换乘中心", category: "景点" },
+                { lat: 37.4685, lng: 121.6125, name: "獐岛", category: "景点" },
+                { lat: 37.4645, lng: 121.6185, name: "秦风崖", category: "景点" },
+                { lat: 37.4625, lng: 121.6145, name: "莲花夕照", category: "景点" },
+                { lat: 37.4635, lng: 121.6165, name: "海岛日记", category: "文化" },
+                { lat: 37.4655, lng: 121.6105, name: "东辰望海渔家", category: "美食" },
+                { lat: 37.4675, lng: 121.6095, name: "居巢民宿", category: "住宿" }
+            ],
+            2: [
+                { lat: 37.4675, lng: 121.6095, name: "居巢民宿", category: "住宿" },
+                { lat: 37.4685, lng: 121.6125, name: "獐岛赶海", category: "景点" },
+                { lat: 37.4665, lng: 121.6115, name: "老船长渔家乐", category: "美食" },
+                { lat: 37.4645, lng: 121.6185, name: "秦风崖日出", category: "景点" },
+                { lat: 37.5325, lng: 121.4205, name: "渔人码头", category: "景点" },
+                { lat: 37.5385, lng: 121.4065, name: "月亮湾", category: "景点" },
+                { lat: 37.5405, lng: 121.3945, name: "旺角小渔村", category: "美食" },
+                { lat: 37.5425, lng: 121.3885, name: "特产采购", category: "购物" },
+                { lat: 37.5535, lng: 121.3914, name: "烟台站", category: "交通" },
+                { lat: 36.675, lng: 117.125, name: "济南东站", category: "交通" }
+            ]
+        };
+        
+        // 类别颜色
+        const categoryColors = {
+            "景点": "#2563eb",
+            "美食": "#f97316",
+            "文化": "#8b5cf6",
+            "购物": "#10b981",
+            "住宿": "#ec4899",
+            "交通": "#6366f1"
+        };
+        
+        // 备用SVG地图
+        function createFallbackMap(day) {
+            const daySpots = spots[day];
+            const mapContainer = document.getElementById('map');
+            
+            // 创建SVG地图
+            const svg = `
+                <svg viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg" style="width: 100%; height: 100%;">
+                    <!-- 背景 -->
+                    <rect width="800" height="600" fill="#f8fafc"/>
+                    
+                    <!-- 海洋 -->
+                    <path d="M0 300 Q200 250 400 300 Q600 350 800 300 V600 H0 Z" fill="#e0f2fe" opacity="0.5"/>
+                    
+                    <!-- 陆地 -->
+                    <path d="M0 300 Q200 250 400 300 Q600 350 800 300 V0 H0 Z" fill="#f0fdf4"/>
+                    
+                    <!-- 养马岛 -->
+                    <ellipse cx="650" cy="350" rx="80" ry="60" fill="#d1fae5" stroke="#10b981" stroke-width="2"/>
+                    <text x="650" y="355" text-anchor="middle" font-size="14" fill="#059669" font-weight="bold">养马岛</text>
+                    
+                    <!-- 烟台市区 -->
+                    <ellipse cx="350" cy="280" rx="100" ry="80" fill="#dbeafe" stroke="#3b82f6" stroke-width="2"/>
+                    <text x="350" y="285" text-anchor="middle" font-size="14" fill="#1d4ed8" font-weight="bold">烟台市区</text>
+                    
+                    <!-- 路线 -->
+                    <path d="M350 280 Q500 300 650 350" stroke="${categoryColors[daySpots[0].category]}" stroke-width="3" fill="none" stroke-dasharray="10,5"/>
+                    
+                    <!-- 标记点 -->
+                    ${daySpots.map((spot, index) => {
+                        const x = 350 + (index * 30);
+                        const y = 280 + (index * 20);
+                        return `
+                            <circle cx="${x}" cy="${y}" r="8" fill="${categoryColors[spot.category]}" stroke="white" stroke-width="2"/>
+                            <text x="${x}" y="${y + 4}" text-anchor="middle" font-size="10" fill="white" font-weight="bold">${index + 1}</text>
+                            <text x="${x}" y="${y + 20}" text-anchor="middle" font-size="8" fill="${categoryColors[spot.category]}">${spot.name}</text>
+                        `;
+                    }).join('')}
+                    
+                    <!-- 图例 -->
+                    <g transform="translate(20, 20)">
+                        <rect x="0" y="0" width="150" height="120" fill="white" rx="8" stroke="#e2e8f0"/>
+                        <text x="75" y="20" text-anchor="middle" font-size="12" font-weight="bold" fill="#1e293b">Day ${day} 路线</text>
+                        ${Object.entries(categoryColors).map(([category, color], i) => `
+                            <circle cx="20" cy="${40 + i * 20}" r="6" fill="${color}"/>
+                            <text x="35" y="${44 + i * 20}" font-size="10" fill="#64748b">${category}</text>
+                        `).join('')}
+                    </g>
+                    
+                    <!-- 提示 -->
+                    <text x="400" y="580" text-anchor="middle" font-size="12" fill="#94a3b8">💡 点击左侧卡片查看详细位置 | 配置腾讯地图API key后可显示交互式地图</text>
+                </svg>
+            `;
+            
+            mapContainer.innerHTML = svg;
+        }
+        
+        // 初始化地图
+        async function initMap() {
+            const mapLoading = document.getElementById('map-loading');
+            const debugOverlay = document.getElementById('debug-overlay');
+            const debugInfo = document.getElementById('debug-info');
+            
+            try {
+                // 显示加载动画
+                mapLoading.style.display = 'flex';
+                
+                // 动态加载腾讯地图API
+                debugInfo.innerHTML = '<span class="info">🔄 开始加载腾讯地图API...</span>\n';
+                await loadTencentMap();
+                debugInfo.innerHTML += '<span class="success">✅ API脚本加载完成</span>\n';
+                
+                // 等待TMap对象可用
+                debugInfo.innerHTML += '<span class="info">⏳ 等待TMap对象初始化...</span>\n';
+                await new Promise(resolve => {
+                    if (typeof TMap !== 'undefined') {
+                        resolve();
+                    } else {
+                        const checkTMap = setInterval(() => {
+                            if (typeof TMap !== 'undefined') {
+                                clearInterval(checkTMap);
+                                resolve();
+                            }
+                        }, 100);
+                        // 超时10秒
+                        setTimeout(() => {
+                            clearInterval(checkTMap);
+                            resolve();
+                        }, 10000);
+                    }
+                });
+                
+                // 检查腾讯地图API是否加载
+                if (typeof TMap === 'undefined') {
+                    debugInfo.innerHTML += '<span class="error">❌ TMap对象未定义，API加载失败</span>\n';
+                    debugInfo.innerHTML += '<span class="info">💡 可能原因：</span>\n';
+                    debugInfo.innerHTML += '<span class="info">1. API key未分配功能额度</span>\n';
+                    debugInfo.innerHTML += '<span class="info">2. 域名白名单限制</span>\n';
+                    debugInfo.innerHTML += '<span class="info">3. API key格式错误</span>\n';
+                    
+                    console.error('腾讯地图API加载失败，使用备用SVG地图');
+                    createFallbackMap(1);
+                    
+                    // 隐藏加载动画，显示调试信息
+                    mapLoading.classList.add('hidden');
+                    setTimeout(() => {
+                        mapLoading.style.display = 'none';
+                        debugOverlay.style.display = 'flex';
+                    }, 500);
+                    return;
+                }
+                
+                debugInfo.innerHTML += '<span class="success">✅ TMap对象加载成功</span>\n';
+                debugInfo.innerHTML += '<span class="info">🗺️ 初始化地图...</span>\n';
+                
+                // 初始化地图
+                map = new TMap.Map(document.getElementById('map'), {
+                    center: new TMap.LatLng(37.5, 121.5), // 烟台中心
+                    zoom: 11,
+                    viewMode: '2D'
+                });
+                
+                debugInfo.innerHTML += '<span class="success">✅ 地图初始化成功</span>\n';
+                debugInfo.innerHTML += '<span class="info">📍 添加标记和连线...</span>\n';
+                
+                // 添加标记和连线
+                updateMap(1);
+                
+                debugInfo.innerHTML += '<span class="success">✅ 标记和连线添加完成</span>\n';
+                
+                // 绑定卡片点击事件
+                bindCardEvents();
+                
+                debugInfo.innerHTML += '<span class="success">✅ 所有功能就绪</span>\n';
+                
+                // 隐藏加载动画
+                mapLoading.classList.add('hidden');
+                setTimeout(() => {
+                    mapLoading.style.display = 'none';
+                }, 500);
+                
+                console.log('腾讯地图初始化完成');
+                
+            } catch (error) {
+                debugInfo.innerHTML += `<span class="error">❌ 初始化失败: ${error.message}</span>\n`;
+                debugInfo.innerHTML += '<span class="info">💡 请检查：</span>\n';
+                debugInfo.innerHTML += '<span class="info">1. 网络连接是否正常</span>\n';
+                debugInfo.innerHTML += '<span class="info">2. API key是否有效</span>\n';
+                debugInfo.innerHTML += '<span class="info">3. 是否配置了功能额度</span>\n';
+                
+                console.error('地图初始化失败:', error);
+                createFallbackMap(1);
+                
+                // 隐藏加载动画，显示调试信息
+                mapLoading.classList.add('hidden');
+                setTimeout(() => {
+                    mapLoading.style.display = 'none';
+                    debugOverlay.style.display = 'flex';
+                }, 500);
+            }
+        }
+        
+        // 更新地图显示
+        function updateMap(day) {
+            if (!map) {
+                createFallbackMap(day);
+                return;
+            }
+            
+            // 清除现有标记
+            markers.forEach(marker => marker.setMap(null));
+            markers = [];
+            
+            // 清除现有连线
+            if (polyline) {
+                polyline.setMap(null);
+                polyline = null;
+            }
+            
+            // 获取当天景点
+            const daySpots = spots[day];
+            
+            // 定义各类别标记样式
+            const markerStyles = {
+                '景点': { color: '#2563eb', icon: '🏖️' },
+                '美食': { color: '#f97316', icon: '🍽️' },
+                '文化': { color: '#8b5cf6', icon: '🎭' },
+                '购物': { color: '#10b981', icon: '🛍️' },
+                '住宿': { color: '#ec4899', icon: '🏨' },
+                '交通': { color: '#6366f1', icon: '🚄' }
+            };
+            
+            // 创建标记
+            daySpots.forEach((spot, index) => {
+                const { color, icon } = markerStyles[spot.category] || { color: '#6b7280', icon: '📍' };
+                
+                const marker = new TMap.MultiMarker({
+                    id: `marker-${day}-${index}`,
+                    map: map,
+                    styles: {
+                        [`marker-style-${spot.category}`]: new TMap.MarkerStyle({
+                            width: 40,
+                            height: 50,
+                            anchor: { x: 20, y: 50 },
+                            src: `data:image/svg+xml;charset=utf-8,${encodeURIComponent(`
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 50">
+                                    <path d="M20 0C9 0 0 9 0 20c0 15 20 30 20 30s20-15 20-30C40 9 31 0 20 0z" fill="${color}"/>
+                                    <circle cx="20" cy="18" r="12" fill="white"/>
+                                    <text x="20" y="22" text-anchor="middle" font-size="14">${icon}</text>
+                                </svg>
+                            `)}`
+                        })
+                    },
+                    geometries: [{
+                        id: `spot-${day}-${index}`,
+                        styleId: `marker-style-${spot.category}`,
+                        position: new TMap.LatLng(spot.lat, spot.lng),
+                        properties: {
+                            title: spot.name,
+                            category: spot.category
+                        }
+                    }]
+                });
+                markers.push(marker);
+            });
+            
+            // 创建连线
+            const path = daySpots.map(spot => new TMap.LatLng(spot.lat, spot.lng));
+            polyline = new TMap.MultiPolyline({
+                id: `polyline-${day}`,
+                map: map,
+                styles: {
+                    'polyline-style': new TMap.PolylineStyle({
+                        'color': categoryColors[daySpots[0].category] || '#2563eb',
+                        'width': 4,
+                        'borderWidth': 2,
+                        'borderColor': '#ffffff',
+                        'lineCap': 'round'
+                    })
+                },
+                geometries: [{
+                    styleId: 'polyline-style',
+                    paths: path
+                }]
+            });
+            
+            // 调整视野
+            const bounds = new TMap.LatLngBounds();
+            path.forEach(latLng => bounds.extend(latLng));
+            map.fitBounds(bounds, { padding: 50 });
+        }
+        
+        // 绑定卡片点击事件
+        function bindCardEvents() {
+            const cards = document.querySelectorAll('.timeline-card');
+            cards.forEach(card => {
+                card.addEventListener('click', function() {
+                    const lat = parseFloat(this.dataset.lat);
+                    const lng = parseFloat(this.dataset.lng);
+                    const index = parseInt(this.dataset.index);
+                    
+                    // 飞到对应位置，使用动画效果
+                    if (map) {
+                        // 先设置缩放级别，确保精确定位
+                        map.setZoom(17);
+                        
+                        // 然后平滑移动到目标位置
+                        setTimeout(() => {
+                            map.panTo(new TMap.LatLng(lat, lng));
+                        }, 100);
+                        
+                        // 添加脉冲动画效果
+                        addPulseEffect(lat, lng, this.dataset.category);
+                    }
+                    
+                    // 高亮当前卡片
+                    cards.forEach(c => c.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // 滚动到对应卡片位置
+                    this.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                });
+            });
+        }
+        
+        // 添加脉冲动画效果
+        function addPulseEffect(lat, lng, category) {
+            // 移除现有脉冲标记
+            if (pulseMarker) {
+                pulseMarker.setMap(null);
+            }
+            
+            // 创建脉冲标记
+            pulseMarker = new TMap.MultiMarker({
+                id: 'pulse-marker',
+                map: map,
+                styles: {
+                    'pulse-style': new TMap.MarkerStyle({
+                        width: 60,
+                        height: 60,
+                        anchor: { x: 30, y: 30 },
+                        src: `data:image/svg+xml;charset=utf-8,${encodeURIComponent(`
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 60">
+                                <circle cx="30" cy="30" r="25" fill="#3b82f6" opacity="0.3">
+                                    <animate attributeName="r" values="15;30;15" dur="1s" repeatCount="indefinite"/>
+                                    <animate attributeName="opacity" values="0.8;0;0.8" dur="1s" repeatCount="indefinite"/>
+                                </circle>
+                                <circle cx="30" cy="30" r="8" fill="#3b82f6"/>
+                            </svg>
+                        `)}`
+                    })
+                },
+                geometries: [{
+                    id: 'pulse-point',
+                    styleId: 'pulse-style',
+                    position: new TMap.LatLng(lat, lng)
+                }]
+            });
+            
+            // 3秒后移除脉冲标记
+            setTimeout(() => {
+                if (pulseMarker) {
+                    pulseMarker.setMap(null);
+                    pulseMarker = null;
+                }
+            }, 3000);
+        }
+        
+        // 隐藏调试信息覆盖层
+        function hideDebugOverlay() {
+            const debugOverlay = document.getElementById('debug-overlay');
+            debugOverlay.style.display = 'none';
+        }
+        
+        // Tab切换
+        function setupTabs() {
+            const tabs = document.querySelectorAll('.day-tab');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const day = parseInt(this.dataset.day);
+                    
+                    // 更新tab样式
+                    tabs.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // 更新内容显示
+                    document.querySelectorAll('.day-content').forEach(content => {
+                        content.style.display = 'none';
+                    });
+                    document.querySelector(`.day-content[data-day="${day}"]`).style.display = 'block';
+                    
+                    // 更新地图
+                    currentDay = day;
+                    updateMap(day);
+                    
+                    // 重置卡片高亮
+                    document.querySelectorAll('.timeline-card').forEach(card => {
+                        card.classList.remove('active');
+                    });
+                });
+            });
+        }
+        
+        // 页面加载完成后初始化
+        window.addEventListener('DOMContentLoaded', function() {
+            setupTabs();
+            // 初始化地图（异步）
+            initMap().catch(error => {
+                console.error('地图初始化失败:', error);
+                createFallbackMap(1);
+            });
+        });
+        
+        
+        // ============================================================
+        // 实时天气预报 + 每张卡片天气标签（腾讯位置服务 WebService API - JSONP）
+        // ============================================================
+        
+        // 天气图标映射
+        const WEATHER_ICONS = {
+            '晴': '☀️', '多云': '⛅', '阴': '☁️',
+            '小雨': '🌦️', '中雨': '🌧️', '大雨': '🌧️', '暴雨': '🌊',
+            '雷阵雨': '⛈️', '阵雨': '🌦️',
+            '雾': '🌫️', '霾': '🌫️', '雪': '🌨️', '大雪': '❄️'
+        };
+        
+        function getWeatherIcon(weather) {
+            for (const [key, icon] of Object.entries(WEATHER_ICONS)) {
+                if (weather.includes(key)) return icon;
+            }
+            return '🌤️';
+        }
+        
+        // 根据时间判断使用白天还是夜间天气
+        // 六月烟台日落约 19:15，以 18:00 为界
+        function isNightTime(timeStr) {
+            // 解析时间字符串，如 "06:05 出发"、"09:30 - 11:00"、"21:30 入住"
+            var match = timeStr.match(/(\d{1,2}):\d{2}/);
+            if (!match) return false;
+            var hour = parseInt(match[1], 10);
+            return hour >= 18 || hour < 4;
+        }
+        
+        // 为所有行程卡片添加天气标签
+        function addWeatherToCards(dayData, cardContainer) {
+            if (!dayData || !cardContainer) return;
+            var cards = cardContainer.querySelectorAll('.timeline-card');
+            var dayW = dayData.day.weather || '未知';
+            var nightW = dayData.night.weather || '未知';
+            var dayTemp = dayData.day.temperature || '--';
+            var nightTemp = dayData.night.temperature || '--';
+            
+            cards.forEach(function(card) {
+                var timeEl = card.querySelector('.card-time');
+                var headerEl = card.querySelector('.card-header');
+                if (!timeEl || !headerEl) return;
+                
+                var isNight = isNightTime(timeEl.textContent);
+                var weather = isNight ? nightW : dayW;
+                var temp = isNight ? nightTemp : dayTemp;
+                var icon = getWeatherIcon(weather);
+                var tempLabel = temp + '°';
+                
+                // 移除已有的天气标签
+                var oldBadge = card.querySelector('.card-weather');
+                if (oldBadge) oldBadge.remove();
+                
+                var badge = document.createElement('span');
+                badge.className = 'card-weather' + (isNight ? ' card-weather-night' : '');
+                badge.innerHTML = '<span class="weather-emoji">' + icon + '</span> ' + tempLabel;
+                // 插入到 card-category 前面
+                var category = headerEl.querySelector('.card-category');
+                if (category) {
+                    headerEl.insertBefore(badge, category);
+                } else {
+                    headerEl.appendChild(badge);
+                }
+            });
+        }
+        
+        // 更新天气小组件
+        function updateWeatherWidget(dayId, dateLabel, info) {
+            const el = document.getElementById(dayId);
+            if (!el) return;
+            const dayW = info.day.weather || '未知';
+            const nightW = info.night.weather || '未知';
+            const display = dayW === nightW ? dayW : dayW + '→' + nightW;
+            el.querySelector('.weather-date').textContent = dateLabel;
+            el.querySelector('.weather-icon').textContent = getWeatherIcon(dayW);
+            el.querySelector('.weather-temp').textContent = info.night.temperature + '~' + info.day.temperature + '°C';
+            el.querySelector('.weather-desc').textContent = display;
+        }
+        
+        // 更新天气详情区域
+        function updateWeatherDetail(detailId, info) {
+            const el = document.getElementById(detailId);
+            if (!el) return;
+            const dayW = info.day.weather || '未知';
+            const nightW = info.night.weather || '未知';
+            const display = dayW === nightW ? dayW : dayW + '→' + nightW;
+            const html = '<span class="weather-icon-small">' + getWeatherIcon(dayW) + '</span><span>' + display + '，' + info.night.temperature + '~' + info.day.temperature + '°C</span>';
+            el.querySelector('.weather-info').innerHTML = html;
+        }
+        
+        // 通过 JSONP 获取实时天气
+        function fetchRealtimeWeather() {
+            // 如果已经获取过就不再重复请求
+            if (window._weatherFetched) return;
+            window._weatherFetched = true;
+            
+            var adcode = '370612'; // 烟台市牟平区（养马岛所在地）
+            var cbName = 'weatherCB_' + Date.now();
+            var timeout = 8000; // 8秒超时
+            
+            // JSONP 回调
+            window[cbName] = function(data) {
+                delete window[cbName];
+                if (data.status === 0 && data.result && data.result.forecast) {
+                    var infos = data.result.forecast.infos;
+                    var day1 = null, day2 = null;
+                    for (var i = 0; i < infos.length; i++) {
+                        if (infos[i].date === '2026-06-19') day1 = infos[i];
+                        if (infos[i].date === '2026-06-20') day2 = infos[i];
+                    }
+                    
+                    // 更新天气小组件和详情
+                    if (day1) {
+                        updateWeatherWidget('weather-day1', '6月19日 周五', day1);
+                        updateWeatherDetail('weather-detail-day1', day1);
+                    }
+                    if (day2) {
+                        updateWeatherWidget('weather-day2', '6月20日 周六', day2);
+                        updateWeatherDetail('weather-detail-day2', day2);
+                    }
+                    
+                    // 为每个行程卡片添加天气标签
+                    var day1Container = document.querySelector('.day-content[data-day="1"]');
+                    var day2Container = document.querySelector('.day-content[data-day="2"]');
+                    addWeatherToCards(day1, day1Container);
+                    addWeatherToCards(day2, day2Container);
+                    
+                    // 更新时间戳
+                    var updateEl = document.getElementById('weather-update-time');
+                    if (updateEl && data.result.forecast.update_time) {
+                        updateEl.textContent = '更新于 ' + data.result.forecast.update_time;
+                    }
+                }
+            };
+            
+            var script = document.createElement('script');
+            script.src = 'https://apis.map.qq.com/ws/weather/v1/?key=' + TENCENT_MAP_KEY + '&adcode=' + adcode + '&type=future&get_md=1&output=jsonp&callback=' + cbName;
+            script.onerror = function() {
+                delete window[cbName];
+                fallbackWeather();
+            };
+            document.body.appendChild(script);
+            
+            // 超时降级
+            setTimeout(function() {
+                if (window[cbName]) {
+                    delete window[cbName];
+                    fallbackWeather();
+                }
+            }, timeout);
+        }
+        
+        // 降级：API 失败时显示静态天气数据（含卡片标签）
+        function fallbackWeather() {
+            // 天气小组件
+            var day1El = document.getElementById('weather-day1');
+            var day2El = document.getElementById('weather-day2');
+            if (day1El) {
+                day1El.querySelector('.weather-date').textContent = '6月19日 周五';
+                day1El.querySelector('.weather-icon').textContent = '🌧️';
+                day1El.querySelector('.weather-temp').textContent = '20~29°C';
+                day1El.querySelector('.weather-desc').textContent = '阴有小雨';
+            }
+            if (day2El) {
+                day2El.querySelector('.weather-date').textContent = '6月20日 周六';
+                day2El.querySelector('.weather-icon').textContent = '🌧️';
+                day2El.querySelector('.weather-temp').textContent = '19~25°C';
+                day2El.querySelector('.weather-desc').textContent = '中雨转阴';
+            }
+            
+            // 天气详情
+            var detail1 = document.getElementById('weather-detail-day1');
+            var detail2 = document.getElementById('weather-detail-day2');
+            if (detail1) detail1.querySelector('.weather-info').innerHTML = '<span class="weather-icon-small">🌧️</span><span>阴有小雨，20~29°C</span>';
+            if (detail2) detail2.querySelector('.weather-info').innerHTML = '<span class="weather-icon-small">🌧️</span><span>中雨转阴，19~25°C</span>';
+            
+            // 卡片天气标签（降级用静态数据）
+            var day1Data = {
+                day: { weather: '小雨', temperature: 26 },
+                night: { weather: '阴', temperature: 20 }
+            };
+            var day2Data = {
+                day: { weather: '中雨', temperature: 23 },
+                night: { weather: '阴', temperature: 19 }
+            };
+            var day1Container = document.querySelector('.day-content[data-day="1"]');
+            var day2Container = document.querySelector('.day-content[data-day="2"]');
+            addWeatherToCards(day1Data, day1Container);
+            addWeatherToCards(day2Data, day2Container);
+        }
+        
+        // 页面加载完成后获取天气
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', fetchRealtimeWeather);
+        } else {
+            fetchRealtimeWeather();
+        }
+    </script>
+    
+        <!-- 详细内容区域 -->
+        <div class="detailed-content">
+        <!-- 住宿推荐 -->
+        <div class="section-card">
+            <h2 class="section-title">🏨 住宿推荐（300-400元）</h2>
+            <div class="hotel-grid">
+                <div class="hotel-card">
+                    <div class="hotel-header">
+                        <h3>居巢民宿 ⭐强烈推荐</h3>
+                        <span class="hotel-price">¥350/晚</span>
+                    </div>
+                    <div class="hotel-rating">4.8分 · 2024年新开业</div>
+                    <div class="hotel-features">
+                        <span class="feature-tag">海景阳台</span>
+                        <span class="feature-tag">智能马桶</span>
+                        <span class="feature-tag">家庭影院</span>
+                        <span class="feature-tag">可带宠物</span>
+                    </div>
+                    <div class="hotel-desc">
+                        距养马岛8分钟车程，房间52平米超大空间。提前给车牌号可办入岛电子授权，打车可直接上岛到民宿。
+                    </div>
+                </div>
+                
+                <div class="hotel-card">
+                    <div class="hotel-header">
+                        <h3>海之星民宿</h3>
+                        <span class="hotel-price">¥300/晚</span>
+                    </div>
+                    <div class="hotel-rating">4.5分 · 步行5分钟到天马广场</div>
+                    <div class="hotel-features">
+                        <span class="feature-tag">阳台看海</span>
+                        <span class="feature-tag">性价比高</span>
+                        <span class="feature-tag">位置便利</span>
+                    </div>
+                    <div class="hotel-desc">
+                        养马岛天马广场附近，步行即可到达主要景点。阳台可看海，适合预算有限的情侣。
+                    </div>
+                </div>
+                
+                <div class="hotel-card">
+                    <div class="hotel-header">
+                        <h3>烟台沁海酒店</h3>
+                        <span class="hotel-price">¥320/晚</span>
+                    </div>
+                    <div class="hotel-rating">4.3分 · 连锁品质</div>
+                    <div class="hotel-features">
+                        <span class="feature-tag">含早餐</span>
+                        <span class="feature-tag">海水浴场旁</span>
+                        <span class="feature-tag">连锁品牌</span>
+                    </div>
+                    <div class="hotel-desc">
+                        养马岛海水浴场旁，连锁酒店品质有保障。含早餐，适合喜欢标准化服务的情侣。
+                    </div>
+                </div>
+                
+                <div class="hotel-card">
+                    <div class="hotel-header">
+                        <h3>烟台养马岛金筑海景民宿</h3>
+                        <span class="hotel-price">¥380/晚</span>
+                    </div>
+                    <div class="hotel-rating">4.7分 · 海景房</div>
+                    <div class="hotel-features">
+                        <span class="feature-tag">海景阳台</span>
+                        <span class="feature-tag">步行几分钟到海滩</span>
+                        <span class="feature-tag">日落美景</span>
+                        <span class="feature-tag">免费停车</span>
+                    </div>
+                    <div class="hotel-desc">
+                        卧室正对养马岛，足不出户饱览海岛风光、看日出日落。距离海滩步行几分钟，随时可享受赶海的乐趣。
+                    </div>
+                </div>
+                
+                <div class="hotel-card">
+                    <div class="hotel-header">
+                        <h3>煜海海景民宿</h3>
+                        <span class="hotel-price">¥350/晚</span>
+                    </div>
+                    <div class="hotel-rating">4.6分 · 位置优越</div>
+                    <div class="hotel-features">
+                        <span class="feature-tag">养马岛大桥外</span>
+                        <span class="feature-tag">出行便捷</span>
+                        <span class="feature-tag">温馨港湾</span>
+                    </div>
+                    <div class="hotel-desc">
+                        坐落于风景秀丽的养马岛大桥外，位置优越，出行便捷。适合喜欢安静环境的情侣。
+                    </div>
+                </div>
+                
+                <div class="hotel-card">
+                    <div class="hotel-header">
+                        <h3>屿海•白驹酒店</h3>
+                        <span class="hotel-price">¥400/晚</span>
+                    </div>
+                    <div class="hotel-rating">4.8分 · 新开业</div>
+                    <div class="hotel-features">
+                        <span class="feature-tag">海景房</span>
+                        <span class="feature-tag">宠物友好</span>
+                        <span class="feature-tag">沙滩酒吧</span>
+                        <span class="feature-tag">免费停车场</span>
+                    </div>
+                    <div class="hotel-desc">
+                        坐落于养马岛海水浴场，新开业酒店，设施现代。有沙滩酒吧，适合喜欢浪漫氛围的情侣。
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 预算明细 -->
+        <div class="section-card">
+            <h2 class="section-title">💰 两人预算明细（约1,534-1,954元）</h2>
+            <div class="budget-table">
+                <div class="budget-row budget-header">
+                    <span>项目</span>
+                    <span>费用（两人）</span>
+                    <span>备注</span>
+                </div>
+                <div class="budget-row">
+                    <span>🚄 高铁（往返）</span>
+                    <span>¥734</span>
+                    <span>济南东↔烟台，二等座</span>
+                </div>
+                <div class="budget-row">
+                    <span>🚌 接驳车</span>
+                    <span>¥50</span>
+                    <span>养马岛接驳车25元/人</span>
+                </div>
+                <div class="budget-row">
+                    <span>🚕 市内交通</span>
+                    <span>¥100</span>
+                    <span>打车/公交/617路</span>
+                </div>
+                <div class="budget-row">
+                    <span>🏨 住宿（1晚）</span>
+                    <span>¥300-400</span>
+                    <span>居巢民宿或同档次</span>
+                </div>
+                <div class="budget-row">
+                    <span>🍜 餐饮（4餐）</span>
+                    <span>¥300-400</span>
+                    <span>海鲜为主，人均60-100/餐</span>
+                </div>
+                <div class="budget-row">
+                    <span>🎫 门票</span>
+                    <span>¥100</span>
+                    <span>烟台山50元/人</span>
+                </div>
+                <div class="budget-row">
+                    <span>🛒 购物/其他</span>
+                    <span>¥50-100</span>
+                    <span>特产、咖啡、手作等</span>
+                </div>
+                <div class="budget-row budget-total">
+                    <span><strong>总计</strong></span>
+                    <span><strong>¥1,534-1,954</strong></span>
+                    <span>2000元预算完全够用</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 时间评估 -->
+        <div class="section-card">
+            <h2 class="section-title">⏰ 时间安排评估与优化建议</h2>
+            <div class="time-assessment">
+                <div class="assessment-header">
+                    <h3>整体评估：行程紧凑但可行</h3>
+                    <p>当前时间安排基本合理，但需注意以下潜在问题：</p>
+                </div>
+                
+                <div class="assessment-grid">
+                    <div class="assessment-card">
+                        <h4>✅ 时间充裕环节</h4>
+                        <ul>
+                            <li>烟台站→朝阳街（40分钟缓冲）</li>
+                            <li>朝阳街→烟台山（30分钟缓冲）</li>
+                            <li>烟台山→午餐（1小时缓冲）</li>
+                            <li>午餐→所城里大街（1小时缓冲）</li>
+                            <li>所城里大街→养马岛（1.5小时充足）</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="assessment-card">
+                        <h4>⚠️ 时间紧张环节</h4>
+                        <ul>
+                            <li>养马岛内部接驳车等候（可能排队15-20分钟）</li>
+                            <li>獐岛→秦风崖→莲花夕照（接驳车衔接）</li>
+                            <li>养马岛→渔人码头（离岛交通）</li>
+                            <li>渔人码头→月亮湾（公交时间较长）</li>
+                            <li>端午节人流高峰（餐厅、景点排队）</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="assessment-card">
+                        <h4>🌧️ 天气因素</h4>
+                        <ul>
+                            <li>端午期间可能有小雨/中雨</li>
+                            <li>雨天步行速度降低20-30%</li>
+                            <li>接驳车可能因天气延误</li>
+                            <li>建议准备雨具和防滑鞋</li>
+                            <li>关注"烟台天气"小程序实时更新</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="assessment-card">
+                        <h4>💑 情侣节奏</h4>
+                        <ul>
+                            <li>情侣旅行节奏通常较慢</li>
+                            <li>拍照、休息时间需额外预留</li>
+                            <li>建议每个景点预留15-30分钟弹性时间</li>
+                            <li>可适当舍弃部分景点保证质量</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="optimization-tips">
+                    <h4>🔧 优化建议</h4>
+                    <div class="tips-content">
+                        <div class="tip-item">
+                            <strong>1. 提前预订接驳车票：</strong>端午节期间接驳车可能排队，建议提前在"养马岛景区"小程序预订电子票。
+                        </div>
+                        <div class="tip-item">
+                            <strong>2. 增加关键环节缓冲时间：</strong>养马岛内部每个景点预留30分钟弹性时间，避免赶场。
+                        </div>
+                        <div class="tip-item">
+                            <strong>3. 准备备用方案：</strong>如遇大雨，可将室外景点改为室内活动（如咖啡馆、博物馆）。
+                        </div>
+                        <div class="tip-item">
+                            <strong>4. 灵活调整顺序：</strong>根据天气和体力，可调整Day 2的景点顺序。
+                        </div>
+                        <div class="tip-item">
+                            <strong>5. 预留返程时间：</strong>烟台站返程前至少预留1小时，避免误车。
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="time-buffer">
+                    <h4>⏰ 建议时间缓冲</h4>
+                    <div class="buffer-table">
+                        <div class="buffer-row">
+                            <span>关键环节</span>
+                            <span>建议缓冲时间</span>
+                            <span>原因</span>
+                        </div>
+                        <div class="buffer-row">
+                            <span>养马岛内部交通</span>
+                            <span>30分钟</span>
+                            <span>接驳车等候、换乘</span>
+                        </div>
+                        <div class="buffer-row">
+                            <span>景点游览</span>
+                            <span>15-30分钟</span>
+                            <span>拍照、休息、排队</span>
+                        </div>
+                        <div class="buffer-row">
+                            <span>用餐时间</span>
+                            <span>15分钟</span>
+                            <span>餐厅排队、等位</span>
+                        </div>
+                        <div class="buffer-row">
+                            <span>返程交通</span>
+                            <span>60分钟</span>
+                            <span>避免误车、安检排队</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 避坑指南 -->
+        <div class="section-card">
+            <h2 class="section-title">⚠️ 避坑指南</h2>
+            <div class="tips-grid">
+                <div class="tip-card warning">
+                    <h4>❌ 千万别做</h4>
+                    <ul>
+                        <li>信火车站拉客的"海岛一日游"（人均150元且带购物点）</li>
+                        <li>信"坐船登岛"——养马岛有跨海大桥直通，无客运轮渡</li>
+                        <li>坐"50元环岛游"小船，不安全且强制推销</li>
+                        <li>在没标价的海鲜大排档吃饭，果断走人</li>
+                        <li>捕捉保护类生物（如砗磲），罚款500元起</li>
+                        <li>买珍珠饰品，多为外地进货不正宗</li>
+                        <li>端午期间骑电动车上岛——已被明令禁止</li>
+                    </ul>
+                </div>
+                
+                <div class="tip-card success">
+                    <h4>✅ 聪明做法</h4>
+                    <ul>
+                        <li>买海鲜盯紧秤，防老板多套袋子加水增重</li>
+                        <li>加工前确认海鲜鲜活防掉包</li>
+                        <li>纪念品买有"SC认证"的海鲜干货</li>
+                        <li>用大众点评搜"本地人常去"更靠谱</li>
+                        <li>错峰用餐：11点前/5点后去餐馆，人少老板还送小菜</li>
+                        <li>提前3天在"烟台文旅"公众号预约，节假日限流</li>
+                        <li>查"烟台潮汐表"小程序，退潮前1小时到獐岛最佳</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 行李清单 -->
+        <div class="section-card">
+            <h2 class="section-title">🧳 行李清单</h2>
+            <div class="packing-grid">
+                <div class="packing-category">
+                    <h4>👗 服装</h4>
+                    <ul>
+                        <li>轻薄外套（早晚温差10°C）</li>
+                        <li>防风外套（岛上风大）</li>
+                        <li>舒适运动鞋（礁石湿滑）</li>
+                        <li>拖鞋/凉鞋（海边用）</li>
+                        <li>防晒帽/太阳镜</li>
+                    </ul>
+                </div>
+                
+                <div class="packing-category">
+                    <h4>🧴 防晒/护肤</h4>
+                    <ul>
+                        <li>SPF50+防晒霜（必备）</li>
+                        <li>晒后修复芦荟胶</li>
+                        <li>补水面膜</li>
+                        <li>驱蚊液</li>
+                    </ul>
+                </div>
+                
+                <div class="packing-category">
+                    <h4>📱 电子设备</h4>
+                    <ul>
+                        <li>充电宝（岛上租贵）</li>
+                        <li>防水手机袋（赶海用）</li>
+                        <li>相机/三脚架（拍日落）</li>
+                        <li>蓝牙耳机（高铁用）</li>
+                    </ul>
+                </div>
+                
+                <div class="packing-category">
+                    <h4>🩹 应急药品</h4>
+                    <ul>
+                        <li>肠胃药（海鲜过敏备用）</li>
+                        <li>创可贴（礁石划伤）</li>
+                        <li>晕车药（接驳车用）</li>
+                        <li>雨具（6月多雨）</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 情侣专属彩蛋 -->
+        <div class="section-card">
+            <h2 class="section-title">💕 情侣专属彩蛋</h2>
+            <div class="romance-grid">
+                <div class="romance-card">
+                    <div class="romance-icon">🌅</div>
+                    <h4>秦风崖日出</h4>
+                    <p>夏季约4:50日出，5:30到达可看朝霞映海。后海礁石区+"象鼻石"逆光拍摄，电影级画面。</p>
+                </div>
+                
+                <div class="romance-card">
+                    <div class="romance-icon">🌊</div>
+                    <h4>獐岛果冻海</h4>
+                    <p>红色木栈道延伸入海，"果冻海"清澈见底。海螺洞穴是退潮限定奇观，岩壁布满荧光绿海葵。</p>
+                </div>
+                
+                <div class="romance-card">
+                    <div class="romance-icon">🎭</div>
+                    <h4>剪纸工坊</h4>
+                    <p>海岛日记旁的剪纸工坊，可定制姓名剪影（20元），超有纪念意义的情侣手作。</p>
+                </div>
+                
+                <div class="romance-card">
+                    <div class="romance-icon">📸</div>
+                    <h4>网红路牌打卡</h4>
+                    <p>"想你的风吹到养马岛"路牌合影，这句话就是最好的情话。二楼露台面朝大海，雨天坐在窗边看海也超治愈。</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 交通管制提醒 -->
+        <div class="section-card important">
+            <h2 class="section-title">🚨 端午交通管制提醒（重要！）</h2>
+            <div class="alert-content">
+                <div class="alert-item">
+                    <strong>管制时间：</strong>2026年6月19日-21日，8:00-18:30
+                </div>
+                <div class="alert-item">
+                    <strong>管制措施：</strong>电动自行车、三轮及以上电动车禁止入岛；非预约机动车禁止入岛
+                </div>
+                <div class="alert-item">
+                    <strong>入岛方式：</strong>游客统一在换乘中心乘接驳车入岛（25元/人，当日一票通制）
+                </div>
+                <div class="alert-item">
+                    <strong>接驳车路线：</strong>换乘中心 → 养马岛大桥 → 天马广场，逆时针环岛25公里、20个站点，随上随下
+                </div>
+                <div class="alert-item">
+                    <strong>建议：</strong>提前在"烟台文旅"公众号预约，节假日限流；617路末班车18:30，别错过！
+                </div>
+            </div>
+        </div>
+        
+        <!-- 天气提醒 -->
+        <div class="section-card">
+            <h2 class="section-title">🌤️ 天气与穿着建议</h2>
+            <div class="weather-detail">
+                <div class="weather-day-detail" id="weather-detail-day1">
+                    <h4>6月19日（周五）</h4>
+                    <div class="weather-info">
+                        <span class="weather-icon-small">📡</span>
+                        <span>获取实时天气数据中...</span>
+                    </div>
+                    <div class="weather-tip">
+                        <strong>建议：</strong>带雨伞/雨衣，穿防滑鞋。雨天备选方案：接驳车环岛看海，海岛日记咖啡+剪纸工坊。
+                    </div>
+                </div>
+                
+                <div class="weather-day-detail" id="weather-detail-day2">
+                    <h4>6月20日（周六）</h4>
+                    <div class="weather-info">
+                        <span class="weather-icon-small">📡</span>
+                        <span>获取实时天气数据中...</span>
+                    </div>
+                    <div class="weather-tip">
+                        <strong>建议：</strong>上午赶海注意安全，礁石湿滑穿防滑鞋。如遇中雨，獐岛海螺洞穴可能关闭，可改去室内景点。
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 美食推荐 -->
+        <div class="section-card">
+            <h2 class="section-title">🍽️ 美食推荐</h2>
+            <div class="food-grid">
+                <div class="food-card">
+                    <h4>必吃美食</h4>
+                    <ul>
+                        <li><strong>海肠捞饭</strong> — 烟台招牌，蓬莱春/万盛合必点</li>
+                        <li><strong>烟台焖子</strong> — 配蒜泥和芝麻酱，本地特色</li>
+                        <li><strong>鲅鱼水饺</strong> — 鲁菜经典，皮薄馅大</li>
+                        <li><strong>蒜蓉扇贝</strong> — 岛上新鲜海鲜</li>
+                        <li><strong>辣炒蛤蜊</strong> — 下酒神器</li>
+                    </ul>
+                </div>
+                
+                <div class="food-card">
+                    <h4>推荐餐厅</h4>
+                    <ul>
+                        <li><strong>蓬莱春酒家</strong> — 本地人最爱，海肠捞饭正宗</li>
+                        <li><strong>万盛合酒楼</strong> — 老字号，葱烧海参经典</li>
+                        <li><strong>东辰望海渔家</strong> — 岛上性价比高，人均70元</li>
+                        <li><strong>老船长渔家乐</strong> — 蒜蓉海胆招牌，送海菜包子</li>
+                        <li><strong>旺角小渔村</strong> — 本地人聚餐首选，烟台焖子必点</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 实用信息 -->
+        <div class="section-card">
+            <h2 class="section-title">📋 实用信息</h2>
+            <div class="info-grid">
+                <div class="info-item">
+                    <strong>烟台文旅公众号：</strong>提前3天预约，节假日限流
+                </div>
+                <div class="info-item">
+                    <strong>烟台潮汐表小程序：</strong>查退潮时间，退潮前1小时到獐岛最佳
+                </div>
+                <div class="info-item">
+                    <strong>大众点评：</strong>搜"本地人常去"找靠谱餐厅
+                </div>
+                <div class="info-item">
+                    <strong>617路公交：</strong>末班车18:30，别错过！
+                </div>
+                <div class="info-item">
+                    <strong>赶海工具：</strong>民宿可免费借用，或岛上买套装20元
+                </div>
+                <div class="info-item">
+                    <strong>特产推荐：</strong>有"SC认证"的海鲜干货、烟台苹果、海苔、鱿鱼丝
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <style>
+        /* 详细内容区域样式 */
+        .detailed-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px 40px;
+        }
+        
+        .section-card {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            border: 1px solid var(--gray-100);
+        }
+        
+        .section-card.important {
+            border-left: 4px solid var(--coral);
+            background: linear-gradient(135deg, #fff7ed 0%, #ffffff 100%);
+        }
+        
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--gray-800);
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--gray-100);
+        }
+        
+        /* 酒店卡片 */
+        .hotel-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        .hotel-card {
+            background: var(--gray-50);
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid var(--gray-200);
+            transition: all 0.3s;
+        }
+        
+        .hotel-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .hotel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 8px;
+        }
+        
+        .hotel-header h3 {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--gray-800);
+        }
+        
+        .hotel-price {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--coral);
+        }
+        
+        .hotel-rating {
+            font-size: 0.875rem;
+            color: var(--gray-500);
+            margin-bottom: 12px;
+        }
+        
+        .hotel-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+        
+        .feature-tag {
+            font-size: 0.75rem;
+            padding: 4px 8px;
+            border-radius: 6px;
+            background: rgba(37, 99, 235, 0.1);
+            color: var(--ocean);
+        }
+        
+        .hotel-desc {
+            font-size: 0.875rem;
+            color: var(--gray-600);
+            line-height: 1.5;
+        }
+        
+        /* 预算表格 */
+        .budget-table {
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--gray-200);
+        }
+        
+        .budget-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr 2fr;
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--gray-100);
+        }
+        
+        .budget-row:last-child {
+            border-bottom: none;
+        }
+        
+        .budget-header {
+            background: var(--gray-50);
+            font-weight: 600;
+            color: var(--gray-700);
+        }
+        
+        .budget-total {
+            background: var(--ocean);
+            color: white;
+            font-weight: 600;
+        }
+        
+        /* 时间评估 */
+        .time-assessment {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+        
+        .assessment-header h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--gray-800);
+            margin-bottom: 8px;
+        }
+        
+        .assessment-header p {
+            color: var(--gray-600);
+            line-height: 1.6;
+        }
+        
+        .assessment-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 16px;
+        }
+        
+        .assessment-card {
+            background: var(--gray-50);
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid var(--gray-200);
+        }
+        
+        .assessment-card h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--gray-800);
+            margin-bottom: 12px;
+        }
+        
+        .assessment-card ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .assessment-card li {
+            padding: 6px 0;
+            color: var(--gray-600);
+            font-size: 0.875rem;
+            line-height: 1.5;
+            border-bottom: 1px solid var(--gray-100);
+        }
+        
+        .assessment-card li:last-child {
+            border-bottom: none;
+        }
+        
+        .optimization-tips {
+            background: linear-gradient(135deg, #f0f9ff 0%, #ffffff 100%);
+            border-radius: 12px;
+            padding: 24px;
+            border: 1px solid #bae6fd;
+        }
+        
+        .optimization-tips h4 {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--ocean-dark);
+            margin-bottom: 16px;
+        }
+        
+        .tips-content {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .tip-item {
+            padding: 12px;
+            background: white;
+            border-radius: 8px;
+            border: 1px solid #e0f2fe;
+            font-size: 0.875rem;
+            line-height: 1.6;
+            color: var(--gray-700);
+        }
+        
+        .tip-item strong {
+            color: var(--ocean-dark);
+        }
+        
+        .time-buffer {
+            background: var(--gray-50);
+            border-radius: 12px;
+            padding: 24px;
+            border: 1px solid var(--gray-200);
+        }
+        
+        .time-buffer h4 {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--gray-800);
+            margin-bottom: 16px;
+        }
+        
+        .buffer-table {
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid var(--gray-200);
+        }
+        
+        .buffer-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr 2fr;
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--gray-100);
+            font-size: 0.875rem;
+        }
+        
+        .buffer-row:last-child {
+            border-bottom: none;
+        }
+        
+        .buffer-row:nth-child(odd) {
+            background: white;
+        }
+        
+        .buffer-row:nth-child(even) {
+            background: var(--gray-50);
+        }
+        
+        /* 交通信息 */
+        .transport-info {
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 12px;
+            border-left: 4px solid var(--ocean);
+            font-size: 0.875rem;
+            line-height: 1.6;
+            color: var(--gray-700);
+        }
+        
+        .transport-info strong {
+            color: var(--ocean-dark);
+        }
+        
+        /* 避坑指南 */
+        .tips-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        
+        .tip-card {
+            border-radius: 12px;
+            padding: 20px;
+        }
+        
+        .tip-card.warning {
+            background: linear-gradient(135deg, #fef2f2 0%, #ffffff 100%);
+            border: 1px solid #fecaca;
+        }
+        
+        .tip-card.success {
+            background: linear-gradient(135deg, #f0fdf4 0%, #ffffff 100%);
+            border: 1px solid #bbf7d0;
+        }
+        
+        .tip-card h4 {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: var(--gray-800);
+        }
+        
+        .tip-card ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .tip-card li {
+            font-size: 0.875rem;
+            color: var(--gray-600);
+            margin-bottom: 8px;
+            padding-left: 20px;
+            position: relative;
+            line-height: 1.5;
+        }
+        
+        .tip-card li::before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: var(--gray-400);
+        }
+        
+        .tip-card.warning li::before {
+            content: '✗';
+            color: #ef4444;
+        }
+        
+        .tip-card.success li::before {
+            content: '✓';
+            color: #10b981;
+        }
+        
+        /* 行李清单 */
+        .packing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+        
+        .packing-category {
+            background: var(--gray-50);
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid var(--gray-200);
+        }
+        
+        .packing-category h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--gray-800);
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--ocean);
+        }
+        
+        .packing-category ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .packing-category li {
+            font-size: 0.875rem;
+            color: var(--gray-600);
+            margin-bottom: 8px;
+            padding-left: 20px;
+            position: relative;
+        }
+        
+        .packing-category li::before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: var(--ocean);
+        }
+        
+        /* 情侣彩蛋 */
+        .romance-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        
+        .romance-card {
+            background: linear-gradient(135deg, #fdf2f8 0%, #ffffff 100%);
+            border-radius: 12px;
+            padding: 24px;
+            text-align: center;
+            border: 1px solid #fecdd3;
+            transition: all 0.3s;
+        }
+        
+        .romance-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 25px rgba(236, 72, 153, 0.15);
+        }
+        
+        .romance-icon {
+            font-size: 2.5rem;
+            margin-bottom: 16px;
+        }
+        
+        .romance-card h4 {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--gray-800);
+            margin-bottom: 8px;
+        }
+        
+        .romance-card p {
+            font-size: 0.875rem;
+            color: var(--gray-600);
+            line-height: 1.5;
+        }
+        
+        /* 交通管制提醒 */
+        .alert-content {
+            background: rgba(249, 115, 22, 0.05);
+            border-radius: 12px;
+            padding: 20px;
+        }
+        
+        .alert-item {
+            font-size: 0.875rem;
+            color: var(--gray-700);
+            margin-bottom: 12px;
+            padding-left: 20px;
+            position: relative;
+            line-height: 1.5;
+        }
+        
+        .alert-item::before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: var(--coral);
+            font-weight: bold;
+        }
+        
+        /* 天气详情 */
+        .weather-detail {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        
+        .weather-day-detail {
+            background: var(--gray-50);
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid var(--gray-200);
+        }
+        
+        .weather-day-detail h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--gray-800);
+            margin-bottom: 12px;
+        }
+        
+        .weather-info {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 12px;
+            font-size: 1rem;
+            color: var(--gray-700);
+        }
+        
+        .weather-icon-small {
+            font-size: 1.5rem;
+        }
+        
+        .weather-tip {
+            font-size: 0.875rem;
+            color: var(--gray-600);
+            line-height: 1.5;
+        }
+        
+        /* 美食推荐 */
+        .food-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        
+        .food-card {
+            background: var(--gray-50);
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid var(--gray-200);
+        }
+        
+        .food-card h4 {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--gray-800);
+            margin-bottom: 16px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--coral);
+        }
+        
+        .food-card ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .food-card li {
+            font-size: 0.875rem;
+            color: var(--gray-600);
+            margin-bottom: 10px;
+            padding-left: 20px;
+            position: relative;
+            line-height: 1.5;
+        }
+        
+        .food-card li::before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: var(--coral);
+        }
+        
+        /* 实用信息 */
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 16px;
+        }
+        
+        .info-item {
+            background: var(--gray-50);
+            border-radius: 8px;
+            padding: 16px;
+            font-size: 0.875rem;
+            color: var(--gray-700);
+            border-left: 3px solid var(--ocean);
+        }
+        
+        /* 响应式 */
+        @media (max-width: 768px) {
+            .detailed-content {
+                padding: 20px;
+            }
+            
+            .section-card {
+                padding: 20px;
+            }
+            
+            .hotel-grid,
+            .tips-grid,
+            .weather-detail,
+            .food-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .packing-grid,
+            .romance-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .budget-row {
+                grid-template-columns: 1fr;
+                gap: 8px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .packing-grid,
+            .romance-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</body>
+</html>
