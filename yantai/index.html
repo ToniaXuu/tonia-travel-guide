@@ -19,23 +19,6 @@
         const TENCENT_MAP_KEY = 'PBOBZ-S4XEN-YOVFW-STAR3-KJOME-4QBOO';
         const TENCENT_MAP_SK = 'zT0wEn1bx9m8TPKBx5FJtQXa5EeBMUFq';
         
-        // 动态加载腾讯地图API
-        function loadTencentMap() {
-            return new Promise((resolve, reject) => {
-                // 腾讯地图JavaScript API只支持key鉴权，不支持签名验证
-                // 签名验证用于WebService API，不适用于JavaScript API
-                const url = `https://map.qq.com/api/gljs?v=2.exp&key=${TENCENT_MAP_KEY}`;
-                
-                console.log('腾讯地图API URL:', url);
-                console.log('注意：JavaScript API只支持key鉴权，不支持签名验证');
-                
-                const script = document.createElement('script');
-                script.src = url;
-                script.onload = () => resolve();
-                script.onerror = () => reject(new Error('腾讯地图API加载失败'));
-                document.head.appendChild(script);
-            });
-        }
     </script>
     <style>
         * {
