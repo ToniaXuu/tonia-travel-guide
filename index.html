@@ -234,11 +234,50 @@
         opacity: 0.7;
     }
     
+    /* 时间线 */
+    .timeline-section {
+        max-width: 800px; margin: 0 auto 40px; padding: 30px 20px;
+        background: var(--white); border-radius: 20px; box-shadow: var(--shadow);
+    }
+    .timeline-label {
+        text-align: center; font-size: 1rem; font-weight: 700; color: var(--text);
+        margin-bottom: 24px; letter-spacing: 1px;
+    }
+    .timeline-bar {
+        display: flex; align-items: flex-start; justify-content: center; flex-wrap: wrap;
+        gap: 0; position: relative;
+    }
+    .tl-item { display: flex; flex-direction: column; align-items: center; min-width: 90px; }
+    .tl-dot { width: 14px; height: 14px; border-radius: 50%; margin-bottom: 8px; }
+    .tl-dot.yantai { background: #1D9E75; box-shadow: 0 0 8px rgba(29,158,117,0.4); }
+    .tl-dot.zibo { background: #e67e22; box-shadow: 0 0 8px rgba(230,126,34,0.4); }
+    .tl-dot.both { background: linear-gradient(135deg, #1D9E75, #e67e22); box-shadow: 0 0 10px rgba(29,158,117,0.5); }
+    .tl-line { flex: 0 0 40px; height: 2px; background: linear-gradient(90deg, #1D9E75, #e67e22, #1D9E75); align-self: flex-start; margin-top: 6px; opacity: 0.5; }
+    .tl-content { text-align: center; }
+    .tl-date { font-size: 0.72rem; font-weight: 600; color: var(--text); }
+    .tl-text { font-size: 0.68rem; color: var(--text-light); margin-top: 2px; }
+    
+    /* 倒计时 */
+    .countdown-section {
+        max-width: 500px; margin: 0 auto 40px; padding: 28px 20px;
+        background: var(--white); border-radius: 20px; box-shadow: var(--shadow);
+        text-align: center;
+    }
+    .countdown-label { font-size: 0.95rem; color: var(--text-light); margin-bottom: 14px; }
+    .countdown-digits { display: flex; align-items: center; justify-content: center; gap: 6px; }
+    .cd-unit { display: flex; flex-direction: column; align-items: center; }
+    .cd-num { font-size: 2.2rem; font-weight: 800; color: var(--text); font-variant-numeric: tabular-nums; }
+    .cd-label { font-size: 0.7rem; color: var(--text-light); margin-top: 2px; }
+    .cd-sep { font-size: 1.5rem; color: var(--purple-mid); font-weight: 300; align-self: flex-start; margin-top: 4px; }
+    
     /* 响应式 */
     @media (max-width: 768px) {
         .hero { padding: 50px 16px 30px; }
         .hero h1 { font-size: 1.8rem; }
         .travel-grid { grid-template-columns: 1fr; padding: 10px 0 40px; }
+        .timeline-bar { flex-direction: column; align-items: center; }
+        .tl-line { flex: 0 0 24px; width: 2px; height: 24px; }
+        .cd-num { font-size: 1.6rem; }
     }
 </style>
 </head>
@@ -295,6 +334,58 @@
             <div class="card-arrow">→</div>
         </a>
         
+    </div>
+    
+    <!-- 时间线 -->
+    <div class="timeline-section">
+        <div class="timeline-label">🗓 旅行时间线</div>
+        <div class="timeline-bar">
+            <div class="tl-item">
+                <div class="tl-dot yantai"></div>
+                <div class="tl-content">
+                    <div class="tl-date">6.19 06:05</div>
+                    <div class="tl-text">🚄 济南东出发</div>
+                </div>
+            </div>
+            <div class="tl-line"></div>
+            <div class="tl-item">
+                <div class="tl-dot yantai"></div>
+                <div class="tl-content">
+                    <div class="tl-date">6.19 · Day 1</div>
+                    <div class="tl-text">🏝️ 烟台养马岛环岛</div>
+                </div>
+            </div>
+            <div class="tl-line"></div>
+            <div class="tl-item">
+                <div class="tl-dot both"></div>
+                <div class="tl-content">
+                    <div class="tl-date">6.20 · Day 2</div>
+                    <div class="tl-text">🌅 秦风崖 / 🏯 周村古商城</div>
+                </div>
+            </div>
+            <div class="tl-line"></div>
+            <div class="tl-item">
+                <div class="tl-dot yantai"></div>
+                <div class="tl-content">
+                    <div class="tl-date">6.20 20:50</div>
+                    <div class="tl-text">🏠 返程回济南</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 倒计时 -->
+    <div class="countdown-section" id="countdown-section">
+        <div class="countdown-label">⏳ 距离出发</div>
+        <div class="countdown-digits" id="countdown-digits">
+            <div class="cd-unit"><span class="cd-num" id="cd-days">--</span><span class="cd-label">天</span></div>
+            <div class="cd-sep">:</div>
+            <div class="cd-unit"><span class="cd-num" id="cd-hours">--</span><span class="cd-label">时</span></div>
+            <div class="cd-sep">:</div>
+            <div class="cd-unit"><span class="cd-num" id="cd-mins">--</span><span class="cd-label">分</span></div>
+            <div class="cd-sep">:</div>
+            <div class="cd-unit"><span class="cd-num" id="cd-secs">--</span><span class="cd-label">秒</span></div>
+        </div>
     </div>
     
     <footer class="footer">
@@ -419,6 +510,39 @@
     }
     
     animate();
+    
+    // 倒计时
+    (function() {
+        var target = new Date('2026-06-19T06:05:00+08:00').getTime();
+        var daysEl = document.getElementById('cd-days');
+        var hoursEl = document.getElementById('cd-hours');
+        var minsEl = document.getElementById('cd-mins');
+        var secsEl = document.getElementById('cd-secs');
+        
+        function pad(n) { return n < 10 ? '0' + n : n; }
+        
+        function tick() {
+            var now = Date.now();
+            var diff = target - now;
+            if (diff <= 0) {
+                daysEl.textContent = '00';
+                hoursEl.textContent = '00';
+                minsEl.textContent = '00';
+                secsEl.textContent = '00';
+                return;
+            }
+            var d = Math.floor(diff / 86400000);
+            var h = Math.floor((diff % 86400000) / 3600000);
+            var m = Math.floor((diff % 3600000) / 60000);
+            var s = Math.floor((diff % 60000) / 1000);
+            daysEl.textContent = pad(d);
+            hoursEl.textContent = pad(h);
+            minsEl.textContent = pad(m);
+            secsEl.textContent = pad(s);
+        }
+        tick();
+        setInterval(tick, 1000);
+    })();
 })();
 </script>
 
