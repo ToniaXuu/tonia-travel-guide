@@ -97,6 +97,13 @@ body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Noto Sans SC',s
 .hotel-card .stars{color:var(--amber);margin:4px 0}
 .hotel-card .price{font-size:1.05rem;font-weight:700;color:var(--coral);margin-top:6px}
 .hotel-card .addr{font-size:0.75rem;color:var(--text-light);margin-top:4px}
+.hotel-card .book-btns{display:flex;gap:8px;margin-top:12px}
+.book-btn{flex:1;text-align:center;padding:7px 0;border-radius:8px;font-size:0.78rem;font-weight:600;text-decoration:none;transition:all 0.2s;display:inline-block}
+.book-btn.ctrip{background:#0088f5;color:#fff}
+.book-btn.ctrip:hover{background:#0066cc;transform:translateY(-1px)}
+.book-btn.meituan{background:#ffc300;color:#333}
+.book-btn.meituan:hover{background:#e6b000;transform:translateY(-1px)}
+.hotel-card .price-note{font-size:0.68rem;color:var(--coral);margin-top:2px}
 .budget-table{width:100%;border-collapse:collapse;font-size:0.85rem}
 .budget-table th,.budget-table td{padding:10px 12px;text-align:left;border-bottom:1px solid #f3f4f6}
 .budget-table th{background:var(--gray-100);font-weight:600}
@@ -317,11 +324,52 @@ body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Noto Sans SC',s
     <!-- 酒店 -->
     <div class="section-card">
         <h2 class="section-title">🏨 住宿推荐 · 八大局 / 万象汇周边</h2>
+        <p style="color:var(--coral);font-size:0.85rem;margin-bottom:16px;">⚠ 端午期间酒店价格普遍上浮 30%-50%，建议尽早预订</p>
         <div class="hotel-grid">
-            <div class="hotel-card"><h4>柏曼酒店（八大局海岱楼店）</h4><div class="stars">⭐⭐⭐⭐</div><div class="price">¥220-350/晚</div><div class="addr">📍 张店区商业步行街 · 距八大局步行5分钟 · 免费停车</div></div>
-            <div class="hotel-card"><h4>全季酒店（淄博万象汇店）</h4><div class="stars">⭐⭐⭐⭐</div><div class="price">¥250-380/晚</div><div class="addr">📍 张店区华光路 · 万象汇商圈 · 免费停车</div></div>
-            <div class="hotel-card"><h4>汉庭酒店（淄博八大局店）</h4><div class="stars">⭐⭐⭐</div><div class="price">¥150-220/晚</div><div class="addr">📍 张店区共青团东路 · 八大局正对面 · 含停车位</div></div>
-            <div class="hotel-card"><h4>淄博喜来登酒店</h4><div class="stars">⭐⭐⭐⭐⭐</div><div class="price">¥450-650/晚</div><div class="addr">📍 张店区金晶大道 · 市中心地标 · 高层俯瞰全城</div></div>
+            <div class="hotel-card">
+                <h4>如家酒店·neo（万象汇八大局店）</h4>
+                <div class="stars">⭐⭐⭐⭐ 4.5分 · 131条评价</div>
+                <div class="price">端午约 ¥350-500/晚</div>
+                <div class="price-note">平日约 ¥180-280</div>
+                <div class="addr">📍 张店区共青团路西路95号 · 距八大局步行8分钟</div>
+                <div class="book-btns">
+                    <a href="https://hotels.ctrip.com/hotels/list?searchKeyword=%E6%B7%84%E5%8D%9A%E5%85%AB%E5%A4%A7%E5%B1%80&checkIn=2026-06-19&checkOut=2026-06-20" target="_blank" class="book-btn ctrip">携程预订</a>
+                    <a href="https://hotel.meituan.com/keyword/%E6%B7%84%E5%8D%9A%E5%85%AB%E5%A4%A7%E5%B1%80/" target="_blank" class="book-btn meituan">美团预订</a>
+                </div>
+            </div>
+            <div class="hotel-card">
+                <h4>驿居酒店（火车站万象汇八大局店）</h4>
+                <div class="stars">⭐⭐⭐⭐ 4.4分 · 999条评价</div>
+                <div class="price">端午约 ¥280-420/晚</div>
+                <div class="price-note">平日约 ¥150-250</div>
+                <div class="addr">📍 张店区体育场街道 · 万象汇旁 · 距八大局驾车3分钟</div>
+                <div class="book-btns">
+                    <a href="https://hotels.ctrip.com/hotels/list?searchKeyword=%E6%B7%84%E5%8D%9A%E4%B8%87%E8%B1%A1%E6%B1%87&checkIn=2026-06-19&checkOut=2026-06-20" target="_blank" class="book-btn ctrip">携程预订</a>
+                    <a href="https://hotel.meituan.com/keyword/%E6%B7%84%E5%8D%9A%E4%B8%87%E8%B1%A1%E6%B1%87%E9%85%92%E5%BA%97/" target="_blank" class="book-btn meituan">美团预订</a>
+                </div>
+            </div>
+            <div class="hotel-card">
+                <h4>睿柏·云酒店（八大局华光路店）</h4>
+                <div class="stars">⭐⭐⭐ 4.2分 · 2261条评价</div>
+                <div class="price">端午约 ¥200-350/晚</div>
+                <div class="price-note">平日约 ¥120-200</div>
+                <div class="addr">📍 张店区华光路64号 · 距八大局步行12分钟 · 免费停车</div>
+                <div class="book-btns">
+                    <a href="https://hotels.ctrip.com/hotels/list?searchKeyword=%E6%B7%84%E5%8D%9A%E5%85%AB%E5%A4%A7%E5%B1%80%E5%8D%8E%E5%85%89%E8%B7%AF&checkIn=2026-06-19&checkOut=2026-06-20" target="_blank" class="book-btn ctrip">携程预订</a>
+                    <a href="https://hotel.meituan.com/keyword/%E6%B7%84%E5%8D%9A%E5%85%AB%E5%A4%A7%E5%B1%80/" target="_blank" class="book-btn meituan">美团预订</a>
+                </div>
+            </div>
+            <div class="hotel-card">
+                <h4>华驿酒店（火车站八大局店）</h4>
+                <div class="stars">⭐⭐⭐ 4.3分 · 46条评价</div>
+                <div class="price">端午约 ¥180-300/晚</div>
+                <div class="price-note">平日约 ¥100-180</div>
+                <div class="addr">📍 张店区金晶大道2号 · 火车站旁 · 步行至八大局10分钟</div>
+                <div class="book-btns">
+                    <a href="https://hotels.ctrip.com/hotels/list?searchKeyword=%E6%B7%84%E5%8D%9A%E7%81%AB%E8%BD%A6%E7%AB%99%E5%85%AB%E5%A4%A7%E5%B1%80&checkIn=2026-06-19&checkOut=2026-06-20" target="_blank" class="book-btn ctrip">携程预订</a>
+                    <a href="https://hotel.meituan.com/keyword/%E6%B7%84%E5%8D%9A%E7%81%AB%E8%BD%A6%E7%AB%99%E9%85%92%E5%BA%97/" target="_blank" class="book-btn meituan">美团预订</a>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -331,11 +379,11 @@ body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Noto Sans SC',s
         <table class="budget-table">
             <tr><th>项目</th><th>明细</th><th>金额</th></tr>
             <tr><td>🚗 交通</td><td>往返约236km，油费+高速</td><td>约 ¥175</td></tr>
-            <tr><td>🏨 住宿</td><td>张店区酒店 1 晚</td><td>¥150 - 350</td></tr>
+            <tr><td>🏨 住宿</td><td>张店区酒店 1 晚（端午上浮）</td><td>¥280 - 500</td></tr>
             <tr><td>🍖 餐饮</td><td>烧烤+博山菜+小吃+早餐</td><td>¥300 - 450</td></tr>
             <tr><td>🎫 门票</td><td>海岱楼登顶 + 周村联票</td><td>¥180</td></tr>
             <tr><td>🎁 伴手礼</td><td>烧饼+炒锅饼+陶琉</td><td>¥100 - 200</td></tr>
-            <tr><td colspan="2"><strong>总计（两人）</strong></td><td><strong>¥905 - 1,355</strong></td></tr>
+            <tr><td colspan="2"><strong>总计（两人）</strong></td><td><strong>¥1,035 - 1,505</strong></td></tr>
         </table>
     </div>
 
