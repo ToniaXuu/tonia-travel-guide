@@ -12,24 +12,29 @@
 <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16.png">
 <link rel="apple-touch-icon" sizes="128x128" href="assets/favicon-128.png">
 <style>
-:root {
-    --green-light:#a8e6cf; --green-mid:#88d8b0; --purple-light:#d5c6e0; --purple-mid:#c9b1db;
-    --bg:#f8f6f9; --text:#2c3e50; --text-light:#5a6c7d; --white:#fff;
-    --shadow:0 4px 24px rgba(0,0,0,0.06); --shadow-hover:0 12px 40px rgba(0,0,0,0.1);
+:root{
+    --bg:#faf9f6; --card:#ffffff;
+    --text:#2c3a47; --text-light:#7d8b99; --text-faint:#a8b2bc;
+    --teal:#3f9179; --teal-deep:#2e7562;
+    --mist:#7d95ad; --lav:#a99bc4;
+    --orange:#cf8a55;
+    --shadow:0 8px 30px rgba(44,58,71,.07);
+    --shadow-hover:0 14px 40px rgba(44,58,71,.12);
 }
 *{margin:0;padding:0;box-sizing:border-box}
 body{
     font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Noto Sans SC',sans-serif;
     background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;
+    -webkit-font-smoothing:antialiased;
 }
-/* 入场动画 — 弹性渐显 */
 body{animation:pageEnter .6s ease-out}
 @keyframes pageEnter{from{opacity:0}to{opacity:1}}
-/* 页面过渡遮罩 — 毛玻璃 + 波纹 */
+
+/* 页面过渡遮罩 */
 #page-transition{
     position:fixed;inset:0;z-index:9999;
-    background:radial-gradient(circle at center,rgba(168,230,207,.92),rgba(213,198,224,.96),rgba(200,180,220,.98));
-    pointer-events:none;opacity:0;transition:opacity .4s cubic-bezier(.4,0,.2,1);
+    background:radial-gradient(circle at center,rgba(228,240,234,.94),rgba(226,222,238,.96));
+    pointer-events:none;opacity:0;transition:opacity .35s ease;
     display:flex;align-items:center;justify-content:center;
 }
 #page-transition.active{opacity:1}
@@ -40,138 +45,204 @@ body{animation:pageEnter .6s ease-out}
     transition:width .45s cubic-bezier(.26,.53,.74,.98),height .45s cubic-bezier(.26,.53,.74,.98);
 }
 #page-transition.active .ripple{width:120vmax;height:120vmax}
-#page-transition .loading-dots{
-    position:relative;z-index:1;display:flex;gap:10px;
-}
-#page-transition .dot{
-    width:10px;height:10px;border-radius:50%;background:#fff;
-    animation:dotBounce 1.2s ease-in-out infinite;
-}
-#page-transition .dot:nth-child(1){animation-delay:0s;background:var(--green-mid)}
-#page-transition .dot:nth-child(2){animation-delay:.15s;background:var(--purple-mid)}
-#page-transition .dot:nth-child(3){animation-delay:.3s;background:var(--green-mid)}
-@keyframes dotBounce{0%,80%,100%{transform:translateY(0)}40%{transform:translateY(-16px)}}
+#page-transition .loading-dots{position:relative;z-index:1;display:flex;gap:9px}
+#page-transition .dot{width:8px;height:8px;border-radius:50%;background:#fff;animation:dotBounce 1.2s ease-in-out infinite}
+#page-transition .dot:nth-child(1){animation-delay:0s;background:var(--teal)}
+#page-transition .dot:nth-child(2){animation-delay:.15s;background:var(--lav)}
+#page-transition .dot:nth-child(3){animation-delay:.3s;background:var(--teal)}
+@keyframes dotBounce{0%,80%,100%{transform:translateY(0)}40%{transform:translateY(-12px)}}
 
-/* 粒子 */
+/* 背景 — 轻微星点轨迹 */
 #particles{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none}
 
-/* 容器 */
-.container{position:relative;z-index:1;max-width:960px;margin:0 auto;padding:0 24px}
+/* 容器 — 旅行杂志宽度 */
+.container{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:0 28px}
 
-/* Hero — 渐变光标扫过 */
-.hero{text-align:center;padding:70px 20px 20px}
+/* ─── Header ─── */
+.hero{text-align:center;padding:66px 20px 0}
 .hero h1{
-    font-size:clamp(2rem,5vw,3rem);font-weight:800;
-    background:linear-gradient(135deg,#66bb6a 0%,#7e57c2 50%,#66bb6a 100%);
-    background-size:200% 200%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-    margin-bottom:8px;animation:shimmer 3s ease-in-out infinite;
+    font-family:Georgia,'Times New Roman','Noto Serif SC',serif;
+    font-size:clamp(2rem,4.4vw,2.7rem);font-weight:600;letter-spacing:.5px;
+    background:linear-gradient(118deg,#2c3a47 0%,#5b7a93 58%,#8a7fae 100%);
+    -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
 }
-@keyframes shimmer{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
-.hero .subtitle{font-size:1rem;color:var(--text-light);letter-spacing:2px}
-.hero .divider{width:50px;height:3px;background:linear-gradient(90deg,var(--green-mid),var(--purple-mid));border-radius:2px;margin:16px auto}
+.hero .subtitle{
+    margin-top:15px;font-size:.82rem;color:var(--mist);letter-spacing:7px;font-weight:400;
+}
 
-/* 年度时间线标签 */
-.year-tabs{display:flex;justify-content:center;gap:12px;margin:30px 0 10px;flex-wrap:wrap}
+/* ─── 年份切换 — 弱化为文字 + 细下划线 ─── */
+.year-tabs{display:flex;justify-content:center;gap:46px;margin-top:50px}
 .year-tab{
-    padding:10px 28px;border-radius:30px;cursor:pointer;font-weight:700;font-size:0.95rem;
-    background:var(--white);box-shadow:var(--shadow);transition:all 0.25s;
-    border:2px solid transparent;position:relative;z-index:1;
+    cursor:pointer;font-size:.95rem;font-weight:600;letter-spacing:1.5px;
+    color:var(--text-faint);padding:4px 2px;position:relative;transition:color .22s ease;
 }
-.year-tab.active{
-    border-color:var(--green-mid);color:#1D9E75;
-    background:linear-gradient(135deg,rgba(168,230,207,0.2),rgba(213,198,224,0.15));
+.year-tab .n{font-size:.68rem;font-weight:400;letter-spacing:.5px;margin-left:5px;opacity:.8}
+.year-tab:hover{color:var(--text-light)}
+.year-tab.active{color:var(--teal)}
+.year-tab.active::after{
+    content:'';position:absolute;left:50%;transform:translateX(-50%);bottom:-4px;
+    width:20px;height:2px;border-radius:1px;background:var(--teal);
 }
-.year-tab:hover:not(.active){transform:translateY(-2px);box-shadow:var(--shadow-hover)}
-.year-tab .year-dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--green-mid);margin-right:6px;vertical-align:middle}
-.year-tab.active .year-dot{animation:pulse-dot 1.5s infinite}
-@keyframes pulse-dot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.4;transform:scale(1.5)}}
-
-/* 年内容 */
-.year-content{display:none;animation:fadeInUp 0.5s ease-out}
+.year-content{display:none;animation:fadeInUp .45s ease-out}
 .year-content.active{display:block}
+@keyframes fadeInUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 
 /* 空年提示 */
-.empty-year{text-align:center;padding:40px 20px;color:var(--text-light);opacity:0.6}
-.empty-year .empty-icon{font-size:3rem;margin-bottom:8px}
+.empty-year{text-align:center;padding:72px 20px;color:var(--text-faint)}
+.empty-year .empty-icon{font-size:2.2rem;margin-bottom:12px;opacity:.7}
+.empty-year p{font-size:.9rem;letter-spacing:1px}
+.empty-year p+p{font-size:.78rem;margin-top:6px;opacity:.8}
 
-/* 旅行卡片 — 弹性交错入场 */
-.travel-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:28px;padding:10px 0 30px}
-.travel-card{
-    background:var(--white);border-radius:18px;overflow:hidden;box-shadow:var(--shadow);
-    transition:all .4s cubic-bezier(.34,1.56,.64,1);cursor:pointer;
-    text-decoration:none;color:inherit;display:block;position:relative;
-    animation:cardSpring .6s cubic-bezier(.34,1.56,.64,1) both;
-}
-.travel-card:nth-child(1){animation-delay:.08s}
-.travel-card:nth-child(2){animation-delay:.18s}
-.travel-card:nth-child(3){animation-delay:.28s}
-@keyframes cardSpring{from{opacity:0;transform:translateY(40px) scale(.92)}to{opacity:1;transform:translateY(0) scale(1)}}
-.travel-card:hover{transform:translateY(-6px) scale(1.015);box-shadow:0 20px 50px rgba(0,0,0,.12)}
-.travel-card:active{transform:translateY(-3px) scale(.99)}
-
-/* 卡片头部 */
-.card-header-img{height:180px;position:relative;overflow:hidden}
-.card-header-img.yantai{background:url('assets/yantai-bg.jpg') center/cover}
-.card-header-img.yantai::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(29,158,117,.6) 0%,rgba(13,107,79,.5) 30%,rgba(26,107,138,.5) 70%,rgba(13,79,107,.6) 100%);z-index:1}
-.card-header-img.zibo{background:url('assets/zibo-bg.jpg') center/cover}
-.card-header-img.zibo::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(230,126,34,.6) 0%,rgba(211,84,0,.5) 30%,rgba(192,57,43,.5) 70%,rgba(142,68,173,.6) 100%);z-index:1}
-/* 大连·烟台 — 纯 CSS 海景（无外部配图依赖） */
-.card-header-img.dalian-yantai{
+/* ─── NEXT TRIP 主卡片 ─── */
+.next-trip{
+    display:block;margin-top:36px;text-decoration:none;color:#fff;
+    border-radius:22px;overflow:hidden;position:relative;
     background-image:
-        radial-gradient(circle at 78% 26%, rgba(255,201,122,.38) 0%, transparent 46%),
-        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='46'%3E%3Cpath d='M0 30 Q 30 21 60 30 T 120 30 T 180 30 T 240 30' stroke='rgba(255,255,255,0.17)' stroke-width='1.4' fill='none'/%3E%3Cpath d='M0 40 Q 30 31 60 40 T 120 40 T 180 40 T 240 40' stroke='rgba(255,255,255,0.11)' stroke-width='1.2' fill='none'/%3E%3C/svg%3E"),
-        linear-gradient(135deg,#08304f 0%,#12567f 34%,#3d7f8c 58%,#b4651f 100%);
-    background-size:cover,240px 46px,cover;
+        radial-gradient(circle at 82% 16%, rgba(255,196,128,.38) 0%, transparent 42%),
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='52'%3E%3Cpath d='M0 34 Q 32 24 65 34 T 130 34 T 195 34 T 260 34' stroke='rgba(255,255,255,0.16)' stroke-width='1.4' fill='none'/%3E%3Cpath d='M0 44 Q 32 34 65 44 T 130 44 T 195 44 T 260 44' stroke='rgba(255,255,255,0.10)' stroke-width='1.2' fill='none'/%3E%3C/svg%3E"),
+        linear-gradient(158deg,#0c2740 0%,#15496b 44%,#2c6a78 74%,#9c6330 108%);
+    background-size:cover,260px 52px,cover;
     background-position:center,bottom,center;
     background-repeat:no-repeat,repeat-x,no-repeat;
+    box-shadow:var(--shadow);
+    transition:box-shadow .25s ease,transform .25s ease;
 }
-.card-header-img.dalian-yantai::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(10,58,92,.42) 0%,rgba(29,106,143,.28) 45%,rgba(180,101,31,.34) 100%);z-index:1}
-.card-header-img .card-emoji{position:absolute;font-size:3.5rem;bottom:12px;right:20px;opacity:.7;animation:float 3s ease-in-out infinite;z-index:2}
-@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
-.card-header-img .card-city{position:absolute;bottom:16px;left:20px;color:rgba(255,255,255,.95);font-size:1.6rem;font-weight:700;text-shadow:0 2px 8px rgba(0,0,0,.3);z-index:2}
-.card-header-img .card-date{position:absolute;top:16px;left:20px;color:rgba(255,255,255,.8);font-size:.78rem;background:rgba(255,255,255,.15);padding:3px 12px;border-radius:20px;backdrop-filter:blur(4px);z-index:2}
-/* 行程状态徽章 — JS 按 card-date 自动判断插入 */
+.next-trip::after{
+    content:'';position:absolute;inset:0;
+    background:linear-gradient(180deg,rgba(10,25,40,.16) 0%,rgba(10,25,40,.02) 40%,rgba(10,25,40,.5) 100%);
+    pointer-events:none;
+}
+.next-trip:hover{box-shadow:var(--shadow-hover);transform:translateY(-3px)}
+.next-trip:hover .nt-cta .ar{transform:translateX(4px)}
+.nt-content{position:relative;z-index:2;padding:30px 38px 32px;min-height:352px;display:flex;flex-direction:column}
+.nt-top{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.nt-badge{
+    font-size:.68rem;font-weight:600;letter-spacing:3.5px;
+    color:rgba(255,255,255,.92);border:1px solid rgba(255,255,255,.4);
+    padding:5px 14px;border-radius:11px;backdrop-filter:blur(2px);
+}
+.nt-date{font-size:.78rem;letter-spacing:1px;color:rgba(255,255,255,.85)}
+.nt-main{display:flex;justify-content:space-between;align-items:flex-end;gap:32px;margin-top:auto;padding-top:56px}
+.nt-info h2{font-size:2.05rem;font-weight:700;letter-spacing:2px;text-shadow:0 2px 12px rgba(10,25,40,.35)}
+.nt-sub{margin-top:9px;font-size:.92rem;letter-spacing:1px;color:rgba(255,255,255,.9)}
+.nt-meta{margin-top:7px;font-size:.8rem;letter-spacing:.5px;color:rgba(255,255,255,.68)}
+.nt-cta{
+    display:inline-flex;align-items:center;gap:6px;margin-top:18px;
+    font-size:.8rem;letter-spacing:1.5px;color:rgba(255,255,255,.92);
+    border-bottom:1px solid rgba(255,255,255,.35);padding-bottom:3px;
+}
+.nt-cta .ar{display:inline-block;transition:transform .25s ease}
+/* NEXT TRIP 倒计时 */
+.nt-countdown{text-align:right;flex-shrink:0}
+.nt-cd-label{font-size:.7rem;letter-spacing:4px;color:rgba(255,255,255,.68);margin-bottom:10px}
+.nt-cd-digits{display:flex;align-items:baseline;gap:10px}
+.nt-cd-digits em{font-style:normal;font-size:1.1rem;font-weight:300;color:rgba(255,255,255,.5);align-self:center}
+.cd{display:inline-flex;align-items:baseline}
+.cd span{font-size:2.3rem;font-weight:700;font-variant-numeric:tabular-nums;line-height:1;text-shadow:0 2px 10px rgba(10,25,40,.3)}
+.cd i{font-style:normal;font-size:.68rem;margin-left:5px;color:rgba(255,255,255,.7);letter-spacing:1px}
+
+/* ─── 我的旅行 / Travel Archive ─── */
+.archive-head{margin-top:66px;display:flex;align-items:baseline;gap:12px}
+.archive-head h2{font-size:1.28rem;font-weight:700;letter-spacing:2px}
+.archive-head span{font-size:.72rem;letter-spacing:2.5px;color:var(--text-faint);font-weight:400}
+.archive-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:22px}
+
+/* 历史旅行卡片 */
+.archive-card{
+    background:var(--card);border-radius:19px;overflow:hidden;
+    box-shadow:var(--shadow);text-decoration:none;color:inherit;display:block;
+    transition:transform .24s ease,box-shadow .24s ease;
+}
+.archive-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-hover)}
+.archive-card:active{transform:translateY(-1px)}
+.card-media{position:relative;height:196px;overflow:hidden}
+.card-media i{position:absolute;inset:-4%;display:block;transition:transform .28s ease}
+.archive-card.yantai .card-media i{background:url('assets/yantai-bg.jpg') center/cover}
+.archive-card.zibo .card-media i{background:url('assets/zibo-bg.jpg') center/cover}
+.archive-card:hover .card-media i{transform:scale(1.035)}
+.card-media::after{
+    content:'';position:absolute;inset:0;
+    background:linear-gradient(180deg,rgba(28,40,52,.18) 0%,rgba(28,40,52,0) 34%,rgba(28,40,52,.44) 100%);
+}
+.archive-card.yantai .card-media::after{background:linear-gradient(180deg,rgba(29,158,117,.34) 0%,rgba(29,158,117,.04) 36%,rgba(13,79,107,.42) 100%)}
+.archive-card.zibo .card-media::after{background:linear-gradient(180deg,rgba(192,100,32,.3) 0%,rgba(192,100,32,.04) 36%,rgba(142,68,90,.4) 100%)}
+.card-date{
+    position:absolute;top:13px;left:14px;z-index:2;
+    font-size:.7rem;letter-spacing:.5px;color:rgba(255,255,255,.94);
+    background:rgba(20,30,40,.3);padding:4px 11px;border-radius:10px;backdrop-filter:blur(3px);
+}
+.card-city{
+    position:absolute;left:17px;bottom:13px;z-index:2;
+    font-size:1.28rem;font-weight:600;letter-spacing:2px;color:#fff;
+    text-shadow:0 1px 8px rgba(20,30,40,.4);
+}
+/* 状态标签 — 手账质感 */
 .card-status{
-    position:absolute;top:16px;right:16px;font-size:.72rem;font-weight:700;
-    padding:3px 12px;border-radius:20px;z-index:2;backdrop-filter:blur(4px);
-    display:inline-flex;align-items:center;gap:4px;letter-spacing:.5px;
+    position:absolute;top:13px;right:14px;z-index:2;
+    font-size:.68rem;font-weight:500;letter-spacing:1px;
+    padding:4px 11px;border-radius:10px;
 }
-.card-status.ongoing{background:rgba(230,126,34,.92);color:#fff;box-shadow:0 2px 10px rgba(230,126,34,.4)}
-.card-status.past{background:rgba(255,255,255,.78);color:#5a6c7d}
-/* 过期行程 — 轻度弱化但仍可点击回看 */
-.travel-card.past .card-header-img{filter:saturate(.45) brightness(.96)}
-.travel-card.past .trip-type{opacity:.55}
-.travel-card.past:hover{transform:translateY(-6px) scale(1.015)} /* 弱化但保留 hover 反馈 */
-/* 卡片内容 */
-.card-body{padding:20px}
-.trip-type{display:inline-block;font-size:.72rem;font-weight:600;padding:3px 10px;border-radius:12px;margin-bottom:6px}
-.trip-type.self-drive{background:rgba(255,152,0,.12);color:#e67e22}
-.trip-type.train{background:rgba(29,158,117,.12);color:#1D9E75}
-.card-body h3{font-size:1.15rem;font-weight:700;margin-bottom:6px}
-.card-body p{font-size:.85rem;color:var(--text-light);line-height:1.6;margin-bottom:12px}
-.card-meta{display:flex;gap:14px;font-size:.78rem;color:var(--text-light);flex-wrap:wrap}
-.card-meta span{display:flex;align-items:center;gap:4px}
-.card-arrow{position:absolute;bottom:20px;right:20px;width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--green-light),var(--purple-light));display:flex;align-items:center;justify-content:center;color:#fff;font-size:1rem;transition:transform .3s}
-.travel-card:hover .card-arrow{transform:translateX(4px)}
+.card-status.past{background:rgba(255,255,255,.88);color:#61707d}
+.card-status.ongoing{background:rgba(207,138,85,.94);color:#fff}
+/* 过期卡片弱化 */
+.archive-card.past .card-media i{filter:saturate(.68) brightness(.97)}
 
-/* 倒计时 */
-.countdown-section{max-width:480px;margin:0 auto 30px;padding:24px 20px;background:var(--white);border-radius:20px;box-shadow:var(--shadow);text-align:center}
-.countdown-label{font-size:.9rem;color:var(--text-light);margin-bottom:12px}
-.countdown-digits{display:flex;align-items:center;justify-content:center;gap:6px}
-.cd-unit{display:flex;flex-direction:column;align-items:center;min-width:56px}
-.cd-num{font-size:2rem;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
-.cd-label{font-size:.68rem;color:var(--text-light);margin-top:2px}
-.cd-sep{font-size:1.4rem;color:var(--purple-mid);font-weight:300;align-self:flex-start;margin-top:4px}
+.card-body{padding:18px 20px 20px}
+.card-body h3{font-size:1.02rem;font-weight:700;letter-spacing:.3px;line-height:1.45}
+.card-body .desc{
+    margin-top:8px;font-size:.82rem;color:var(--text-light);line-height:1.65;
+    display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+}
+.card-meta{margin-top:14px;font-size:.78rem;color:var(--text-faint);letter-spacing:.3px;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.card-meta .dot-sep{opacity:.5}
+.card-meta b{font-weight:600;color:var(--teal-deep);font-variant-numeric:tabular-nums}
+.card-cta{
+    margin-top:14px;padding-top:13px;border-top:1px solid rgba(44,58,71,.07);
+    font-size:.74rem;letter-spacing:1.5px;color:var(--text-faint);
+    display:flex;align-items:center;justify-content:space-between;transition:color .22s ease;
+}
+.card-cta .ar{display:inline-block;transition:transform .25s ease}
+.archive-card:hover .card-cta{color:var(--teal)}
+.archive-card:hover .card-cta .ar{transform:translateX(4px)}
 
-.footer{text-align:center;padding:30px 20px;font-size:.78rem;color:var(--text-light);opacity:.7}
+/* 占位卡 — 下一站 */
+.archive-card.placeholder{
+    border:1.5px dashed rgba(44,58,71,.16);box-shadow:none;background:transparent;
+    display:flex;align-items:center;justify-content:center;min-height:380px;cursor:default;
+    transition:border-color .24s ease;
+}
+.archive-card.placeholder:hover{transform:none;box-shadow:none;border-color:rgba(63,145,121,.3)}
+.ph-body{text-align:center;color:var(--text-faint);padding:30px}
+.ph-body .ph-icon{font-size:1.5rem;opacity:.55;display:block}
+.ph-body p{margin-top:12px;font-size:.88rem;letter-spacing:1.5px;color:var(--text-light)}
+.ph-body .ph-sub{display:block;margin-top:6px;font-size:.72rem;letter-spacing:.5px;opacity:.75}
 
-@media(max-width:768px){
-    .hero{padding:50px 16px 16px}
-    .hero h1{font-size:1.7rem}
-    .travel-grid{grid-template-columns:1fr;padding:6px 0 30px}
-    .year-tab{padding:8px 20px;font-size:.85rem}
-    .card-header-img{height:150px}
-    .cd-num{font-size:1.5rem}
+/* ─── Footer ─── */
+.footer{text-align:center;padding:70px 20px 58px}
+.footer .f-quote{font-size:.85rem;color:var(--text-light);letter-spacing:2.5px}
+.footer .f-meta{margin-top:10px;font-size:.72rem;color:var(--text-faint);letter-spacing:1.5px}
+
+/* ─── 响应式 ─── */
+@media(max-width:1199px){
+    .archive-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:767px){
+    .hero{padding:52px 16px 0}
+    .hero h1{font-size:1.72rem}
+    .hero .subtitle{letter-spacing:5px;font-size:.78rem}
+    .year-tabs{gap:32px;margin-top:40px}
+    .container{padding:0 18px}
+    .next-trip{border-radius:19px}
+    .nt-content{padding:24px 22px 26px;min-height:0}
+    .nt-main{flex-direction:column;align-items:flex-start;gap:26px;padding-top:40px}
+    .nt-info h2{font-size:1.6rem}
+    .nt-countdown{text-align:left}
+    .cd span{font-size:1.9rem}
+    .archive-grid{grid-template-columns:1fr;gap:18px}
+    .archive-head{margin-top:52px}
+    .card-media{height:200px}
+    .archive-card.placeholder{min-height:180px}
+    .footer{padding:56px 20px 48px}
 }
 </style>
 </head>
@@ -181,82 +252,91 @@ body{animation:pageEnter .6s ease-out}
 <div id="page-transition"><div class="ripple"></div><div class="loading-dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div></div>
 
 <div class="container">
+
     <header class="hero">
         <h1>Tonia's Travel Journal</h1>
         <p class="subtitle">✈ 旅行手记</p>
-        <div class="divider"></div>
     </header>
 
-    <!-- 年度标签 -->
+    <!-- 年份切换 -->
     <div class="year-tabs" id="year-tabs">
-        <div class="year-tab active" data-year="2026"><span class="year-dot"></span>2026</div>
-        <div class="year-tab" data-year="2025"><span class="year-dot"></span>2025</div>
-        <div class="year-tab" data-year="2024"><span class="year-dot"></span>2024</div>
+        <div class="year-tab active" data-year="2026">2026<span class="n">· 3 trips</span></div>
+        <div class="year-tab" data-year="2025">2025</div>
+        <div class="year-tab" data-year="2024">2024</div>
     </div>
 
     <!-- 2026 -->
     <div class="year-content active" data-year="2026">
-        <div class="travel-grid">
-            <a href="dalian-yantai-20261001/" class="travel-card" onclick="return navigateTo(event,this.href)">
-                <div class="card-header-img dalian-yantai">
-                    <div class="card-date">2026.10.02 — 10.06</div>
-                    <div class="card-city">大 连 · 烟 台</div>
-                    <div class="card-emoji">🚢</div>
+
+        <!-- NEXT TRIP — 下一次旅行 -->
+        <a href="dalian-yantai-20261001/" class="next-trip" onclick="return navigateTo(event,this.href)">
+            <div class="nt-content">
+                <div class="nt-top">
+                    <span class="nt-badge">NEXT TRIP · 下一次旅行</span>
+                    <span class="nt-date">2026.10.02 — 10.06</span>
                 </div>
-                <div class="card-body">
-                    <span class="trip-type train">✈️ 海陆空三栖</span>
-                    <h3>国庆跨海游 · 飞机+轮渡+夜车</h3>
-                    <p>早班机飞大连，夜航轮渡跨渤海看日出，养马岛追橘子日落，K286 硬卧回济南……</p>
-                    <div class="card-meta">
-                        <span>📅 4天3晚</span><span>🚢 夜航7h</span><span>💰 ¥5,326/2人</span>
+                <div class="nt-main">
+                    <div class="nt-info">
+                        <h2>大连 · 烟台</h2>
+                        <p class="nt-sub">国庆跨海游 · 飞机 + 轮渡 + 夜车</p>
+                        <p class="nt-meta">4天3晚 · 夜航 7h · ¥5,326 / 2人</p>
+                        <span class="nt-cta">查看手记 <span class="ar">→</span></span>
+                    </div>
+                    <div class="nt-countdown">
+                        <div class="nt-cd-label">距离出发</div>
+                        <div class="nt-cd-digits">
+                            <div class="cd"><span id="cd-days">--</span><i>天</i></div>
+                            <em>:</em>
+                            <div class="cd"><span id="cd-hours">--</span><i>时</i></div>
+                            <em>:</em>
+                            <div class="cd"><span id="cd-mins">--</span><i>分</i></div>
+                        </div>
                     </div>
                 </div>
-                <div class="card-arrow">→</div>
-            </a>
-            <a href="yantai/" class="travel-card" onclick="return navigateTo(event,this.href)">
-                <div class="card-header-img yantai">
-                    <div class="card-date">2026.06.19 — 06.20</div>
-                    <div class="card-city">烟 台 养 马 岛</div>
-                    <div class="card-emoji">🏝️</div>
-                </div>
-                <div class="card-body">
-                    <span class="trip-type train">🚄 高铁出行</span>
-                    <h3>端午情侣游 · 果冻海与橘子日落</h3>
-                    <p>济南高铁 2h45m 直达，养马岛果冻海、秦风崖日落、海岛日记咖啡……</p>
-                    <div class="card-meta">
-                        <span>📅 2天1晚</span><span>🚄 高铁</span><span>💰 ¥1,600</span>
-                    </div>
-                </div>
-                <div class="card-arrow">→</div>
-            </a>
-            <a href="zibo/" class="travel-card" onclick="return navigateTo(event,this.href)">
-                <div class="card-header-img zibo">
-                    <div class="card-date">2026.06.19 — 06.20</div>
-                    <div class="card-city">淄 博</div>
-                    <div class="card-emoji">🍖</div>
-                </div>
-                <div class="card-body">
-                    <span class="trip-type self-drive">🚗 自驾出行</span>
-                    <h3>烧烤之旅 · 齐文化与烟火气</h3>
-                    <p>自驾 1.5h，八大局早市、海岱楼钟书阁、周村古商城、灵魂三件套……</p>
-                    <div class="card-meta">
-                        <span>📅 2天1晚</span><span>🚗 自驾118km</span><span>💰 ¥1,200</span>
-                    </div>
-                </div>
-                <div class="card-arrow">→</div>
-            </a>
-        </div>
-        <div class="countdown-section">
-            <div class="countdown-label">⏳ 距离出发</div>
-            <div class="countdown-digits">
-                <div class="cd-unit"><span class="cd-num" id="cd-days">--</span><span class="cd-label">天</span></div>
-                <div class="cd-sep">:</div>
-                <div class="cd-unit"><span class="cd-num" id="cd-hours">--</span><span class="cd-label">时</span></div>
-                <div class="cd-sep">:</div>
-                <div class="cd-unit"><span class="cd-num" id="cd-mins">--</span><span class="cd-label">分</span></div>
-                <div class="cd-sep">:</div>
-                <div class="cd-unit"><span class="cd-num" id="cd-secs">--</span><span class="cd-label">秒</span></div>
             </div>
+        </a>
+
+        <!-- 我的旅行 / Travel Archive -->
+        <div class="archive-head">
+            <h2>我的旅行</h2>
+            <span>TRAVEL ARCHIVE</span>
+        </div>
+        <div class="archive-grid">
+
+            <a href="yantai/" class="archive-card yantai" onclick="return navigateTo(event,this.href)">
+                <div class="card-media"><i></i>
+                    <div class="card-date">2026.06.19 — 06.20</div>
+                    <div class="card-city">烟台 · 养马岛</div>
+                </div>
+                <div class="card-body">
+                    <h3>端午情侣游 · 果冻海与橘子日落</h3>
+                    <p class="desc">济南高铁 2h45m 直达，养马岛果冻海、秦风崖日落、海岛日记咖啡……</p>
+                    <div class="card-meta">2天1晚 <span class="dot-sep">·</span> 高铁 <span class="dot-sep">·</span> <b>¥1,600</b></div>
+                    <div class="card-cta">查看手记 <span class="ar">→</span></div>
+                </div>
+            </a>
+
+            <a href="zibo/" class="archive-card zibo" onclick="return navigateTo(event,this.href)">
+                <div class="card-media"><i></i>
+                    <div class="card-date">2026.06.19 — 06.20</div>
+                    <div class="card-city">淄博</div>
+                </div>
+                <div class="card-body">
+                    <h3>烧烤之旅 · 齐文化与烟火气</h3>
+                    <p class="desc">自驾 1.5h，八大局早市、海岱楼钟书阁、周村古商城、灵魂三件套……</p>
+                    <div class="card-meta">2天1晚 <span class="dot-sep">·</span> 自驾 118km <span class="dot-sep">·</span> <b>¥1,200</b></div>
+                    <div class="card-cta">查看手记 <span class="ar">→</span></div>
+                </div>
+            </a>
+
+            <div class="archive-card placeholder">
+                <div class="ph-body">
+                    <span class="ph-icon">✈</span>
+                    <p>下一站，正在计划</p>
+                    <span class="ph-sub">筹备好后会写在这里</span>
+                </div>
+            </div>
+
         </div>
     </div>
 
@@ -265,24 +345,27 @@ body{animation:pageEnter .6s ease-out}
         <div class="empty-year">
             <div class="empty-icon">🗺️</div>
             <p>2025 年的旅行故事尚未记录</p>
-            <p style="font-size:.8rem;margin-top:4px">期待你的第一篇旅行手记 ✨</p>
+            <p>期待你的第一篇旅行手记 ✨</p>
         </div>
     </div>
 
     <!-- 2024 -->
     <div class="year-content" data-year="2024">
         <div class="empty-year">
-            <div class="empty-icon">🧭</div>
+            <div class="empty-icon">🗺️</div>
             <p>2024 年的旅行故事尚未记录</p>
-            <p style="font-size:.8rem;margin-top:4px">期待你的第一篇旅行手记 ✨</p>
+            <p>期待你的第一篇旅行手记 ✨</p>
         </div>
     </div>
 
-    <footer class="footer">Made with 💚💜 · Tonia's Travel Journal · 2026</footer>
+    <footer class="footer">
+        <p class="f-quote">记录走过的路，也记录路上的风。</p>
+        <p class="f-meta">Tonia's Travel Journal · 2026</p>
+    </footer>
 </div>
 
 <script>
-// ========== 粒子动画 ==========
+// ========== 背景星点 — 轻量减法 ==========
 (function(){
     var c=document.getElementById('particles'),ctx=c.getContext('2d'),ps=[],w,h,mouse={x:-999,y:-999};
     function rz(){w=c.width=innerWidth;h=c.height=innerHeight}
@@ -291,31 +374,30 @@ body{animation:pageEnter .6s ease-out}
         addEventListener('mousemove',function(e){mouse.x=e.clientX;mouse.y=e.clientY});
         addEventListener('mouseleave',function(){mouse.x=-999;mouse.y=-999});
     }
-    var gs=['#a8e6cf','#88d8b0','#b8f0d8','#dcedc1','#7ecba1'];
-    var ps2=['#d5c6e0','#c9b1db','#e8d5f5','#b39ddb','#dcc8e8'];
+    var gs=['#a8cbb8','#88b3a0','#c2d8ce','#cfc4dd','#b3a8c9'];
     function P(){
-        this.x=Math.random()*w;this.y=Math.random()*h;this.s=.6+Math.random()*2.4;
-        this.sx=(Math.random()-.5)*.5;this.sy=(Math.random()-.5)*.5;
-        this.isG=Math.random()>.5;this.c=this.isG?gs[Math.floor(Math.random()*gs.length)]:ps2[Math.floor(Math.random()*ps2.length)];
-        this.a=.15+Math.random()*.35;this.ps=.005+Math.random()*.015;this.pd=Math.random()>.5?1:-1;
+        this.x=Math.random()*w;this.y=Math.random()*h;this.s=.5+Math.random()*1.6;
+        this.sx=(Math.random()-.5)*.35;this.sy=(Math.random()-.5)*.35;
+        this.c=gs[Math.floor(Math.random()*gs.length)];
+        this.a=.08+Math.random()*.12;this.ps=.004+Math.random()*.01;this.pd=Math.random()>.5?1:-1;
     }
     P.prototype.u=function(){
-        this.a+=this.ps*this.pd;if(this.a>=.6)this.pd=-1;if(this.a<=.12)this.pd=1;
+        this.a+=this.ps*this.pd;if(this.a>=.2)this.pd=-1;if(this.a<=.06)this.pd=1;
         var dx=mouse.x-this.x,dy=mouse.y-this.y,dist=Math.sqrt(dx*dx+dy*dy);
-        if(dist<150&&dist>0){var f=.3/(dist*.03+1);this.sx+=dx*f*.01;this.sy+=dy*f*.01}
+        if(dist<140&&dist>0){var f=.22/(dist*.03+1);this.sx+=dx*f*.008;this.sy+=dy*f*.008}
         this.x+=this.sx;this.y+=this.sy;this.sx*=.999;this.sy*=.999;
         if(this.x>w+20)this.x=-20;if(this.x<-20)this.x=w+20;
         if(this.y>h+20)this.y=-20;if(this.y<-20)this.y=h+20;
     };
     P.prototype.d=function(){ctx.beginPath();ctx.arc(this.x,this.y,this.s,0,Math.PI*2);ctx.fillStyle=this.c;ctx.globalAlpha=this.a;ctx.fill();ctx.globalAlpha=1};
-    var cnt=Math.min(Math.floor(w*h/15000),90);
+    var cnt=Math.min(Math.floor(w*h/30000),44);
     for(var i=0;i<cnt;i++)ps.push(new P());
     function anim(){
         ctx.clearRect(0,0,w,h);
         for(var i=0;i<ps.length;i++){ps[i].u();ps[i].d();
             for(var j=i+1;j<ps.length;j++){var dx=ps[i].x-ps[j].x,dy=ps[i].y-ps[j].y,d=dx*dx+dy*dy;
-                if(d<10000){ctx.beginPath();ctx.moveTo(ps[i].x,ps[i].y);ctx.lineTo(ps[j].x,ps[j].y);
-                    ctx.strokeStyle=d<5000?'rgba(168,230,207,.1)':'rgba(213,198,224,.05)';ctx.lineWidth=.5;ctx.stroke()}}}
+                if(d<9000){ctx.beginPath();ctx.moveTo(ps[i].x,ps[i].y);ctx.lineTo(ps[j].x,ps[j].y);
+                    ctx.strokeStyle='rgba(136,179,160,.045)';ctx.lineWidth=.5;ctx.stroke()}}}
         requestAnimationFrame(anim);
     }
     anim();
@@ -329,27 +411,27 @@ document.getElementById('year-tabs').addEventListener('click',function(e){
     document.querySelectorAll('.year-content').forEach(function(c){c.classList.toggle('active',c.dataset.year===year)});
 });
 
-// ========== 行程状态自动标识（已过期 / 进行中） ==========
-// 解析卡片 .card-date 文本（如 "2026.10.02 — 10.06"），按当天日期自动打状态：
-// 结束日 < 今天 → 已完成（徽章+弱化）；今天在行程内 → 进行中（徽章）。未来行程不加徽章。
+// ========== 历史旅行状态自动标识（已完成 / 进行中） ==========
+// 解析卡片 .card-date 文本（如 "2026.06.19 — 06.20"），按当天日期自动打状态：
+// 结束日 < 今天 → 已完成（徽章+图片降饱和）；今天在行程内 → 进行中。未来行程不加徽章。
 (function(){
     var today=new Date();today.setHours(0,0,0,0);
-    document.querySelectorAll('.travel-card .card-date').forEach(function(el){
+    document.querySelectorAll('.archive-card .card-date').forEach(function(el){
         var m=el.textContent.trim().match(/(\d{4})\.(\d{2})\.(\d{2})(?:\s*[—–-]\s*(\d{1,2})\.(\d{1,2}))?/);
         if(!m)return;
         var y=+m[1],sm=+m[2],sd=+m[3];
         var em=m[4]?+m[4]:sm,ed=m[5]?+m[5]:sd;
         var start=new Date(y,sm-1,sd),end=new Date(y,em-1,ed);
-        var card=el.closest('.travel-card'),img=el.parentElement;
+        var card=el.closest('.archive-card'),media=el.parentElement;
         if(today>end){
             card.classList.add('past');
             var b=document.createElement('div');
-            b.className='card-status past';b.textContent='✅ 已完成';
-            img.appendChild(b);
+            b.className='card-status past';b.textContent='✓ 已完成';
+            media.appendChild(b);
         }else if(today>=start&&today<=end){
             var b2=document.createElement('div');
-            b2.className='card-status ongoing';b2.textContent='🔥 进行中';
-            img.appendChild(b2);
+            b2.className='card-status ongoing';b2.textContent='进行中';
+            media.appendChild(b2);
         }
     });
 })();
@@ -370,26 +452,25 @@ function navigateTo(e,url){
     }
 })();
 
-// ========== 倒计时 ==========
+// ========== NEXT TRIP 倒计时（天 / 时 / 分） ==========
 (function(){
     // 大连·烟台国庆行程：2026-10-02 05:00 从制锦市出发，10-06 23:59 结束
     var target=new Date('2026-10-02T05:00:00+08:00').getTime();
     var tripEnd=new Date('2026-10-06T23:59:59+08:00').getTime();
-    var de=document.getElementById('cd-days'),he=document.getElementById('cd-hours'),me=document.getElementById('cd-mins'),se=document.getElementById('cd-secs');
-    var lbl=document.querySelector('.countdown-label');
+    var de=document.getElementById('cd-days'),he=document.getElementById('cd-hours'),me=document.getElementById('cd-mins');
+    var lbl=document.querySelector('.nt-cd-label');
     function pad(n){return n<10?'0'+n:n}
     function tick(){
         var now=Date.now(),diff=target-now;
         if(diff<=0){
-            de.textContent='00';he.textContent='00';me.textContent='00';se.textContent='00';
-            if(lbl)lbl.textContent=now>tripEnd?'🏁 大连·烟台 · 行程已结束':'🎉 已在路上 · 大连·烟台';
+            de.textContent='00';he.textContent='00';me.textContent='00';
+            if(lbl)lbl.textContent=now>tripEnd?'旅程已结束':'正在路上';
             return}
         de.textContent=pad(Math.floor(diff/864e5));
         he.textContent=pad(Math.floor((diff%864e5)/36e5));
         me.textContent=pad(Math.floor((diff%36e5)/6e4));
-        se.textContent=pad(Math.floor((diff%6e4)/1e3));
     }
-    tick();setInterval(tick,1e3);
+    tick();setInterval(tick,15e3);
 })();
 </script>
 </body>
