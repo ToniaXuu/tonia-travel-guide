@@ -158,6 +158,9 @@ body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Noto Sans SC',s
 .book-btn.ctrip{background:#0088f5;color:#fff}
 .book-btn.ctrip:hover{background:#0066cc;transform:translateY(-1px)}
 .hotel-card .price-note{font-size:.68rem;color:var(--coral);margin-top:2px}
+.hotel-pick{margin-top:10px;padding:8px 10px;background:rgba(63,145,121,.07);border-radius:8px;font-size:.72rem;color:var(--text-light);line-height:1.5}
+.hotel-pick b{color:var(--teal-deep);font-weight:600}
+.hotel-pick .hp-score{color:var(--orange);font-weight:600}
 
 /* 提示 */
 .tips-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
@@ -759,9 +762,9 @@ body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Noto Sans SC',s
 
 <div class="detail-section">
 
-    <!-- 原计划修正 -->
+    <!-- AI 原计划修正 -->
     <div class="section-card">
-        <h2 class="section-title">🔧 原计划修正清单</h2>
+        <h2 class="section-title">🔧 AI 原计划修正清单</h2>
         <p class="section-sub">你的大框架很棒——飞机进、轮渡穿、火车回，海陆空三栖还省了两晚房费。以下是 6 处需要修的时间硬伤。</p>
         <table class="fix-table">
             <tr><th style="width:15%">环节</th><th style="width:38%">❌ 原计划</th><th>✅ 修正后</th></tr>
@@ -939,21 +942,24 @@ body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Noto Sans SC',s
                 <div class="price">¥400-550<span style="font-size:.7rem;color:var(--text-light)"> / 晚（国庆）</span></div>
                 <div class="price-note">国庆溢价约 40%，9 月中旬前订</div>
                 <div class="addr">地铁 2 号线机场直达，30 分钟；步行可达中山广场、俄罗斯风情街、天津街小吃；打车去星海广场/棒棰岛/东港都在 20 分钟内。</div>
-                <div class="book-btns"><a class="book-btn ctrip" data-kw="大连青泥洼桥" data-in="2026-10-02" data-out="2026-10-03" href="#">携程查看</a></div>
+                <div class="hotel-pick">🏨 推荐酒店：<b>大连中山广场亚朵酒店</b>（民意街16号，距中山广场站 330m）<span class="hp-score">4.7分</span> · 5600+ 点评</div>
+                <div class="book-btns"><a class="book-btn ctrip" data-hid="68612585" data-in="2026-10-02" data-out="2026-10-03" href="#">携程预订</a></div>
             </div>
             <div class="hotel-card">
                 <h4>星海广场 / 会展中心</h4>
                 <div class="stars">★★★☆ 推荐度</div>
                 <div class="price">¥450-600<span style="font-size:.7rem;color:var(--text-light)"> / 晚（国庆）</span></div>
                 <div class="addr">靠海、安静，推开窗可能见海。缺点是离机场和老城区稍远，晚上回来打车不便，国庆期间路面拥堵。</div>
-                <div class="book-btns"><a class="book-btn ctrip" data-kw="大连星海广场" data-in="2026-10-02" data-out="2026-10-03" href="#">携程查看</a></div>
+                <div class="hotel-pick">🏨 推荐酒店：<b>大连星海广场会展中心地铁站亚朵酒店</b>（高尔基路504号，距会展中心站 330m）<span class="hp-score">4.8分</span> · 900+ 点评 · 2025 新开业</div>
+                <div class="book-btns"><a class="book-btn ctrip" data-hid="131707712" data-in="2026-10-02" data-out="2026-10-03" href="#">携程预订</a></div>
             </div>
             <div class="hotel-card">
                 <h4>东港 / 威尼斯水城</h4>
                 <div class="stars">★★★☆ 推荐度</div>
                 <div class="price">¥550-750<span style="font-size:.7rem;color:var(--text-light)"> / 晚（国庆）</span></div>
                 <div class="addr">夜景最好，下楼就是运河和欧式城堡，适合情侣。但国庆这片的房价溢价最狠，性价比一般。</div>
-                <div class="book-btns"><a class="book-btn ctrip" data-kw="大连东港威尼斯水城" data-in="2026-10-02" data-out="2026-10-03" href="#">携程查看</a></div>
+                <div class="hotel-pick">🏨 推荐酒店：<b>全季大连东港威尼斯水城海景酒店</b>（港东街7号，过马路就是威尼斯水城）<span class="hp-score">4.6分</span> · 2026 新开业</div>
+                <div class="book-btns"><a class="book-btn ctrip" data-hid="134619296" data-in="2026-10-02" data-out="2026-10-03" href="#">携程预订</a></div>
             </div>
         </div>
 
@@ -965,14 +971,16 @@ body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Noto Sans SC',s
                 <div class="price">¥350-500<span style="font-size:.7rem;color:var(--text-light)"> / 晚（国庆）</span></div>
                 <div class="price-note">离烟台站打车仅 10 分钟，赶 23:35 火车最稳</div>
                 <div class="addr">老城中心，步行可达所城里、朝阳街、烟台山、第一海水浴场。Day4 晚上要赶 23:35 的火车，住这里能省掉最后一程的折腾——这是选它的决定性理由。</div>
-                <div class="book-btns"><a class="book-btn ctrip" data-kw="烟台所城里" data-in="2026-10-04" data-out="2026-10-05" href="#">携程查看</a></div>
+                <div class="hotel-pick">🏨 推荐酒店：<b>烟台站南大街亚朵酒店</b>（南大街132号，烟台站步行 1.2km）<span class="hp-score">4.9分</span> · 1500+ 点评</div>
+                <div class="book-btns"><a class="book-btn ctrip" data-hid="133402618" data-in="2026-10-04" data-out="2026-10-05" href="#">携程预订</a></div>
             </div>
             <div class="hotel-card">
                 <h4>莱山区 万象城 / 渔人码头</h4>
                 <div class="stars">★★★★ 推荐度</div>
                 <div class="price">¥350-480<span style="font-size:.7rem;color:var(--text-light)"> / 晚（国庆）</span></div>
                 <div class="addr">新城区，马路宽、商场新、离渔人码头和月亮湾近。缺点是离烟台站 30 分钟车程，赶夜车要多留时间。</div>
-                <div class="book-btns"><a class="book-btn ctrip" data-kw="烟台莱山万象城" data-in="2026-10-04" data-out="2026-10-05" href="#">携程查看</a></div>
+                <div class="hotel-pick">🏨 推荐酒店：<b>全季酒店（烟台观海路渔人码头店）</b>（观海路40号）<span class="hp-score">4.8分</span> · 790+ 点评 · 免费停车</div>
+                <div class="book-btns"><a class="book-btn ctrip" data-hid="110043873" data-in="2026-10-04" data-out="2026-10-05" href="#">携程预订</a></div>
             </div>
             <div class="hotel-card">
                 <h4>养马岛民宿 <span style="font-size:.7rem;color:#b91c1c;font-weight:600">✗ 不推荐</span></h4>
@@ -1182,18 +1190,18 @@ loadMap();
 })();
 </script>
 
-<!-- 携程酒店搜索：按关键词 + 日期跳转 -->
+<!-- 携程酒店直达预订：按酒店ID + 日期跳详情页 -->
 <script>
 document.addEventListener('click',function(e){
-    var b=e.target.closest('.book-btn.ctrip[data-kw]');
+    var b=e.target.closest('.book-btn.ctrip[data-hid]');
     if(!b)return;
     e.preventDefault();
-    var kw=encodeURIComponent(b.dataset.kw),
+    var id=b.dataset.hid,
         ci=b.dataset.in, co=b.dataset.out,
         m=window.innerWidth<=768,
         url=m
-            ? 'https://m.ctrip.com/webapp/hotel/list?keyword='+kw+'&checkin='+ci+'&checkout='+co
-            : 'https://hotels.ctrip.com/hotels/list?keyword='+kw+'&checkin='+ci+'&checkout='+co;
+            ? 'https://m.ctrip.com/webapp/hotel/hoteldetail/'+id+'.html?checkin='+ci+'&checkout='+co
+            : 'https://hotels.ctrip.com/hotels/'+id+'.html?checkin='+ci+'&checkout='+co;
     window.open(url,'_blank');
 });
 </script>
