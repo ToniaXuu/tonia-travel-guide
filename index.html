@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Tonia's Travel Journal · 旅行手记 — 记录每一次出发，烟台果冻海、淄博烧烤、更多在路上……">
+<meta name="description" content="Tonia's Travel Journal · 旅行手记 — 记录每一次出发，大连跨海夜航、烟台果冻海、淄博烧烤、更多在路上……">
 <meta property="og:title" content="Tonia's Travel Journal · 旅行手记">
-<meta property="og:description" content="烟台养马岛果冻海、淄博烧烤烟火气——自驾与高铁，两日攻略尽在旅行手记">
+<meta property="og:description" content="大连·烟台跨海四日、烟台养马岛果冻海、淄博烧烤烟火气——飞机、轮渡、高铁，攻略尽在旅行手记">
 <meta property="og:type" content="website">
 <title>Tonia's Travel Journal · 旅行手记</title>
 <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
@@ -115,6 +115,17 @@ body{animation:pageEnter .6s ease-out}
 .card-header-img.yantai::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(29,158,117,.6) 0%,rgba(13,107,79,.5) 30%,rgba(26,107,138,.5) 70%,rgba(13,79,107,.6) 100%);z-index:1}
 .card-header-img.zibo{background:url('assets/zibo-bg.jpg') center/cover}
 .card-header-img.zibo::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(230,126,34,.6) 0%,rgba(211,84,0,.5) 30%,rgba(192,57,43,.5) 70%,rgba(142,68,173,.6) 100%);z-index:1}
+/* 大连·烟台 — 纯 CSS 海景（无外部配图依赖） */
+.card-header-img.dalian-yantai{
+    background-image:
+        radial-gradient(circle at 78% 26%, rgba(255,201,122,.38) 0%, transparent 46%),
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='46'%3E%3Cpath d='M0 30 Q 30 21 60 30 T 120 30 T 180 30 T 240 30' stroke='rgba(255,255,255,0.17)' stroke-width='1.4' fill='none'/%3E%3Cpath d='M0 40 Q 30 31 60 40 T 120 40 T 180 40 T 240 40' stroke='rgba(255,255,255,0.11)' stroke-width='1.2' fill='none'/%3E%3C/svg%3E"),
+        linear-gradient(135deg,#08304f 0%,#12567f 34%,#3d7f8c 58%,#b4651f 100%);
+    background-size:cover,240px 46px,cover;
+    background-position:center,bottom,center;
+    background-repeat:no-repeat,repeat-x,no-repeat;
+}
+.card-header-img.dalian-yantai::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(10,58,92,.42) 0%,rgba(29,106,143,.28) 45%,rgba(180,101,31,.34) 100%);z-index:1}
 .card-header-img .card-emoji{position:absolute;font-size:3.5rem;bottom:12px;right:20px;opacity:.7;animation:float 3s ease-in-out infinite;z-index:2}
 @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
 .card-header-img .card-city{position:absolute;bottom:16px;left:20px;color:rgba(255,255,255,.95);font-size:1.6rem;font-weight:700;text-shadow:0 2px 8px rgba(0,0,0,.3);z-index:2}
@@ -174,6 +185,22 @@ body{animation:pageEnter .6s ease-out}
     <!-- 2026 -->
     <div class="year-content active" data-year="2026">
         <div class="travel-grid">
+            <a href="dalian-yantai-20261001/" class="travel-card" onclick="return navigateTo(event,this.href)">
+                <div class="card-header-img dalian-yantai">
+                    <div class="card-date">2026.10.02 — 10.06</div>
+                    <div class="card-city">大 连 · 烟 台</div>
+                    <div class="card-emoji">🚢</div>
+                </div>
+                <div class="card-body">
+                    <span class="trip-type train">✈️ 海陆空三栖</span>
+                    <h3>国庆跨海游 · 飞机+轮渡+夜车</h3>
+                    <p>早班机飞大连，夜航轮渡跨渤海看日出，养马岛追橘子日落，K286 硬卧回济南……</p>
+                    <div class="card-meta">
+                        <span>📅 4天3晚</span><span>🚢 夜航6h</span><span>💰 ¥5,386/2人</span>
+                    </div>
+                </div>
+                <div class="card-arrow">→</div>
+            </a>
             <a href="yantai/" class="travel-card" onclick="return navigateTo(event,this.href)">
                 <div class="card-header-img yantai">
                     <div class="card-date">2026.06.19 — 06.20</div>
@@ -300,7 +327,7 @@ function navigateTo(e,url){
 }
 // 从子页面返回时检测 referrer
 (function(){
-    if(document.referrer&&(document.referrer.includes('yantai')||document.referrer.includes('zibo'))){
+    if(document.referrer&&(document.referrer.includes('yantai')||document.referrer.includes('zibo')||document.referrer.includes('dalian'))){
         transition.classList.add('active');
         setTimeout(function(){transition.classList.remove('active')},100);
     }
@@ -308,12 +335,17 @@ function navigateTo(e,url){
 
 // ========== 倒计时 ==========
 (function(){
-    var target=new Date('2026-06-19T06:05:00+08:00').getTime();
+    // 大连·烟台国庆行程：2026-10-02 05:00 从制锦市出发
+    var target=new Date('2026-10-02T05:00:00+08:00').getTime();
     var de=document.getElementById('cd-days'),he=document.getElementById('cd-hours'),me=document.getElementById('cd-mins'),se=document.getElementById('cd-secs');
+    var lbl=document.querySelector('.countdown-label');
     function pad(n){return n<10?'0'+n:n}
     function tick(){
         var diff=target-Date.now();
-        if(diff<=0){de.textContent='00';he.textContent='00';me.textContent='00';se.textContent='00';return}
+        if(diff<=0){
+            de.textContent='00';he.textContent='00';me.textContent='00';se.textContent='00';
+            if(lbl)lbl.textContent='🎉 已在路上 · 大连·烟台';
+            return}
         de.textContent=pad(Math.floor(diff/864e5));
         he.textContent=pad(Math.floor((diff%864e5)/36e5));
         me.textContent=pad(Math.floor((diff%36e5)/6e4));

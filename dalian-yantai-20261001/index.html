@@ -1,0 +1,1194 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="大连·烟台国庆四天三晚情侣游攻略：济南飞大连、夜航轮渡跨渤海看海上日出、烟台养马岛果冻海、K286 夜车回济南。含逐日时间轴、交互地图、预算表与订票时间节点。">
+<meta property="og:title" content="大连 · 烟台 跨海四日 | Tonia's Travel Journal">
+<meta property="og:description" content="飞机 + 轮渡 + 夜车，海陆空三栖。跨渤海看日出，养马岛追日落，¥5,400 两人四天三晚。">
+<meta property="og:type" content="website">
+<title>大连 · 烟台 跨海四日 | Tonia's Travel Journal</title>
+<link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../assets/favicon-16.png">
+<link rel="apple-touch-icon" sizes="128x128" href="../assets/favicon-128.png">
+<style>body{animation:pageIn .5s ease-out}@keyframes pageIn{from{opacity:0}to{opacity:1}}</style>
+<style>
+:root {
+    --bg:#eef4f9; --card-bg:#fff; --text:#12263a; --text-light:#5b6b7c;
+    --orange:#ea580c; --ocean:#0284c7; --coral:#e11d48; --night:#4f46e5;
+    --green:#059669; --purple:#7c3aed; --amber:#d97706; --gray-100:#f4f7fa; --gray-300:#dbe3ea;
+    --shadow:0 2px 16px rgba(15,40,70,0.07);
+    --banner-start:#0c4a6e; --banner-end:#b45309;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Noto Sans SC',sans-serif;background:var(--bg);color:var(--text);line-height:1.6}
+
+.back-btn{position:fixed;top:20px;left:20px;z-index:1000;background:rgba(255,255,255,.92);backdrop-filter:blur(10px);border:1px solid #e5eaf0;border-radius:30px;padding:8px 18px;text-decoration:none;color:var(--text);font-size:.85rem;font-weight:500;box-shadow:0 2px 8px rgba(0,0,0,.06);transition:all .2s;display:flex;align-items:center;gap:6px}
+.back-btn:hover{background:#fff;transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,0,0,.1)}
+
+/* Banner — 纯 CSS 渐变 + 内联 SVG 场景（无外部图片依赖） */
+.banner{background:linear-gradient(163deg,#0a3555 0%,#0e4a70 32%,#2f6b7d 56%,#a35f22 80%,#b45309 100%);background-color:#0c4a6e;color:#fff;text-align:center;padding:70px 20px 40px;position:relative;overflow:hidden}
+.banner::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 28% 72%,rgba(255,255,255,.10) 0%,transparent 58%),radial-gradient(circle at 74% 26%,rgba(255,255,255,.06) 0%,transparent 58%);z-index:2}
+.banner-scene{position:absolute;inset:0;z-index:1;pointer-events:none}
+.banner-scene svg{width:100%;height:100%;display:block}
+@keyframes sailDrift{0%{transform:translateX(0)}50%{transform:translateX(70px)}100%{transform:translateX(0)}}
+@keyframes cloudDrift{0%{transform:translateX(-30px)}50%{transform:translateX(40px)}100%{transform:translateX(-30px)}}
+@keyframes sunGlow{0%,100%{opacity:.16}50%{opacity:.30}}
+@keyframes waveShift{0%{transform:translateX(0)}50%{transform:translateX(-40px)}100%{transform:translateX(0)}}
+.sail-boat{animation:sailDrift 26s ease-in-out infinite}
+.drift-cloud{animation:cloudDrift 34s ease-in-out infinite}
+.sun-halo{animation:sunGlow 6s ease-in-out infinite}
+.wave-line{animation:waveShift 12s ease-in-out infinite}
+.wave-line:nth-of-type(2){animation-duration:17s;animation-direction:reverse}
+.banner h1{font-size:clamp(1.75rem,4vw,2.5rem);font-weight:800;position:relative;z-index:3}
+.banner p{font-size:1rem;opacity:.88;margin-top:8px;position:relative;z-index:3}
+.banner-meta{display:flex;justify-content:center;gap:12px;margin-top:14px;flex-wrap:wrap;position:relative;z-index:3}
+.banner-meta span{background:rgba(255,255,255,.18);padding:4px 16px;border-radius:20px;font-size:.82rem}
+
+/* 主布局 */
+.main-layout{max-width:1280px;margin:0 auto;padding:24px 20px 40px;display:flex;gap:28px}
+.left-panel{flex:0 0 520px;min-width:0}
+.right-panel{flex:1;min-width:380px;position:sticky;top:80px;height:calc(100vh - 100px)}
+
+/* 天气 */
+.weather-widget{background:var(--card-bg);border-radius:14px;padding:18px;box-shadow:var(--shadow);margin-bottom:20px}
+.weather-title{font-size:.95rem;font-weight:600;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.weather-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.weather-day{text-align:center;padding:12px 6px;background:var(--gray-100);border-radius:10px}
+.weather-city{font-size:.66rem;color:var(--ocean);font-weight:700;letter-spacing:1px}
+.weather-icon{font-size:1.7rem;margin:3px 0}
+.weather-temp{font-size:.95rem;font-weight:700;color:var(--orange)}
+.weather-desc{font-size:.7rem;color:var(--text-light);margin-top:3px}
+.weather-date{font-size:.74rem;color:var(--text-light);margin-bottom:2px}
+.weather-update-time{font-size:.65rem;color:var(--gray-300);font-weight:400;margin-left:8px}
+
+/* Day Tabs */
+.day-tabs{display:flex;gap:8px;margin-bottom:16px;overflow-x:auto;padding-bottom:6px;scrollbar-width:thin}
+.day-tab{flex:0 0 auto;min-width:106px;text-align:center;padding:9px 10px;border-radius:10px;background:#fff;cursor:pointer;font-weight:600;font-size:.76rem;box-shadow:var(--shadow);transition:all .2s;border:2px solid transparent;white-space:nowrap}
+.day-tab.active{border-color:var(--orange);color:var(--orange);background:rgba(234,88,12,.05)}
+.day-content{display:none}
+.day-content.active{display:block}
+
+/* 时间轴卡片 */
+.timeline-card{background:var(--card-bg);border-radius:12px;padding:16px;box-shadow:var(--shadow);margin-bottom:12px;border-left:4px solid #e5e7eb;transition:all .2s;cursor:pointer}
+.timeline-card:hover{transform:translateX(4px);box-shadow:0 4px 20px rgba(15,40,70,.12)}
+.timeline-card[data-cat="景点"]{border-left-color:var(--green)}
+.timeline-card[data-cat="美食"]{border-left-color:var(--coral)}
+.timeline-card[data-cat="文化"]{border-left-color:var(--purple)}
+.timeline-card[data-cat="交通"]{border-left-color:var(--night)}
+.timeline-card[data-cat="住宿"]{border-left-color:#ec4899}
+.timeline-card[data-cat="购物"]{border-left-color:var(--amber)}
+.timeline-card.highlight{border-left-width:6px;background:#fff8f0}
+.timeline-card.key-moment{background:linear-gradient(90deg,#fff7ed 0%,#fff 60%)}
+.card-header{display:flex;justify-content:flex-start;align-items:flex-start;margin-bottom:4px;gap:8px}
+.card-time{font-size:.82rem;color:var(--text-light);font-weight:600}
+.card-cat{font-size:.68rem;padding:2px 8px;border-radius:10px;font-weight:600;margin-left:auto;flex-shrink:0}
+.card-cat[data-cat="景点"]{background:rgba(5,150,105,.12);color:var(--green)}
+.card-cat[data-cat="美食"]{background:rgba(225,29,72,.12);color:var(--coral)}
+.card-cat[data-cat="文化"]{background:rgba(124,58,237,.12);color:var(--purple)}
+.card-cat[data-cat="交通"]{background:rgba(79,70,229,.12);color:var(--night)}
+.card-cat[data-cat="住宿"]{background:rgba(236,72,153,.12);color:#ec4899}
+.card-cat[data-cat="购物"]{background:rgba(217,119,6,.12);color:var(--amber)}
+.card-title{font-size:1rem;font-weight:600;margin-bottom:3px}
+.card-subtitle{font-size:.8rem;color:var(--text-light);margin-bottom:6px}
+.card-desc{font-size:.82rem;color:var(--text-light);line-height:1.62;margin-bottom:8px}
+.card-tags{display:flex;gap:5px;flex-wrap:wrap}
+.tag{font-size:.7rem;padding:2px 7px;border-radius:7px;background:var(--gray-100);color:var(--text-light)}
+.tag.warn{background:rgba(234,88,12,.12);color:var(--orange);font-weight:600}
+.tag.fix{background:rgba(79,70,229,.12);color:var(--night);font-weight:600}
+.tag.good{background:rgba(5,150,105,.12);color:var(--green);font-weight:600}
+.tag.money{background:rgba(217,119,6,.12);color:var(--amber);font-weight:600}
+/* 人潮等级 */
+.tag.crowd3{background:rgba(220,38,38,.15);color:#dc2626;font-weight:700;cursor:help}
+.tag.crowd2{background:rgba(234,88,12,.14);color:#ea580c;font-weight:700;cursor:help}
+.tag.crowd1{background:rgba(5,150,105,.14);color:var(--green);font-weight:700;cursor:help}
+.card-note{margin-top:8px;padding:8px 10px;border-radius:8px;background:#eff6ff;border-left:3px solid var(--night);font-size:.76rem;color:#1e40af;line-height:1.55}
+.card-note.warn{background:#fff7ed;border-left-color:var(--orange);color:#9a3412}
+.card-note.good{background:#ecfdf5;border-left-color:var(--green);color:#065f46}
+.card-note.planb{background:#fef2f2;border-left-color:#dc2626;color:#7f1d1d}
+.card-note.planb b{color:#b91c1c}
+
+/* 地图 */
+.map-container{background:#fff;border-radius:14px;overflow:hidden;box-shadow:var(--shadow);height:100%;position:relative;min-height:420px}
+#map{width:100%;height:100%}
+.map-legend{position:absolute;bottom:16px;left:16px;background:rgba(255,255,255,.93);backdrop-filter:blur(8px);padding:10px 14px;border-radius:10px;font-size:.72rem;display:flex;gap:11px;flex-wrap:wrap;box-shadow:0 2px 8px rgba(0,0,0,.08);max-width:calc(100% - 32px)}
+.legend-item{display:flex;align-items:center;gap:4px;white-space:nowrap}
+.legend-dot{width:9px;height:9px;border-radius:50%}
+.map-loading-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.9);z-index:5;flex-direction:column;gap:12px}
+.map-loading-spinner{width:36px;height:36px;border:3px solid #e5e7eb;border-top-color:var(--orange);border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.sat-toggle{position:absolute;top:14px;right:14px;z-index:6;background:rgba(255,255,255,.94);border:1px solid #e5eaf0;border-radius:20px;padding:6px 14px;font-size:.75rem;font-weight:600;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.sat-toggle:hover{background:#fff}
+.map-hint{position:absolute;top:14px;left:14px;z-index:6;background:rgba(255,255,255,.9);border-radius:20px;padding:6px 12px;font-size:.7rem;color:var(--text-light)}
+
+/* 详情区域 */
+.detail-section{max-width:1280px;margin:0 auto;padding:0 20px 40px}
+.section-card{background:var(--card-bg);border-radius:14px;padding:24px;box-shadow:var(--shadow);margin-bottom:18px}
+.section-title{font-size:1.15rem;font-weight:700;margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.section-sub{font-size:.82rem;color:var(--text-light);margin-bottom:18px}
+.budget-table{width:100%;border-collapse:collapse;font-size:.85rem}
+.budget-table th,.budget-table td{padding:10px 12px;text-align:left;border-bottom:1px solid #f1f5f9}
+.budget-table th{background:var(--gray-100);font-weight:600}
+.budget-table td.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.budget-table tr.subtotal td{font-weight:700;background:#f8fafc}
+.budget-table tr.total td{font-weight:800;border-top:2px solid var(--orange);font-size:.95rem}
+.budget-table tr.total td:last-child{color:var(--orange)}
+.old-text{color:#94a3b8;text-decoration:line-through}
+.new-text{color:var(--green);font-weight:600}
+
+/* 修正表 */
+.fix-table{width:100%;border-collapse:collapse;font-size:.84rem}
+.fix-table th,.fix-table td{padding:12px;border-bottom:1px solid #f1f5f9;vertical-align:top;text-align:left}
+.fix-table th{background:var(--gray-100);font-weight:600;white-space:nowrap}
+.fix-table td.issue{color:#b91c1c;background:#fef2f2}
+.fix-table td.fixed{color:#065f46;background:#f0fdf4}
+.fix-table td:first-child{font-weight:600;white-space:nowrap;color:var(--text)}
+.fix-num{display:inline-block;width:22px;height:22px;line-height:22px;text-align:center;border-radius:50%;background:var(--orange);color:#fff;font-size:.72rem;font-weight:700;margin-right:6px}
+
+/* 酒店 */
+.hotel-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(258px,1fr));gap:14px}
+.hotel-card{border:1px solid #e5eaf0;border-radius:12px;padding:16px;transition:all .2s}
+.hotel-card:hover{border-color:var(--orange);box-shadow:0 4px 12px rgba(234,88,12,.1)}
+.hotel-card h4{font-size:.95rem;font-weight:600}
+.hotel-card .stars{color:var(--amber);margin:4px 0;font-size:.82rem}
+.hotel-card .price{font-size:1.05rem;font-weight:700;color:var(--coral);margin-top:6px}
+.hotel-card .addr{font-size:.75rem;color:var(--text-light);margin-top:4px;line-height:1.5}
+.hotel-card .book-btns{display:flex;gap:8px;margin-top:12px}
+.book-btn{flex:1;text-align:center;padding:7px 0;border-radius:8px;font-size:.78rem;font-weight:600;text-decoration:none;transition:all .2s;display:inline-block}
+.book-btn.ctrip{background:#0088f5;color:#fff}
+.book-btn.ctrip:hover{background:#0066cc;transform:translateY(-1px)}
+.hotel-card .price-note{font-size:.68rem;color:var(--coral);margin-top:2px}
+
+/* 提示 */
+.tips-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.tips-box{border-radius:12px;padding:16px}
+.tips-box.bad{background:#fef2f2;border:1px solid #fecaca}
+.tips-box.good{background:#f0fdf4;border:1px solid #bbf7d0}
+.tips-box h4{margin-bottom:8px;font-size:.9rem}
+.tips-box ul{padding-left:16px;font-size:.82rem;color:var(--text-light)}
+.tips-box li{margin-bottom:5px}
+
+/* 订票节点时间轴 */
+.ticket-timeline{list-style:none;padding:0;margin-top:8px}
+.ticket-timeline li{position:relative;padding:0 0 20px 30px;border-left:2px solid var(--gray-300);margin-left:8px}
+.ticket-timeline li:last-child{border-left-color:transparent;padding-bottom:0}
+.ticket-timeline li::before{content:'';position:absolute;left:-7px;top:4px;width:12px;height:12px;border-radius:50%;background:var(--orange);border:2px solid #fff;box-shadow:0 0 0 2px rgba(234,88,12,.25)}
+.ticket-timeline li.done::before{background:var(--green);box-shadow:0 0 0 2px rgba(5,150,105,.25)}
+.ticket-timeline .tk-date{font-size:.78rem;font-weight:700;color:var(--orange)}
+.ticket-timeline li.done .tk-date{color:var(--green)}
+.ticket-timeline .tk-title{font-size:.9rem;font-weight:600;margin:1px 0 2px}
+.ticket-timeline .tk-desc{font-size:.8rem;color:var(--text-light)}
+
+@media(max-width:900px){
+    .main-layout{flex-direction:column}
+    .left-panel{flex:auto}
+    .right-panel{position:static;height:450px;min-width:auto}
+    .tips-grid{grid-template-columns:1fr}
+    .weather-grid{grid-template-columns:repeat(2,1fr)}
+    .fix-table{font-size:.78rem}
+    .fix-table td:first-child{white-space:normal}
+}
+</style>
+</head>
+<body>
+
+<a href="../" class="back-btn">← 返回旅行手记</a>
+
+<div class="banner">
+    <div class="banner-scene" aria-hidden="true">
+        <svg viewBox="0 0 1600 260" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+            <!-- 朝阳 -->
+            <circle class="sun-halo" cx="1252" cy="86" r="80" fill="#ffc46b" opacity=".18"/>
+            <circle cx="1252" cy="86" r="30" fill="#ffd79a" opacity=".72"/>
+            <circle cx="1252" cy="86" r="20" fill="#fff0d0" opacity=".55"/>
+            <!-- 云 -->
+            <g class="drift-cloud">
+                <ellipse cx="250" cy="60" rx="132" ry="15" fill="#ffffff" opacity=".085"/>
+                <ellipse cx="358" cy="48" rx="88" ry="11" fill="#ffffff" opacity=".065"/>
+                <ellipse cx="150" cy="52" rx="60" ry="9" fill="#ffffff" opacity=".05"/>
+            </g>
+            <g class="drift-cloud" style="animation-duration:46s;animation-delay:-8s">
+                <ellipse cx="880" cy="42" rx="150" ry="13" fill="#ffffff" opacity=".06"/>
+                <ellipse cx="990" cy="34" rx="76" ry="9" fill="#ffffff" opacity=".045"/>
+            </g>
+            <!-- 远山两层 -->
+            <path d="M0 132 L150 106 L292 130 L452 100 L612 132 L772 112 L932 138 L1112 108 L1292 134 L1458 112 L1600 130 L1600 260 L0 260 Z" fill="#08324f" opacity=".42"/>
+            <path d="M0 156 L200 134 L378 158 L556 130 L752 160 L968 136 L1196 162 L1418 138 L1600 156 L1600 260 L0 260 Z" fill="#06263c" opacity=".58"/>
+            <!-- 跨海大桥：斜拉索 -->
+            <g stroke="#03182a" stroke-width="1" opacity=".45" fill="none">
+                <path d="M520 122 L392 175 M520 122 L436 175 M520 122 L480 176 M520 122 L560 176 M520 122 L604 175 M520 122 L648 175"/>
+                <path d="M1078 120 L950 174 M1078 120 L994 174 M1078 120 L1038 175 M1078 120 L1118 175 M1078 120 L1162 174 M1078 120 L1206 174"/>
+            </g>
+            <!-- 跨海大桥：桥塔 + 桥面 -->
+            <g fill="#03182a" opacity=".72">
+                <rect x="516" y="118" width="7" height="58"/>
+                <rect x="1074" y="116" width="7" height="60"/>
+            </g>
+            <path d="M-20 177 Q 400 167 800 173 T 1620 169" stroke="#03182a" stroke-width="3.4" fill="none" opacity=".8"/>
+            <!-- 海面 -->
+            <path d="M0 184 L1600 184 L1600 260 L0 260 Z" fill="#04243a" opacity=".72"/>
+            <g fill="none" stroke="#7fd4e8" stroke-width="1.1" opacity=".2">
+                <path class="wave-line" d="M-60 202 Q 140 194 340 202 T 740 202 T 1140 202 T 1540 202 T 1940 202"/>
+                <path class="wave-line" d="M-60 224 Q 160 216 380 224 T 820 224 T 1260 224 T 1700 224 T 2140 224"/>
+                <path class="wave-line" d="M-60 246 Q 120 239 300 246 T 660 246 T 1020 246 T 1380 246 T 1740 246"/>
+            </g>
+            <!-- 夜航轮渡 -->
+            <g class="sail-boat">
+                <g fill="#02121f" opacity=".88">
+                    <path d="M1146 202 L1226 202 L1217 213 L1155 213 Z"/>
+                    <rect x="1156" y="190" width="56" height="12"/>
+                    <rect x="1198" y="181" width="7" height="10"/>
+                </g>
+                <g fill="#ffd79a" opacity=".55">
+                    <rect x="1160" y="194" width="4" height="3.4"/><rect x="1168" y="194" width="4" height="3.4"/>
+                    <rect x="1176" y="194" width="4" height="3.4"/><rect x="1184" y="194" width="4" height="3.4"/>
+                    <rect x="1192" y="194" width="4" height="3.4"/><rect x="1200" y="194" width="4" height="3.4"/>
+                </g>
+            </g>
+        </svg>
+    </div>
+    <h1>🌉 大连 · 烟台 · 跨海四日</h1>
+    <p>飞机跨海 · 夜航轮渡 · 海上日出 · 养马岛日落</p>
+    <div class="banner-meta">
+        <span>✈️ 济南 07:30 起飞</span>
+        <span>🚢 22:20 夜航跨渤海</span>
+        <span>🚄 K286 硬卧返程</span>
+        <span>📅 2026.10.02 - 10.06</span>
+        <span>💰 两人 ¥5,386</span>
+    </div>
+</div>
+
+<div class="main-layout">
+    <div class="left-panel">
+        <!-- 天气 -->
+        <div class="weather-widget">
+            <div class="weather-title">🌤️ 天气参考<span id="weather-update-time" class="weather-update-time"></span></div>
+            <div class="weather-grid">
+                <div class="weather-day" id="weather-d1">
+                    <div class="weather-city">大连</div>
+                    <div class="weather-date">10/02 周五</div>
+                    <div class="weather-icon">🌤️</div>
+                    <div class="weather-temp">15~22°C</div>
+                    <div class="weather-desc">晴间多云</div>
+                </div>
+                <div class="weather-day" id="weather-d2">
+                    <div class="weather-city">大连</div>
+                    <div class="weather-date">10/03 周六</div>
+                    <div class="weather-icon">☀️</div>
+                    <div class="weather-temp">16~23°C</div>
+                    <div class="weather-desc">晴</div>
+                </div>
+                <div class="weather-day" id="weather-d3">
+                    <div class="weather-city">烟台</div>
+                    <div class="weather-date">10/04 周日</div>
+                    <div class="weather-icon">🌅</div>
+                    <div class="weather-temp">17~24°C</div>
+                    <div class="weather-desc">晴 · 日出 05:52</div>
+                </div>
+                <div class="weather-day" id="weather-d4">
+                    <div class="weather-city">烟台</div>
+                    <div class="weather-date">10/05 周一</div>
+                    <div class="weather-icon">⛅</div>
+                    <div class="weather-temp">17~23°C</div>
+                    <div class="weather-desc">多云</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Day Tabs -->
+        <div class="day-tabs">
+            <div class="day-tab active" onclick="switchDay(1)">Day1 · 10/02 飞大连</div>
+            <div class="day-tab" onclick="switchDay(2)">Day2 · 10/03 夜航</div>
+            <div class="day-tab" onclick="switchDay(3)">Day3 · 10/04 日出+养马岛</div>
+            <div class="day-tab" onclick="switchDay(4)">Day4 · 10/05 烟台市区</div>
+            <div class="day-tab" onclick="switchDay(5)">Day5 · 10/06 回济南</div>
+        </div>
+
+        <!-- ============ Day 1 ============ -->
+        <div class="day-content active" id="day1">
+            <div class="timeline-card" data-cat="交通" data-lat="36.674" data-lng="117.021">
+                <div class="card-header"><div class="card-time">05:00 出门</div><div class="card-cat" data-cat="交通">交通</div></div>
+                <div class="card-title">制锦市 → 济南遥墙国际机场</div>
+                <div class="card-subtitle">打车约 45 分钟 · 33km</div>
+                <div class="card-desc">国庆首日高速免费但车多，务必 05:00 前出门。打车约 ¥110-140；也可坐机场大巴 1 号线（济南东站/大明湖方向），约 1 小时 ¥20/人，但早班发车时间偏晚，赶 07:30 的飞机建议直接打车。</div>
+                <div class="card-tags"><span class="tag">打车¥130</span><span class="tag">33km</span><span class="tag warn">务必 05:00 出门</span></div>
+            </div>
+
+            <div class="timeline-card" data-cat="交通" data-lat="36.857" data-lng="116.857">
+                <div class="card-header"><div class="card-time">06:00 到机场</div><div class="card-cat" data-cat="交通">交通</div></div>
+                <div class="card-title">济南遥墙国际机场</div>
+                <div class="card-subtitle">留足 1.5 小时 · 国庆安检排队</div>
+                <div class="card-desc">06:00 到机场，1.5 小时完成值机+安检。若已网上值机且只带背包，可压缩到 06:20 到。国庆期间安检口排队普遍 30-40 分钟，不要卡点。</div>
+                <div class="card-tags"><span class="tag">提前值机</span><span class="tag">身份证必带</span><span class="tag crowd2" title="国庆 06:00-08:00 是出港早高峰">🟠 早高峰排队</span></div>
+                <div class="card-note planb">🅱️ <b>Plan B：</b>国庆早班机值机+安检普遍要 50-70 分钟。<b>提前一天在航旅纵横/山航 App 网上值机</b>并选好座位，现场只过安检；行李能托运就托运，别带大件挤安检通道。实在担心就把出门时间提前到 04:40。</div>
+            </div>
+
+            <div class="timeline-card" data-cat="交通" data-lat="38.9657" data-lng="121.5386">
+                <div class="card-header"><div class="card-time">07:30 → 08:50</div><div class="card-cat" data-cat="交通">交通</div></div>
+                <div class="card-title">SC8771 山航 济南 → 大连</div>
+                <div class="card-subtitle">飞行 1 小时 20 分 · 波音 737</div>
+                <div class="card-desc">山航 SC8771，07:30 遥墙起飞，08:50 落地大连周水子 T2。准点率 97%，平均延误 6 分钟。平日票价 ¥400-510/人，国庆预计 ¥600-950/人——这条线越早订越便宜。</div>
+                <div class="card-tags"><span class="tag">1h20m</span><span class="tag money">¥600-950/人</span><span class="tag warn">尽早订</span></div>
+                <div class="card-note">💡 同时间段还有东航 MU6475（07:35→08:40）。如果 SC8771 涨价太多可以对比，但东航这班落地更早、价格通常更高。</div>
+            </div>
+
+            <div class="timeline-card" data-cat="交通" data-lat="38.9657" data-lng="121.5386">
+                <div class="card-header"><div class="card-time">08:50 → 10:00</div><div class="card-cat" data-cat="交通">交通</div></div>
+                <div class="card-title">落地 · 前往市区酒店</div>
+                <div class="card-subtitle">地铁 2 号线直达 · 约 50 分钟</div>
+                <div class="card-desc">08:50 落地，取行李约 20 分钟。机场到市区两种走法：① 地铁 2 号线（周水子机场站 → 青泥洼桥/友好广场）约 30 分钟，¥4/人，最稳不堵车；② 打车约 30-40 分钟 ¥35-45，国庆路面拥堵不推荐。到酒店约 10:00。</div>
+                <div class="card-tags"><span class="tag">地铁2号线</span><span class="tag">¥4/人</span><span class="tag good">推荐地铁</span></div>
+                <div class="card-note warn">⚠️ 修正：原计划"8:50 落地 9:00 到酒店办入住"不现实。落地到酒店至少 50 分钟，且酒店普遍 14:00 后才给房——上午只能寄存行李。</div>
+            </div>
+
+            <div class="timeline-card" data-cat="住宿" data-lat="38.918" data-lng="121.623">
+                <div class="card-header"><div class="card-time">10:00 寄存</div><div class="card-cat" data-cat="住宿">住宿</div></div>
+                <div class="card-title">酒店寄存行李 · 轻装出发</div>
+                <div class="card-subtitle">青泥洼桥 / 中山广场商圈</div>
+                <div class="card-desc">行李寄存后轻装开玩。建议订在青泥洼桥或中山广场一带：地铁 2 号线机场直达、步行可达俄罗斯风情街和中山广场、打车去各景点都在 20 分钟内。国庆房价 ¥400-550/晚。</div>
+                <div class="card-tags"><span class="tag">免费寄存</span><span class="tag money">¥400-550/晚</span><span class="tag crowd2" title="国庆中午前后前台寄存排队">🟠 前台排队</span></div>
+                <div class="card-note planb">🅱️ <b>Plan B：</b>10:00 正是退房高峰，前台办理寄存可能要排 20 分钟。两个提速办法：① <b>提前一天在 App 上申请"提前入住"</b>，万一有空房直接进房；② 酒店排队太长就用<b>就近的行李寄存服务/商场存包柜</b>（青泥洼桥商圈很多），¥10-20/件。</div>
+            </div>
+
+            <div class="timeline-card" data-cat="文化" data-lat="38.9180" data-lng="121.6230">
+                <div class="card-header"><div class="card-time">10:30 - 12:00</div><div class="card-cat" data-cat="文化">文化</div></div>
+                <div class="card-title">中山广场 · 俄罗斯风情街</div>
+                <div class="card-subtitle">百年欧式建筑群 · 免费</div>
+                <div class="card-desc">大连近代建筑的核心区，放射状道路环绕一圈老洋行、老银行。步行 10 分钟到俄罗斯风情街（胜利桥西北），俄式十九、二十世纪风格小街，适合慢慢逛、拍照。上午人少，作为落地热身刚好。</div>
+                <div class="card-tags"><span class="tag">免费</span><span class="tag">步行可达</span><span class="tag">拍照</span><span class="tag crowd3" title="国庆 10:00-16:00 街道窄、人挤人">🔴 风情街爆满</span></div>
+                <div class="card-note planb">🅱️ <b>Plan B：</b>中山广场本身是开放的环形广场，随便走不会挤。如果风情街入口排长队，直接跳过，改去<b>南山旅游风情街</b>（日式建筑群，人少一大半，打车 10 分钟），或者就在广场周边看老建筑。</div>
+            </div>
+
+            <div class="timeline-card" data-cat="美食" data-lat="38.9200" data-lng="121.6280">
+                <div class="card-header"><div class="card-time">12:00 - 13:30</div><div class="card-cat" data-cat="美食">美食</div></div>
+                <div class="card-title">午餐 · 大连海鲜 / 焖子</div>
+                <div class="card-subtitle">人均 ¥60-90</div>
+                <div class="card-desc">大连焖子、海胆饺子、铁板鱿鱼、咸鱼饼子。推荐去天津街或青泥洼桥附近的老店，避开火车站周边拉客的"海鲜大排档"（价格虚高）。</div>
+                <div class="card-tags"><span class="tag">大连焖子</span><span class="tag">海胆饺子</span><span class="tag money">人均¥75</span></div>
+            </div>
+
+            <div class="timeline-card" data-cat="景点" data-lat="38.8820" data-lng="121.6720">
+                <div class="card-header"><div class="card-time">14:00 - 16:30</div><div class="card-cat" data-cat="景点">景点</div></div>
+                <div class="card-title">棒棰岛风景区</div>
+                <div class="card-subtitle">国宾馆级海湾 · 门票 ¥40</div>
+                <div class="card-desc">国家一级国宾馆所在地，海湾开阔、海水干净，是大连市区最漂亮的海滨。门票 ¥40/人 + 园内电瓶车 ¥20/人（景区很大，建议坐车）。相比国庆人挤人的老虎滩（五馆 ¥210/人），这里性价比和体验都更好。</div>
+                <div class="card-tags"><span class="tag">¥60/人</span><span class="tag">2.5h</span><span class="tag good">避开人潮</span><span class="tag crowd2" title="比老虎滩好很多，但国庆下午仍会排队">🟠 人较多</span></div>
+                <div class="card-note">💡 如果两人对海洋馆兴趣不大，果断跳过老虎滩（五馆 ¥210/人，国庆每个馆排队 40 分钟起），省下 ¥420 够吃两顿海鲜大餐。</div>
+                <div class="card-note planb">🅱️ <b>Plan B：</b>棒棰岛门口堵车排队时，改去<b>海之韵公园</b>（门票 ¥20，海岸线 1200 米，有怪坡和十八盘，人少景不差），或者<b>傅家庄公园</b>（免费，本地人去的海水浴场）。</div>
+            </div>
+
+            <div class="timeline-card key-moment" data-cat="景点" data-lat="38.8700" data-lng="121.6800">
+                <div class="card-header"><div class="card-time">17:00 - 18:30</div><div class="card-cat" data-cat="景点">景点</div></div>
+                <div class="card-title">老虎滩渔人码头 · 日落</div>
+                <div class="card-subtitle">大连最后的渔港 · 免费</div>
+                <div class="card-desc">大连市区现存唯一的渔港，古朴渔船与欧式小资咖啡馆混搭。10 月初大连日落约 17:15，提前 30 分钟到，在防波堤上看夕阳把整个渔港染成金色。情侣氛围拉满。</div>
+                <div class="card-tags"><span class="tag">免费</span><span class="tag">日落17:15</span><span class="tag good">情侣必去</span><span class="tag crowd2" title="日落前 1 小时防波堤上会挤满人">🟠 日落时段拥挤</span></div>
+                <div class="card-note planb">🅱️ <b>Plan B：</b>如果渔人码头人多到走不动，打车 8 分钟去<b>北大桥</b>或<b>燕窝岭</b>看同一片海的同一次日落，视野更开阔、人少得多。这也是 Day2 原本要去的滨海路段，提前看掉反而省时间。</div>
+            </div>
+
+            <div class="timeline-card" data-cat="美食" data-lat="38.9000" data-lng="121.6400">
+                <div class="card-header"><div class="card-time">18:30 - 20:00</div><div class="card-cat" data-cat="美食">美食</div></div>
+                <div class="card-title">晚餐 · 海鲜正餐</div>
+                <div class="card-subtitle">人均 ¥100-140</div>
+                <div class="card-desc">来大连总要正经吃一顿海鲜。海胆、鲍鱼、海肠、虾爬子（国庆正是肥美季）。点菜前一定问清时价并看秤，或者直接在大众点评选口碑店套餐，避免被宰。</div>
+                <div class="card-tags"><span class="tag">海鲜</span><span class="tag money">人均¥120</span><span class="tag warn">先问价</span></div>
+            </div>
+
+            <div class="timeline-card" data-cat="景点" data-lat="38.9300" data-lng="121.6700">
+                <div class="card-header"><div class="card-time">20:00 - 21:00</div><div class="card-cat" data-cat="景点">景点</div></div>
+                <div class="card-title">东港 · 威尼斯水城夜景</div>
+                <div class="card-subtitle">4 公里海水运河 · 免费</div>
+                <div class="card-desc">大连的"欧式后花园"，200 多座法式城堡沿运河排开，夜灯亮起很出片。东港音乐喷泉广场通常 20:00 左右有一场（约 20 分钟），具体以当日公告为准。</div>
+                <div class="card-tags"><span class="tag">免费</span><span class="tag">夜景</span><span class="tag">喷泉</span><span class="tag crowd2" title="20:00 前后运河边人流量大">🟠 夜间人多</span></div>
+                <div class="card-note planb">🅱️ <b>Plan B：</b>喷泉表演那 20 分钟岸边基本站不下人。不想挤的话去隔壁<b>港湾广场 / 15 库</b>（老码头改造的文创街区，同在东港片区，有餐酒吧，坐着就能看夜景）。</div>
+            </div>
+
+            <div class="timeline-card" data-cat="住宿" data-lat="38.918" data-lng="121.623">
+                <div class="card-header"><div class="card-time">21:00 入住</div><div class="card-cat" data-cat="住宿">住宿</div></div>
+                <div class="card-title">回酒店办理入住 · 早点休息</div>
+                <div class="card-subtitle">今天已经"飞"了 18 小时</div>
+                <div class="card-desc">05:00 起床 + 赶飞机 + 玩半天，到 21:00 体力基本见底。明天要玩一整天还要赶 22:20 的夜航船，今晚务必睡够。</div>
+                <div class="card-tags"><span class="tag">补觉</span><span class="tag fix">原计划 23:00 收尾→改 21:00</span></div>
+                <div class="card-note warn">⚠️ 修正：原计划第一天玩到 23:00。第一天 05:00 就起床，连轴 18 小时会直接把后三天拖垮，砍到 21:00 收尾。</div>
+            </div>
+        </div>
+
+        <!-- ============ Day 2 ============ -->
+        <div class="day-content" id="day2">
+            <div class="timeline-card" data-cat="住宿" data-lat="38.918" data-lng="121.623">
+                <div class="card-header"><div class="card-time">09:00 退房</div><div class="card-cat" data-cat="住宿">住宿</div></div>
+                <div class="card-title">退房寄存行李</div>
+                <div class="card-subtitle">今晚睡船上，行李随身</div>
+                <div class="card-desc">睡到自然醒（08:00 起床），09:00 退房寄存。今晚的行李要带上船，建议把过夜用的洗漱包、充电宝、外套单独装一个随身小包，大箱子寄存/托运。</div>
+                <div class="card-tags"><span class="tag">寄存</span><span class="tag warn">随身包单独装</span></div>
+            </div>
+
+            <div class="timeline-card" data-cat="景点" data-lat="38.8700" data-lng="121.5900">
+                <div class="card-header"><div class="card-time">09:30 - 11:00</div><div class="card-cat" data-cat="景点">景点</div></div>
+                <div class="card-title">星海广场</div>
+                <div class="card-subtitle">城市地标 · 观跨海大桥 · 免费</div>
+                <div class="card-desc">大连最大的城市广场，像一块钻石嵌在南海岸线上。在这里可以完整看到星海湾跨海大桥的弧线，是大连最有代表性的画面。早上光线好、人少。</div>
+                <div class="card-tags"><span class="tag">免费</span><span class="tag">跨海大桥</span><span class="tag">地标</span><span class="tag crowd3" title="大连头号免费地标，国庆 10:00 后人流极大">🔴 国庆爆满</span></div>
+                <div class="card-note planb">🅱️ <b>Plan B：</b>如果广场上人山人海且停车/打车困难，改去<b>东港商务区</b>（同样是看海 + 现代建筑，人流密度低一半）或<b>傅家庄公园</b>。跨海大桥的最佳机位其实在<b>莲花山观景台</b>，不用非在广场挤。</div>
+            </div>
+
+            <div class="timeline-card" data-cat="景点" data-lat="38.8600" data-lng="121.6500">
+                <div class="card-header"><div class="card-time">11:00 - 12:00</div><div class="card-cat" data-cat="景点">景点</div></div>
+                <div class="card-title">滨海路 · 北大桥</div>
+                <div class="card-subtitle">半山半海三十里 · 免费</div>
+                <div class="card-desc">中国最长的海滨木栈道之一，一侧山一侧海。北大桥是滨海路上的观景桥，本地说法是情侣牵手走过此桥许下山盟海誓可以白头到老——情侣打卡点，走过别忘许愿。</div>
+                <div class="card-tags"><span class="tag">免费</span><span class="tag">情侣打卡</span><span class="tag">海景</span><span class="tag crowd2" title="滨海路部分路段国庆单向拥堵">🟠 车流拥堵</span></div>
+                <div class="card-note planb">🅱️ <b>Plan B：</b>滨海路国庆会交通管制、部分路段单行且堵。别自驾，打车到北大桥这一个点打卡即可，不要试图走完"三十里"。堵死的话改去<b>海之韵公园十八盘</b>。</div>
+            </div>
+
+            <div class="timeline-card" data-cat="美食" data-lat="38.8800" data-lng="121.6100">
+                <div class="card-header"><div class="card-time">12:00 - 13:20</div><div class="card-cat" data-cat="美食">美食</div></div>
+                <div class="card-title">午餐 · 吃顿扎实的</div>
+                <div class="card-subtitle">人均 ¥60-80</div>
+                <div class="card-desc">今晚 22:20 才开船，中间要熬很久。午餐吃扎实一点，推荐烤肉或日料（大连日料水准在全国都排得上）。</div>
+                <div class="card-tags"><span class="tag">大连日料</span><span class="tag money">人均¥70</span></div>
+            </div>
+
+            <div class="timeline-card" data-cat="景点" data-lat="38.8800" data-lng="121.6100">
+                <div class="card-header"><div class="card-time">13:30 - 16:00</div><div class="card-cat" data-cat="景点">景点</div></div>
+                <div class="card-title">莲花山观景台</div>
+                <div class="card-subtitle">海拔 259.6m「爱我久留」· 俯瞰全城</div>
+                <div class="card-desc">大连市区最高峰，海拔 259.6 米谐音"爱我久留"，情侣梗拉满。山顶可俯瞰整个大连湾和跨海大桥。门票 + 往返小火车约 ¥80/人，山上风大记得带外套。</div>
+                <div class="card-tags"><span class="tag">¥80/人</span><span class="tag">259.6m</span><span class="tag good">情侣梗</span><span class="tag crowd3" title="小火车运力有限，国庆排队常超 1 小时">🔴 小火车排队 1h+</span></div>
+                <div class="card-note planb">🅱️ <b>Plan B（重要）：</b>国庆莲花山小火车排队普遍超 1 小时，山顶平台也窄。三选一：<br>① <b>不坐小火车徒步上山</b>——约 25 分钟台阶路，反而更快；<br>② <b>换到上午 9:00 去</b>——和 Day1 的棒棰岛对调，早上基本不排队；<br>③ <b>直接改去东港/富力中心高层观景</b>，俯瞰效果接近，零排队。</div>
+            </div>
+
+            <div class="timeline-card" data-cat="住宿" data-lat="38.918" data-lng="121.623">
+                <div class="card-header"><div class="card-time">16:30 取行李</div><div class="card-cat" data-cat="住宿">住宿</div></div>
+                <div class="card-title">回酒店取行李</div>
+                <div class="card-subtitle">预留充足时间，别拖到傍晚</div>
+                <div class="card-desc">16:30 前回到酒店取行李，顺便在大堂洗手间整理一下、给手机充电。今晚到港口后不方便再补给了。</div>
+                <div class="card-tags"><span class="tag">取行李</span><span class="tag">补给</span></div>
+            </div>
+
+            <div class="timeline-card" data-cat="美食" data-lat="38.918" data-lng="121.623">
+                <div class="card-header"><div class="card-time">17:30 - 18:50</div><div class="card-cat" data-cat="美食">美食</div></div>
+                <div class="card-title">晚餐 · 提前吃</div>
+                <div class="card-subtitle">人均 ¥70-90</div>
+                <div class="card-desc">船上餐饮又贵又一般（一份盒饭 ¥35-50），建议上船前吃饱。也可以买些面包、水果、矿泉水带上船当夜宵和明早早餐。</div>
+                <div class="card-tags"><span class="tag money">人均¥80</span><span class="tag warn">船上餐贵</span><span class="tag good">带点干粮上船</span></div>
+            </div>
+
+            <div class="timeline-card key-moment" data-cat="交通" data-lat="39.0200" data-lng="121.7200">
+                <div class="card-header"><div class="card-time">19:15 → 20:15</div><div class="card-cat" data-cat="交通">交通</div></div>
+                <div class="card-title">打车前往大连湾综合交通枢纽</div>
+                <div class="card-subtitle">距市中心 20km · 约 50 分钟</div>
+                <div class="card-desc">这是整个行程最容易翻车的一环。大连湾港在市区东北 20 公里外，打车 40-55 分钟 ¥60-80，国庆晚高峰可能更久。19:15 出发，20:15 前到港。</div>
+                <div class="card-tags"><span class="tag">打车¥70</span><span class="tag">20km</span><span class="tag warn">别卡点</span><span class="tag crowd3" title="国庆晚高峰 + 港口周边车流，务必提前">🔴 堵车高风险</span></div>
+                <div class="card-note warn">⚠️ 修正：原计划"21:00 结束游玩再出发赶 22:00 的船"太危险。港口在 20km 外，21:00 出发 21:50 才到，取票+安检根本来不及。必须 19:15 就走。</div>
+                <div class="card-note planb">🅱️ <b>Plan B（三重保险）：</b><br>① <b>当天 17:00 就用网约车预约 19:15 的行程</b>，别临时路边叫车——国庆这个时段大概率叫不到；<br>② 实在叫不到车，坐地铁 3 号线到<b>大连湾站</b>再打车（避开市区拥堵段）；<br>③ 提前一天问酒店能否帮忙叫车/包车（约 ¥100-120，可议价，酒店叫车成功率最高）。<br><b>兜底：</b>万一 21:30 还没到港，立刻联系轮渡客服 0411-87607272。</div>
+            </div>
+
+            <div class="timeline-card" data-cat="交通" data-lat="39.0200" data-lng="121.7200">
+                <div class="card-header"><div class="card-time">20:15 - 22:00</div><div class="card-cat" data-cat="交通">交通</div></div>
+                <div class="card-title">取票 · 安检 · 候船</div>
+                <div class="card-subtitle">节假日前 1 小时停止取票</div>
+                <div class="card-desc">凭身份证在窗口或自助机取纸质票（网上订票会收到回执短信和港口定位）。节假日建议提前 2 小时到港。候船厅有座位和小卖部，可以补给。开船前 2 小时以内不受理退票。</div>
+                <div class="card-tags"><span class="tag">身份证</span><span class="tag">纸质票</span><span class="tag warn">提前2h到港</span></div>
+            </div>
+
+            <div class="timeline-card key-moment" data-cat="交通" data-lat="39.0200" data-lng="121.7200">
+                <div class="card-header"><div class="card-time">22:20 启航</div><div class="card-cat" data-cat="交通">交通</div></div>
+                <div class="card-title">普陀岛轮 · 大连湾 → 烟台港</div>
+                <div class="card-subtitle">航行 6 小时 · 10/04 04:50 抵达</div>
+                <div class="card-desc">22:20 开船，次日 04:50 抵达烟台港客运北站，航行 6 小时。已选四等八人间（¥230/人，上下铺、无窗），两人 ¥460。上船后先安顿铺位，手机充满电，定好 04:30 的闹钟。</div>
+                <div class="card-tags"><span class="tag">6小时</span><span class="tag money">¥230/人</span><span class="tag">四等八人间</span></div>
+                <div class="card-note warn">⚠️ 修正：原计划"22:00 开船、航行 6 小时、05:50 到"自相矛盾（22:00+6h=04:00）。实际晚班船 6.0-7.0 小时不等，最晚一班 22:50 发、05:20 到。选 22:20 这班既接近你的原计划，又能留出看日出的时间。</div>
+            </div>
+
+            <div class="timeline-card" data-cat="住宿" data-lat="38.3000" data-lng="121.3000">
+                <div class="card-header"><div class="card-time">22:20 - 04:50 船上</div><div class="card-cat" data-cat="住宿">住宿</div></div>
+                <div class="card-title">夜航过夜 · 省下一晚房费</div>
+                <div class="card-subtitle">船上睡一晚 = 省 ¥400 住宿</div>
+                <div class="card-desc">船舱有空调，10 月海上不冷但隔音一般，带耳塞。八人间是上下铺、无窗，贵重物品随身放枕头边。明早 04:30 起床，04:50 靠港。</div>
+                <div class="card-tags"><span class="tag">耳塞</span><span class="tag good">省一晚房费</span><span class="tag">04:30 闹钟</span></div>
+                <div class="card-note">💡 四等八人间是公共舱，下单时备注"两人同行请安排同一房间相邻铺位"，渤海轮渡一般会照顾。</div>
+            </div>
+        </div>
+
+        <!-- ============ Day 3 ============ -->
+        <div class="day-content" id="day3">
+            <div class="timeline-card key-moment" data-cat="交通" data-lat="37.5600" data-lng="121.3900">
+                <div class="card-header"><div class="card-time">04:50 抵达</div><div class="card-cat" data-cat="交通">交通</div></div>
+                <div class="card-title">烟台港客运站 · 下船</div>
+                <div class="card-subtitle">下船约 20 分钟 · 拿好所有行李</div>
+                <div class="card-desc">04:50 靠港，走下船通道取行李，05:10 左右出站。清晨港口风大温度低（约 15℃），提前把外套穿上。</div>
+                <div class="card-tags"><span class="tag">05:10 出站</span><span class="tag warn">穿外套</span></div>
+            </div>
+
+            <div class="timeline-card key-moment" data-cat="景点" data-lat="37.5450" data-lng="121.3930">
+                <div class="card-header"><div class="card-time">05:30 - 06:15</div><div class="card-cat" data-cat="景点">景点</div></div>
+                <div class="card-title">🌅 滨海广场看海上日出</div>
+                <div class="card-subtitle">10/04 日出 05:52:53</div>
+                <div class="card-desc">打车 10 分钟到滨海广场/月亮湾一带（¥15），05:30 到位，朝霞先红，05:52:53 太阳跃出海面。这是整趟行程的高光时刻——跨海夜航的意义全在这 10 分钟里。</div>
+                <div class="card-tags"><span class="tag">日出05:52</span><span class="tag">免费</span><span class="tag good">全程高光</span></div>
+                <div class="card-note warn">⚠️ 修正：原计划"顺便看日出"。烟台 10/4 日出是 05:52:53，而船 04:50 才靠港——必须专门打车去海边，看完再回市区，不能"顺便"。</div>
+                <div class="card-note">💡 备选：如果阴天或太累，可以直接在甲板上看朝霞，然后下船吃早餐，不用硬撑。</div>
+            </div>
+
+            <div class="timeline-card" data-cat="美食" data-lat="37.5480" data-lng="121.3900">
+                <div class="card-header"><div class="card-time">06:30 - 07:40</div><div class="card-cat" data-cat="美食">美食</div></div>
+                <div class="card-title">早餐 · 海边第一顿</div>
+                <div class="card-subtitle">人均 ¥20-35</div>
+                <div class="card-desc">海鲜粥、豆腐脑、油条、鲅鱼水饺当早餐都很烟台。看完日出身上暖和了再慢慢吃，顺便歇脚。</div>
+                <div class="card-tags"><span class="tag">鲅鱼水饺</span><span class="tag money">人均¥28</span></div>
+            </div>
+
+            <div class="timeline-card" data-cat="住宿" data-lat="37.5450" data-lng="121.3850">
+                <div class="card-header"><div class="card-time">08:00 寄存</div><div class="card-cat" data-cat="住宿">住宿</div></div>
+                <div class="card-title">酒店寄存行李</div>
+                <div class="card-subtitle">所城里 / 朝阳街一带</div>
+                <div class="card-desc">建议住芝罘区所城里或朝阳街附近：步行可达所城里、朝阳街、烟台山、第一海水浴场，离烟台站打车 10 分钟，明晚赶 23:35 的火车最方便。国庆 ¥350-500/晚。</div>
+                <div class="card-tags"><span class="tag money">¥350-500/晚</span><span class="tag good">离火车站近</span></div>
+            </div>
+
+            <div class="timeline-card" data-cat="住宿" data-lat="37.5450" data-lng="121.3850">
+                <div class="card-header"><div class="card-time">08:40 - 12:30</div><div class="card-cat" data-cat="住宿">住宿</div></div>
+                <div class="card-title">钟点房补觉 · 关键决策</div>
+                <div class="card-subtitle">4 小时 ¥100-150 · 强烈建议</div>
+                <div class="card-desc">昨晚在八人间船舱基本睡不踏实，凌晨 4:50 又爬起来看日出，直接冲养马岛下午必定崩。开 4 小时钟点房补一觉，是这趟行程性价比最高的 ¥120。</div>
+                <div class="card-tags"><span class="tag money">¥120</span><span class="tag warn">强烈建议</span></div>
+                <div class="card-note good">✅ 替代方案：订酒店时提前联系前台申请 early check-in（国庆成功率低，加 ¥100-150 半日房费可谈）；或选一家有大堂休息区的酒店，在沙发上眯 2 小时。</div>
+            </div>
+
+            <div class="timeline-card" data-cat="美食" data-lat="37.5450" data-lng="121.3850">
+                <div class="card-header"><div class="card-time">12:30 - 13:30</div><div class="card-cat" data-cat="美食">美食</div></div>
+                <div class="card-title">午餐 · 烟台焖子</div>
+                <div class="card-subtitle">人均 ¥40-60</div>
+                <div class="card-desc">补觉醒来吃午饭。烟台焖子是必点（配蒜泥+芝麻酱），再配一份鲅鱼水饺或海菜包子。所城里大街小吃集中，选择多。</div>
+                <div class="card-tags"><span class="tag">烟台焖子</span><span class="tag money">人均¥50</span></div>
+            </div>
+
+            <div class="timeline-card" data-cat="交通" data-lat="37.4615" data-lng="121.6085">
+                <div class="card-header"><div class="card-time">13:30 → 14:30</div><div class="card-cat" data-cat="交通">交通</div></div>
+                <div class="card-title">前往养马岛</div>
+                <div class="card-subtitle">打车约 40 分钟 ¥80-100 / 公交 617 路 ¥15</div>
+                <div class="card-desc">养马岛在牟平区，距市区约 30km。打车 40 分钟 ¥80-100（国庆路面拥堵预留 1 小时）；公交 617 路从火车站到养马岛换乘中心约 1 小时，¥15/人，国庆人多要排队。上岛后坐接驳车 ¥20/人/天无限次环岛。</div>
+                <div class="card-tags"><span class="tag">30km</span><span class="tag">接驳车¥20/人</span><span class="tag warn">国庆堵车</span><span class="tag crowd3" title="国庆养马岛限流+车辆限行，进岛桥堵车常见">🔴 进岛高峰拥堵</span></div>
+                <div class="card-note">💡 13:30 出发是为了避开上午的进岛高峰，同时 14:30 到岛后光线正好，一路玩到日落。</div>
+                <div class="card-note planb">🅱️ <b>Plan B（养马岛是全程人潮风险最高的点）：</b><br>① <b>提前打听限行政策</b>——国庆养马岛常对社会车辆限行，只允许接驳车/岛上车辆进，出发前一天务必确认；<br>② <b>公交 617 路反而是优选</b>——堵车时有公交专用道，¥15/人，虽然慢（1 小时）但确定性高；<br>③ <b>回程留足 2.5 小时</b>——17:40 日落结束，务必 18:00 前上返程车，国庆出岛比进岛更堵；<br>④ <b>彻底放弃的选项</b>：改去<b>烟台金沙滩海滨公园</b>（开发区，沙滩宽、免费、人比养马岛少）或<b>蓬莱阁</b>（需整天，只能放弃 Day4 市区）。</div>
+            </div>
+
+            <div class="timeline-card" data-cat="景点" data-lat="37.4685" data-lng="121.6125">
+                <div class="card-header"><div class="card-time">14:30 - 16:40</div><div class="card-cat" data-cat="景点">景点</div></div>
+                <div class="card-title">獐岛 · 果冻海</div>
+                <div class="card-subtitle">海蚀拱门 · 红色木栈道 · 免费</div>
+                <div class="card-desc">养马岛最出片的地方。红色木栈道转角用广角仰拍，能把海蚀拱门和果冻海同框。退潮时可以下到礁石区赶海（提前查"烟台潮汐表"小程序）。下午 3-5 点光线最柔和，正午光太硬不好拍。</div>
+                <div class="card-tags"><span class="tag">果冻海</span><span class="tag">免费</span><span class="tag good">拍照圣地</span><span class="tag crowd3" title="养马岛第一网红点，红色木栈道排队拍照">🔴 栈道排队</span></div>
+                <div class="card-note planb">🅱️ <b>Plan B：</b>红色木栈道转角的最佳机位国庆要排队 20-30 分钟。三个替代：<br>① <b>错峰拍</b>——先去别处，16:30 后再回来，旅行团基本撤了；<br>② <b>换机位</b>——栈道往东走 100 米，同样的拱门角度，几乎没人；<br>③ <b>换地点</b>——<b>后海礁石区</b>和<b>海岛日记</b>一带景致相当，人少一半。</div>
+            </div>
+
+            <div class="timeline-card key-moment" data-cat="景点" data-lat="37.4645" data-lng="121.6185">
+                <div class="card-header"><div class="card-time">16:40 - 17:40</div><div class="card-cat" data-cat="景点">景点</div></div>
+                <div class="card-title">秦风崖 · 橘子日落</div>
+                <div class="card-subtitle">象鼻石逆光 · 10/04 日落约 17:20</div>
+                <div class="card-desc">养马岛最佳日落点，后海礁石区配"象鼻石"逆光，整片天空被染成橘子色。日落前 30 分钟到，抢个好机位。这趟两天内看了海上日出和海边日落，圆满了。</div>
+                <div class="card-tags"><span class="tag">日落17:20</span><span class="tag">免费</span><span class="tag good">情侣必去</span><span class="tag crowd2" title="日落前 30 分钟观景平台会挤满">🟠 日落占位</span></div>
+                <div class="card-note planb">🅱️ <b>Plan B：</b>秦风崖观景台不大，17:00 后基本站满。提前 40 分钟（16:40）到；真挤不上就退到<b>后海礁石区</b>或<b>环岛路西段</b>，同一片橘子色天空，只是没有象鼻石做前景。</div>
+            </div>
+
+            <div class="timeline-card" data-cat="美食" data-lat="37.5405" data-lng="121.3945">
+                <div class="card-header"><div class="card-time">18:30 - 20:00</div><div class="card-cat" data-cat="美食">美食</div></div>
+                <div class="card-title">晚餐 · 回市区吃</div>
+                <div class="card-subtitle">人均 ¥70-100</div>
+                <div class="card-desc">离岛回市区再吃，选择比岛上多、价格更实在。旺角小渔村一类的本地馆子，辣炒蛤蜊、烤海肠、烟台焖子都是招牌。</div>
+                <div class="card-tags"><span class="tag">本地菜</span><span class="tag money">人均¥85</span></div>
+            </div>
+
+            <div class="timeline-card" data-cat="住宿" data-lat="37.5450" data-lng="121.3850">
+                <div class="card-header"><div class="card-time">20:30 入住</div><div class="card-cat" data-cat="住宿">住宿</div></div>
+                <div class="card-title">酒店办入住 · 洗个热水澡</div>
+                <div class="card-subtitle">今晚必须睡好，明天还有 14 小时</div>
+                <div class="card-desc">明天要玩到 23:35 上火车，今晚务必休息充分。洗漱完早点睡，行李顺手收拾好，明天一早退房寄存。</div>
+                <div class="card-tags"><span class="tag">早睡</span><span class="tag">收拾行李</span></div>
+            </div>
+        </div>
+
+        <!-- ============ Day 4 ============ -->
+        <div class="day-content" id="day4">
+            <div class="timeline-card" data-cat="住宿" data-lat="37.5450" data-lng="121.3850">
+                <div class="card-header"><div class="card-time">09:00 退房</div><div class="card-cat" data-cat="住宿">住宿</div></div>
+                <div class="card-title">退房寄存 · 睡到自然醒</div>
+                <div class="card-subtitle">今天要撑到凌晨，晚点起</div>
+                <div class="card-desc">前一晚睡够了，今天 08:30 起、09:00 退房寄存。今晚没有酒店，23:35 直接上火车，所以行李要随身带着寄存。</div>
+                <div class="card-tags"><span class="tag">寄存</span><span class="tag">睡到自然醒</span></div>
+            </div>
+
+            <div class="timeline-card" data-cat="文化" data-lat="37.5450" data-lng="121.3850">
+                <div class="card-header"><div class="card-time">09:30 - 11:00</div><div class="card-cat" data-cat="文化">文化</div></div>
+                <div class="card-title">所城里</div>
+                <div class="card-subtitle">600 年老城 · 免费</div>
+                <div class="card-desc">明朝奇山守御千户所的遗址，烟台城市之根。青砖灰瓦的老街巷里藏着咖啡馆、文创店和小吃摊，早上人少，适合慢慢逛。</div>
+                <div class="card-tags"><span class="tag">免费</span><span class="tag">老街</span><span class="tag">文创</span><span class="tag crowd1" title="街区面积大、巷子多，能消化人流">🟢 相对从容</span></div>
+                <div class="card-note good">✅ 所城里是这几天最抗挤的景点：街区大、巷子多、四通八达，人多也不会走不动。<b>09:30 这个时间点是特意挑的</b>——旅行团一般 10:30 后才到。</div>
+            </div>
+
+            <div class="timeline-card" data-cat="景点" data-lat="37.5535" data-lng="121.3914">
+                <div class="card-header"><div class="card-time">11:00 - 12:00</div><div class="card-cat" data-cat="景点">景点</div></div>
+                <div class="card-title">朝阳街</div>
+                <div class="card-subtitle">百年老街改造 · 巨型玫瑰花瀑墙</div>
+                <div class="card-desc">从所城里步行 15 分钟到朝阳街。红砖洋楼改造成的网红街区，最出名的是那面巨型玫瑰花瀑墙，情侣合照必打卡。</div>
+                <div class="card-tags"><span class="tag">免费</span><span class="tag">玫瑰花瀑</span><span class="tag good">情侣合照</span><span class="tag crowd3" title="玫瑰花瀑墙是烟台头号网红打卡点，排队严重">🔴 网红墙排长队</span></div>
+                <div class="card-note planb">🅱️ <b>Plan B：</b>那面玫瑰花瀑墙国庆排队 30 分钟起步，队伍就在主街上，很影响逛街体验。三选一：<br>① <b>拍一张就走</b>——两个人轮流拍，别纠结机位，限时 10 分钟；<br>② <b>改早上 8:30 去</b>（和 Day4 的行程对调，早上整条街基本没人）；<br>③ <b>放弃打卡</b>——朝阳街本身的老洋楼和街景更值得拍，隔壁<b>所城里</b>也有不少花墙。</div>
+            </div>
+
+            <div class="timeline-card" data-cat="景点" data-lat="37.5465" data-lng="121.3885">
+                <div class="card-header"><div class="card-time">12:00 - 13:00</div><div class="card-cat" data-cat="景点">景点</div></div>
+                <div class="card-title">烟台山景区</div>
+                <div class="card-subtitle">城市地标 · 灯塔俯瞰 · 门票 ¥50</div>
+                <div class="card-desc">烟台名字的由来，山上有多国领事馆旧址和灯塔。登塔可以俯瞰整个烟台港和城市天际线。朝阳街步行 10 分钟即到。</div>
+                <div class="card-tags"><span class="tag">¥50/人</span><span class="tag">灯塔</span><span class="tag">海景</span><span class="tag crowd2" title="登塔电梯容量小，高峰需排队">🟠 登塔排队</span></div>
+                <div class="card-note planb">🅱️ <b>Plan B：</b>灯塔电梯一次只能上几个人，国庆排队 30 分钟+。不想等就只在山上逛领事馆旧址和观海平台（同样能俯瞰烟台港），登塔作罢，还能省下门票时间。</div>
+            </div>
+
+            <div class="timeline-card" data-cat="美食" data-lat="37.5445" data-lng="121.3925">
+                <div class="card-header"><div class="card-time">13:00 - 14:20</div><div class="card-cat" data-cat="美食">美食</div></div>
+                <div class="card-title">午餐 · 鲁菜老字号</div>
+                <div class="card-subtitle">人均 ¥50-80</div>
+                <div class="card-desc">蓬莱春酒家一类老字号鲁菜馆，葱烧海参、烟台焖子、糟溜鱼片都很地道。午餐吃正经一点，晚上那顿海鲜才是重头戏。</div>
+                <div class="card-tags"><span class="tag">鲁菜</span><span class="tag money">人均¥65</span></div>
+            </div>
+
+            <div class="timeline-card" data-cat="景点" data-lat="37.5385" data-lng="121.4065">
+                <div class="card-header"><div class="card-time">14:40 - 16:00</div><div class="card-cat" data-cat="景点">景点</div></div>
+                <div class="card-title">月亮湾</div>
+                <div class="card-subtitle">情侣圣地 · 月老见证 · 免费</div>
+                <div class="card-desc">烟台最浪漫的海湾，月老雕塑是情侣必打卡。昨天在船上远眺看日出，今天沿着海岸线慢慢走，把昨天的"远景"变成"近景"。</div>
+                <div class="card-tags"><span class="tag">免费</span><span class="tag">月老</span><span class="tag good">情侣圣地</span><span class="tag crowd1" title="工作日午后人流可控">🟢 相对从容</span></div>
+            </div>
+
+            <div class="timeline-card" data-cat="景点" data-lat="37.5325" data-lng="121.4205">
+                <div class="card-header"><div class="card-time">16:00 - 17:30</div><div class="card-cat" data-cat="景点">景点</div></div>
+                <div class="card-title">渔人码头 + 滨海中路</div>
+                <div class="card-subtitle">欧式建筑群 · 烟台最美海岸线 · 免费</div>
+                <div class="card-desc">欧式建筑配海景栈道，左手城市右手大海。滨海中路是烟台最好看的一段海岸线，慢慢走或骑共享单车都很舒服。</div>
+                <div class="card-tags"><span class="tag">免费</span><span class="tag">海景栈道</span><span class="tag">骑行</span><span class="tag crowd1" title="栈道长，人流分散">🟢 相对从容</span></div>
+            </div>
+
+            <div class="timeline-card" data-cat="美食" data-lat="37.5405" data-lng="121.3945">
+                <div class="card-header"><div class="card-time">18:00 - 19:30</div><div class="card-cat" data-cat="美食">美食</div></div>
+                <div class="card-title">🍽️ 告别晚宴 · 海鲜大餐</div>
+                <div class="card-subtitle">人均 ¥100-140 · 这趟最后一顿正餐</div>
+                <div class="card-desc">蒜蓉海胆、辣炒蛤蜊、烤海肠、鲅鱼水饺、海菜包子——把这些天想吃的都点一遍。上火车前吃饱，车上只需要睡。</div>
+                <div class="card-tags"><span class="tag">海鲜大餐</span><span class="tag money">人均¥120</span><span class="tag good">告别宴</span></div>
+            </div>
+
+            <div class="timeline-card" data-cat="购物" data-lat="37.5450" data-lng="121.4000">
+                <div class="card-header"><div class="card-time">19:30 - 21:30</div><div class="card-cat" data-cat="购物">购物</div></div>
+                <div class="card-title">烟台大悦城 · 休整 + 伴手礼</div>
+                <div class="card-subtitle">有空调有座位有卫生间</div>
+                <div class="card-desc">离 23:35 发车还有 4 小时，找个商场坐着歇脚最稳妥：给手机充电、上洗手间、吹空调，顺便买伴手礼（烟台苹果、张裕葡萄酒、海苔、鱿鱼丝）。</div>
+                <div class="card-tags"><span class="tag">休息</span><span class="tag">伴手礼</span><span class="tag">充电</span></div>
+            </div>
+
+            <div class="timeline-card" data-cat="交通" data-lat="37.5540" data-lng="121.3880">
+                <div class="card-header"><div class="card-time">22:00 → 22:30</div><div class="card-cat" data-cat="交通">交通</div></div>
+                <div class="card-title">取行李 · 前往烟台站</div>
+                <div class="card-subtitle">打车 10 分钟 ¥15</div>
+                <div class="card-desc">回酒店取行李，打车去烟台站。国庆夜间站内人多，提前 1 小时进站稳妥。</div>
+                <div class="card-tags"><span class="tag">¥15</span><span class="tag">提前1h进站</span><span class="tag crowd2" title="国庆夜间站内人多，安检排队">🟠 夜间人流</span></div>
+                <div class="card-note planb">🅱️ <b>Plan B：</b>烟台站 22:30-23:30 这一小时聚集了好几趟车次的旅客，安检口会排长队。<b>提前到 22:10</b>（发车前 85 分钟）；如果堵在路上，直接走"重点旅客/临近开车"快速通道，向工作人员出示车票可插队。</div>
+            </div>
+
+            <div class="timeline-card key-moment" data-cat="交通" data-lat="37.5540" data-lng="121.3880">
+                <div class="card-header"><div class="card-time">23:35 发车</div><div class="card-cat" data-cat="交通">交通</div></div>
+                <div class="card-title">K286 烟台 → 大明湖</div>
+                <div class="card-subtitle">6 小时 45 分 · 次日 06:20 抵达</div>
+                <div class="card-desc">硬卧 ¥133/人（两人 ¥266），软卧 ¥205/人。上车直接睡，明早 06:20 到大明湖站。这班车同时解决了交通和住宿——又省一晚房费。</div>
+                <div class="card-tags"><span class="tag">6h45m</span><span class="tag money">硬卧¥133/人</span><span class="tag good">省一晚房费</span></div>
+                <div class="card-note warn">⚠️ 修正：原计划"约 6 小时"，实际 6 小时 45 分。另外这趟车是热门线路，国庆票很紧张，务必在开售当天抢（详见下方订票时间轴）。</div>
+                <div class="card-note">💡 硬卧 vs 软卧：硬卧 ¥133 是开放式六人间（上中下铺），软卧 ¥205 是四人间带门。两人出行建议硬卧下铺，性价比最高。</div>
+            </div>
+        </div>
+
+        <!-- ============ Day 5 ============ -->
+        <div class="day-content" id="day5">
+            <div class="timeline-card" data-cat="交通" data-lat="36.6730" data-lng="117.0210">
+                <div class="card-header"><div class="card-time">06:20 抵达</div><div class="card-cat" data-cat="交通">交通</div></div>
+                <div class="card-title">大明湖站 · 到济南了</div>
+                <div class="card-subtitle">火车上睡了 6 小时</div>
+                <div class="card-desc">06:20 准点到达大明湖站。拿好行李，出站前先去趟洗手间洗把脸。</div>
+                <div class="card-tags"><span class="tag">准点</span><span class="tag">拿好行李</span></div>
+            </div>
+
+            <div class="timeline-card" data-cat="交通" data-lat="36.674" data-lng="117.021">
+                <div class="card-header"><div class="card-time">06:50 到家</div><div class="card-cat" data-cat="交通">交通</div></div>
+                <div class="card-title">回制锦市 · 补觉</div>
+                <div class="card-subtitle">打车约 15 分钟 ¥20</div>
+                <div class="card-desc">大明湖站到制锦市很近，打车 15 分钟 ¥20。10 月 6 日还在假期内，回家睡到自然醒，下午再各回各家。</div>
+                <div class="card-tags"><span class="tag">¥20</span><span class="tag">补觉</span><span class="tag good">假期还有一天</span></div>
+            </div>
+
+            <div class="timeline-card" data-cat="购物" data-lat="36.674" data-lng="117.021">
+                <div class="card-header"><div class="card-time">下午</div><div class="card-cat" data-cat="购物">购物</div></div>
+                <div class="card-title">休整收尾</div>
+                <div class="card-subtitle">洗衣服 · 整理照片 · 平摊账</div>
+                <div class="card-desc">10/6 下午洗衣服、导照片、把四天的账算清楚平摊。10/7 上班/上学，还有一整天缓冲。</div>
+                <div class="card-tags"><span class="tag">整理照片</span><span class="tag">算账</span></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 地图 -->
+    <div class="right-panel">
+        <div class="map-container">
+            <div id="map"></div>
+            <div class="map-loading-overlay" id="map-loading">
+                <div class="map-loading-spinner"></div>
+                <div style="font-size:.8rem;color:#888">地图加载中…</div>
+            </div>
+            <button class="sat-toggle" id="sat-toggle" onclick="toggleSatellite()">🛰 卫星</button>
+            <div class="map-hint">点击卡片定位 · 点标记回看行程</div>
+            <div class="map-legend" id="map-legend"></div>
+        </div>
+    </div>
+</div>
+
+<div class="detail-section">
+
+    <!-- 原计划修正 -->
+    <div class="section-card">
+        <h2 class="section-title">🔧 原计划修正清单</h2>
+        <p class="section-sub">你的大框架很棒——飞机进、轮渡穿、火车回，海陆空三栖还省了两晚房费。以下是 6 处需要修的时间硬伤。</p>
+        <table class="fix-table">
+            <tr><th style="width:15%">环节</th><th style="width:38%">❌ 原计划</th><th>✅ 修正后</th></tr>
+            <tr>
+                <td><span class="fix-num">1</span>抵达酒店</td>
+                <td class="issue">8:50 落地，9:00 到酒店办理入住</td>
+                <td class="fixed">落地取行李 20 分钟 + 机场到市区 30-50 分钟，<b>10:00 才到酒店</b>；且酒店普遍 <b>14:00 后才给房</b>，上午只能寄存行李。已改为 10:00 寄存、21:00 回店入住。</td>
+            </tr>
+            <tr>
+                <td><span class="fix-num">2</span>轮渡时刻</td>
+                <td class="issue">22:00 开船，航行 6 小时，10/4 05:50 抵达</td>
+                <td class="fixed">22:00+6h=04:00，和 05:50 差了近 2 小时。实际晚班船 6.0-7.0 小时不等。改订 <b>普陀岛 22:20 发 → 04:50 到</b>（6 小时），既贴近原计划又留出看日出的时间。</td>
+            </tr>
+            <tr>
+                <td><span class="fix-num">3</span>去港口</td>
+                <td class="issue">21:00 结束游玩，22:00 去做轮渡</td>
+                <td class="fixed">大连湾港在市区东北 <b>20km 外</b>，打车 40-55 分钟。21:00 出发 21:50 才到，取票安检根本来不及。改为 <b>19:15 出发、20:15 到港</b>，留 2 小时缓冲。</td>
+            </tr>
+            <tr>
+                <td><span class="fix-num">4</span>看日出</td>
+                <td class="issue">4 号 5:50 到港，"顺便"看海上日出</td>
+                <td class="fixed">10/4 烟台日出 <b>05:52:53</b>，船 04:50 靠港。必须专门打车去滨海广场/月亮湾（10 分钟），05:30 到位，看完再回市区。不是"顺便"能搞定的。</td>
+            </tr>
+            <tr>
+                <td><span class="fix-num">5</span>返程火车</td>
+                <td class="issue">23:35 发车，约 6 小时，06:20 到大明湖</td>
+                <td class="fixed">车次 K286 确认无误，但实际运行 <b>6 小时 45 分</b>。硬卧 ¥133/人、软卧 ¥205/人。国庆车次紧张，需在售票首日抢票。</td>
+            </tr>
+            <tr>
+                <td><span class="fix-num">6</span>行程强度</td>
+                <td class="issue">Day1 玩到 23:00、Day3 从 5:50 连玩到 22:00</td>
+                <td class="fixed">Day1 是 05:00 起床+赶飞机，<b>砍到 21:00 收尾</b>；Day3 凌晨下船没睡好，<b>插入 4 小时钟点房补觉（¥120）</b>再去养马岛。否则后两天必然崩盘。</td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- 国庆人潮预警总表 -->
+    <div class="section-card">
+        <h2 class="section-title">🚨 国庆人潮预警 · 备选方案总表</h2>
+        <p class="section-sub">
+            10 月 2-5 日是全年客流最高峰，下面每个点都标了人潮等级和 Plan B。
+            <span class="tag crowd3" style="cursor:default">🔴 爆满 · 必须有 Plan B</span>
+            <span class="tag crowd2" style="cursor:default">🟠 拥挤 · 建议错峰</span>
+            <span class="tag crowd1" style="cursor:default">🟢 从容 · 照常安排</span>
+        </p>
+        <table class="fix-table">
+            <tr><th style="width:19%">地点</th><th style="width:15%">高危时段</th><th style="width:9%">人潮</th><th>备选方案（Plan B）</th></tr>
+            <tr><td colspan="4" style="background:#f0f9ff;font-weight:700;color:#0c4a6e;padding:8px 12px">📍 大连（10/2 - 10/3）</td></tr>
+            <tr><td>俄罗斯风情街</td><td>10:00-16:00</td><td><span class="tag crowd3" style="cursor:default">🔴</span></td><td>街道窄、人挤人。改去<b>南山旅游风情街</b>（日式建筑群，人少一大半），或只逛中山广场外围。</td></tr>
+            <tr><td>老虎滩海洋公园</td><td>全天</td><td><span class="tag crowd3" style="cursor:default">🔴</span></td><td><b>已直接跳过</b>——五馆 ¥210/人，国庆每馆排队 40 分钟起。改棒棰岛，省 ¥420。</td></tr>
+            <tr><td>棒棰岛</td><td>11:00-15:00</td><td><span class="tag crowd2" style="cursor:default">🟠</span></td><td>门口堵车就改<b>海之韵公园</b>（¥20，海岸线长、有怪坡）或<b>傅家庄公园</b>（免费）。</td></tr>
+            <tr><td>渔人码头（日落）</td><td>16:30-17:30</td><td><span class="tag crowd2" style="cursor:default">🟠</span></td><td>防波堤挤满就打车 8 分钟去<b>北大桥 / 燕窝岭</b>，同一片海同一次日落，视野更开阔。</td></tr>
+            <tr><td>星海广场</td><td>10:00-17:00</td><td><span class="tag crowd3" style="cursor:default">🔴</span></td><td>头号免费地标。改<b>东港商务区</b>（同样看海，人流低一半）或<b>傅家庄公园</b>。跨海大桥最佳机位在莲花山，不必在广场挤。</td></tr>
+            <tr><td>滨海路</td><td>全天</td><td><span class="tag crowd2" style="cursor:default">🟠</span></td><td>国庆交通管制 + 部分单行易堵。<b>别试图走完"三十里"</b>，打车到北大桥单点打卡即可。</td></tr>
+            <tr><td>莲花山小火车</td><td>13:00-17:00</td><td><span class="tag crowd3" style="cursor:default">🔴</span></td><td>排队常超 1 小时。① 徒步上山约 25 分钟反而更快；② 改到<b>上午 9:00</b>（和棒棰岛对调）；③ 换<b>东港/富力中心高层观景</b>，零排队。</td></tr>
+            <tr><td>东港音乐喷泉</td><td>20:00-20:30</td><td><span class="tag crowd2" style="cursor:default">🟠</span></td><td>岸边站不下人。改去<b>港湾广场 / 15 库</b>（老码头文创街区，坐着看夜景）。</td></tr>
+            <tr><td style="color:#b91c1c;font-weight:700">市区 → 大连湾港</td><td>19:00-21:00</td><td><span class="tag crowd3" style="cursor:default">🔴</span></td><td><b>全程最危险一环。</b>① 当天 17:00 用网约车<b>预约</b> 19:15 的行程；② 叫不到车就坐地铁 3 号线到大连湾站再打车；③ 提前一天让酒店帮忙叫车/包车（¥100-120）。兜底：21:30 未到港立即拨 0411-87607272。</td></tr>
+            <tr><td colspan="4" style="background:#fff7ed;font-weight:700;color:#9a3412;padding:8px 12px">📍 烟台（10/4 - 10/5）</td></tr>
+            <tr><td style="color:#b91c1c;font-weight:700">养马岛进/出岛</td><td>进 10-14 时<br>出 17-19 时</td><td><span class="tag crowd3" style="cursor:default">🔴</span></td><td><b>人潮风险最高。</b>① 出发前一天<b>务必确认车辆限行政策</b>；② 公交 617 路有专用道，确定性比打车高；③ <b>18:00 前必须上返程车</b>，出岛比进岛更堵；④ 彻底放弃则改<b>金沙滩海滨公园</b>（免费、沙滩宽、人少）。</td></tr>
+            <tr><td>獐岛红色木栈道</td><td>13:00-16:00</td><td><span class="tag crowd3" style="cursor:default">🔴</span></td><td>最佳机位排队 20-30 分钟。① <b>16:30 后错峰返回</b>，旅行团已撤；② 沿栈道往东 100 米，同角度几乎没人；③ 改<b>后海礁石区</b>。</td></tr>
+            <tr><td>秦风崖日落</td><td>17:00-17:30</td><td><span class="tag crowd2" style="cursor:default">🟠</span></td><td>观景台不大，17:00 后站满。<b>提前 40 分钟到</b>；挤不上就退到后海礁石区或环岛路西段，天空一样是橘子色。</td></tr>
+            <tr><td>朝阳街玫瑰花瀑墙</td><td>11:00-16:00</td><td><span class="tag crowd3" style="cursor:default">🔴</span></td><td>烟台头号网红打卡点，排队 30 分钟起且堵在主街。① <b>限时 10 分钟拍完就走</b>；② 改<b>早上 8:30</b>（和次日行程对调）；③ 放弃打卡，改拍老洋楼或所城里的花墙。</td></tr>
+            <tr><td>烟台山登塔</td><td>12:00-15:00</td><td><span class="tag crowd2" style="cursor:default">🟠</span></td><td>灯塔电梯容量小，排队 30 分钟+。只逛<b>领事馆旧址和观海平台</b>（同样俯瞰烟台港），登塔作罢。</td></tr>
+            <tr><td>所城里</td><td>全天</td><td><span class="tag crowd1" style="cursor:default">🟢</span></td><td>街区大、巷子多，最抗挤。<b>09:30 去</b>——旅行团一般 10:30 后才到。</td></tr>
+            <tr><td>月亮湾 / 渔人码头</td><td>全天</td><td><span class="tag crowd1" style="cursor:default">🟢</span></td><td>海景栈道长、人流分散，照常安排即可。</td></tr>
+            <tr><td>烟台站安检</td><td>22:30-23:20</td><td><span class="tag crowd2" style="cursor:default">🟠</span></td><td>多趟车次旅客叠加。<b>22:10 前到站</b>；堵了就走"临近开车"快速通道，出示车票可插队。</td></tr>
+            <tr><td colspan="4" style="background:#f5f3ff;font-weight:700;color:#5b21b6;padding:8px 12px">✈️🚄 交通节点</td></tr>
+            <tr><td>济南遥墙机场</td><td>06:00-07:30</td><td><span class="tag crowd2" style="cursor:default">🟠</span></td><td>国庆早班机值机+安检 50-70 分钟。<b>提前一天网上值机</b>，行李能托运就托运；不放心就 04:40 出门。</td></tr>
+            <tr><td>K286 抢票（9/21 开售）</td><td>开售瞬间</td><td><span class="tag crowd3" style="cursor:default">🔴</span></td><td>热门线路硬卧基本秒没。① 提前填好 12306 乘车人 + 设开售提醒；② 抢不到改<b>软卧 ¥205/人</b>；③ 再不行买<b>硬座</b>上车补卧铺；④ 终极兜底：烟台→济南长途大巴（约 7 小时，¥160/人）。</td></tr>
+        </table>
+
+        <div style="margin-top:18px;padding:16px 18px;border-radius:12px;background:#fef2f2;border:1px solid #fecaca">
+            <div style="font-size:.95rem;font-weight:800;color:#b91c1c;margin-bottom:10px">⛔ 三条不可逾越的时间红线</div>
+            <div style="font-size:.84rem;color:#7f1d1d;line-height:1.9">
+                <b>红线一 · 10/3 19:15</b> —— 必须坐上去大连湾港的车。晚 30 分钟就可能误船，而误船意味着整个后半程作废。<br>
+                <b>红线二 · 10/4 18:00</b> —— 必须离开养马岛上车返程。国庆出岛比进岛堵得多，拖到 19:00 可能堵 2 小时。<br>
+                <b>红线三 · 10/5 22:10</b> —— 必须进烟台站。23:35 的车，国庆夜间安检排队不可预测。
+            </div>
+        </div>
+
+        <div style="margin-top:14px;padding:16px 18px;border-radius:12px;background:#ecfdf5;border:1px solid #bbf7d0">
+            <div style="font-size:.95rem;font-weight:800;color:#065f46;margin-bottom:10px">🎯 主动避峰的整体策略</div>
+            <div style="font-size:.84rem;color:#065f46;line-height:1.9">
+                ① <b>上午打硬仗、下午看海</b>——把最想去的收费景点放在 09:00-11:00，旅行团还没出动；<br>
+                ② <b>热门打卡点限时</b>——玫瑰花瀑墙、獐岛栈道这类网红点，设 10-20 分钟闹钟，拍完就撤；<br>
+                ③ <b>日落提前 40 分钟占位</b>——秦风崖、渔人码头的黄金机位靠抢，别掐着日落时间到；<br>
+                ④ <b>能公交就不打车</b>——养马岛 617 路、大连地铁 2 号线都有专用道，确定性远高于路面；<br>
+                ⑤ <b>随时准备换点</b>——这张表里每个 🔴 都有 Plan B，遇到排长队别犹豫，直接换。
+            </div>
+        </div>
+    </div>
+
+    <!-- 订票时间节点 -->
+    <div class="section-card">
+        <h2 class="section-title">🎫 订票时间轴 · 别错过开售日</h2>
+        <p class="section-sub">今天 2026-08-31，距离出发 32 天。下面每一项的开售时间都不一样，按顺序来。</p>
+        <ul class="ticket-timeline">
+            <li>
+                <div class="tk-date">现在就能订 · 越早越便宜</div>
+                <div class="tk-title">✈️ 机票 济南 → 大连（SC8771 07:30-08:50）</div>
+                <div class="tk-desc">平日 ¥400-510/人，国庆这条线会涨到 ¥600-950。<b>这是全程最大的浮动项</b>，占总预算近三成。建议今天就下单锁定，别等。两人按 ¥750/人预算 = ¥1,500。</div>
+            </li>
+            <li>
+                <div class="tk-date">现在就能订 · 国庆房源紧张</div>
+                <div class="tk-title">🏨 两晚酒店（大连 10/2、烟台 10/4）</div>
+                <div class="tk-desc">国庆热门商圈房源 9 月中旬就开始涨价，越晚越贵。订的时候留意：<b>免费取消</b>优先，方便后面调整。</div>
+            </li>
+            <li>
+                <div class="tk-date">9 月 21 日 · 售票首日</div>
+                <div class="tk-title">🚄 K286 硬卧 烟台 → 大明湖（10/5 23:35）</div>
+                <div class="tk-desc">火车票预售期 15 天，10/5 的车票 9/21 开售。<b>国庆热门线路，硬卧基本秒没</b>。提前在 12306 填好乘车人、设好开售提醒，开票当天立刻抢。抢不到硬卧就退而求其次买软卧（¥205/人）。</div>
+            </li>
+            <li>
+                <div class="tk-date">9 月底 · 每天刷一次</div>
+                <div class="tk-title">🚢 轮渡票 大连湾 → 烟台港（10/3 22:20 普陀岛）</div>
+                <div class="tk-desc">渤海轮渡一般提前 3-7 天放票，国庆会提前放、且四等舱（最便宜）最先售罄。订票电话 0411-87607272，也可以在「大连轮渡票务」官网/微信小程序上盯着。</div>
+            </li>
+            <li class="done">
+                <div class="tk-date">出发前 2 天</div>
+                <div class="tk-title">📋 出发前 Checklist</div>
+                <div class="tk-desc">身份证+充电宝+薄外套+耳塞（船舱用）+ 常备药 + 现金零钱。手机装好：12306、携程/飞猪、腾讯地图、大众点评、烟台潮汐表小程序。</div>
+            </li>
+        </ul>
+    </div>
+
+    <!-- 预算 -->
+    <div class="section-card">
+        <h2 class="section-title">💰 预算明细 · 两人总计</h2>
+        <p class="section-sub">按国庆期间价格估算，留了约 ¥600 机动。机票是最大变量，见下方说明。</p>
+        <table class="budget-table">
+            <tr><th style="width:16%">类别</th><th>项目</th><th style="width:20%">单价</th><th style="width:14%" class="num">小计</th></tr>
+            <tr><td rowspan="3">🚌 大交通</td><td>机票 济南→大连 SC8771（国庆估 ¥750/人）</td><td>¥750 × 2 人</td><td class="num">¥1,500</td></tr>
+            <tr><td>轮渡 大连湾→烟台 四等八人间</td><td>¥230 × 2 人</td><td class="num">¥460</td></tr>
+            <tr><td>火车 K286 硬卧 烟台→大明湖</td><td>¥133 × 2 人</td><td class="num">¥266</td></tr>
+            <tr class="subtotal"><td colspan="2">大交通小计</td><td class="num"></td><td class="num">¥2,226</td></tr>
+
+            <tr><td rowspan="3">🏨 住宿</td><td>大连 10/2 · 1 晚（青泥洼桥/中山广场商圈）</td><td>¥450 / 晚</td><td class="num">¥450</td></tr>
+            <tr><td>烟台 10/4 · 1 晚（所城里/朝阳街一带）</td><td>¥400 / 晚</td><td class="num">¥400</td></tr>
+            <tr><td>烟台 10/4 白天钟点房 4 小时（补觉用）</td><td>¥120</td><td class="num">¥120</td></tr>
+            <tr class="subtotal"><td colspan="2">住宿小计</td><td class="num"></td><td class="num">¥970</td></tr>
+
+            <tr><td rowspan="3">🚕 市内交通</td><td>济南：制锦市→遥墙机场 打车</td><td>¥130</td><td class="num">¥130</td></tr>
+            <tr><td>大连：机场地铁 + 日常公交地铁 + 市区→大连湾港 打车</td><td>—</td><td class="num">¥170</td></tr>
+            <tr><td>烟台：港口→市区 + 市区→养马岛往返 + 日常 + 去火车站</td><td>—</td><td class="num">¥220</td></tr>
+            <tr class="subtotal"><td colspan="2">市内交通小计</td><td class="num"></td><td class="num">¥520</td></tr>
+
+            <tr><td>🍜 餐饮</td><td>4 天 × 2 人（含 1 顿海鲜正餐、1 顿告别宴）</td><td>¥138 / 人 / 天</td><td class="num">¥1,100</td></tr>
+            <tr><td rowspan="3">🎫 门票</td><td>棒棰岛 门票 ¥40 + 电瓶车 ¥20</td><td>¥60 × 2 人</td><td class="num">¥120</td></tr>
+            <tr><td>莲花山观景台 + 往返小火车</td><td>¥80 × 2 人</td><td class="num">¥160</td></tr>
+            <tr><td>养马岛环岛接驳车（当天无限次）</td><td>¥20 × 2 人</td><td class="num">¥40</td></tr>
+            <tr class="subtotal"><td colspan="2">餐饮 + 门票小计</td><td class="num"></td><td class="num">¥1,420</td></tr>
+
+            <tr><td>🎁 其他</td><td>伴手礼、零食饮料、机动备用</td><td>—</td><td class="num">¥250</td></tr>
+            <tr class="total"><td colspan="3">合计（两人）</td><td class="num">¥5,386</td></tr>
+            <tr class="total"><td colspan="3">人均</td><td class="num">¥2,693</td></tr>
+        </table>
+        <div style="margin-top:16px;padding:14px 16px;border-radius:10px;background:#fff7ed;border-left:3px solid var(--orange);font-size:.83rem;color:#7c2d12;line-height:1.65">
+            <b>💱 预算弹性说明：</b>预算 ¥6,000，预估花 ¥5,386，余 <b>¥614</b>。三个可调旋钮：<br>
+            ① <b>机票（±¥400）</b>——最大变量。现在下单大概率能压到 ¥650/人；拖到 9 月底可能破 ¥900/人，届时总支出逼近 ¥5,800。<br>
+            ② <b>钟点房 ¥120</b>——体力好的话可以砍掉，在咖啡馆/商场歇两小时；<br>
+            ③ <b>餐饮 ¥1,100</b>——压缩到 ¥900 毫无压力，少吃一顿海鲜正餐即可。<br>
+            <b>极端情况：</b>机票涨到 ¥950/人 + 临时改软卧，总支出约 ¥5,900，仍在预算内。
+        </div>
+    </div>
+
+    <!-- 住宿 -->
+    <div class="section-card">
+        <h2 class="section-title">🏨 住宿建议</h2>
+        <p class="section-sub">只住 2 晚酒店（另 1 晚在船上、1 晚在火车上），位置比装修重要。</p>
+        <h3 style="font-size:.92rem;font-weight:700;margin:6px 0 12px;color:var(--ocean)">📍 大连 · 10月2日 1晚</h3>
+        <div class="hotel-grid">
+            <div class="hotel-card">
+                <h4>青泥洼桥 / 中山广场商圈 <span style="font-size:.7rem;color:var(--green);font-weight:600">✓ 首选</span></h4>
+                <div class="stars">★★★★ 推荐度</div>
+                <div class="price">¥400-550<span style="font-size:.7rem;color:var(--text-light)"> / 晚（国庆）</span></div>
+                <div class="price-note">国庆溢价约 40%，9 月中旬前订</div>
+                <div class="addr">地铁 2 号线机场直达，30 分钟；步行可达中山广场、俄罗斯风情街、天津街小吃；打车去星海广场/棒棰岛/东港都在 20 分钟内。</div>
+                <div class="book-btns"><a class="book-btn ctrip" data-kw="大连青泥洼桥" data-in="2026-10-02" data-out="2026-10-03" href="#">携程查看</a></div>
+            </div>
+            <div class="hotel-card">
+                <h4>星海广场 / 会展中心</h4>
+                <div class="stars">★★★☆ 推荐度</div>
+                <div class="price">¥450-600<span style="font-size:.7rem;color:var(--text-light)"> / 晚（国庆）</span></div>
+                <div class="addr">靠海、安静，推开窗可能见海。缺点是离机场和老城区稍远，晚上回来打车不便，国庆期间路面拥堵。</div>
+                <div class="book-btns"><a class="book-btn ctrip" data-kw="大连星海广场" data-in="2026-10-02" data-out="2026-10-03" href="#">携程查看</a></div>
+            </div>
+            <div class="hotel-card">
+                <h4>东港 / 威尼斯水城</h4>
+                <div class="stars">★★★☆ 推荐度</div>
+                <div class="price">¥550-750<span style="font-size:.7rem;color:var(--text-light)"> / 晚（国庆）</span></div>
+                <div class="addr">夜景最好，下楼就是运河和欧式城堡，适合情侣。但国庆这片的房价溢价最狠，性价比一般。</div>
+                <div class="book-btns"><a class="book-btn ctrip" data-kw="大连东港威尼斯水城" data-in="2026-10-02" data-out="2026-10-03" href="#">携程查看</a></div>
+            </div>
+        </div>
+
+        <h3 style="font-size:.92rem;font-weight:700;margin:22px 0 12px;color:var(--orange)">📍 烟台 · 10月4日 1晚</h3>
+        <div class="hotel-grid">
+            <div class="hotel-card">
+                <h4>芝罘区 所城里 / 朝阳街一带 <span style="font-size:.7rem;color:var(--green);font-weight:600">✓ 首选</span></h4>
+                <div class="stars">★★★★★ 推荐度</div>
+                <div class="price">¥350-500<span style="font-size:.7rem;color:var(--text-light)"> / 晚（国庆）</span></div>
+                <div class="price-note">离烟台站打车仅 10 分钟，赶 23:35 火车最稳</div>
+                <div class="addr">老城中心，步行可达所城里、朝阳街、烟台山、第一海水浴场。Day4 晚上要赶 23:35 的火车，住这里能省掉最后一程的折腾——这是选它的决定性理由。</div>
+                <div class="book-btns"><a class="book-btn ctrip" data-kw="烟台所城里" data-in="2026-10-04" data-out="2026-10-05" href="#">携程查看</a></div>
+            </div>
+            <div class="hotel-card">
+                <h4>莱山区 万象城 / 渔人码头</h4>
+                <div class="stars">★★★★ 推荐度</div>
+                <div class="price">¥350-480<span style="font-size:.7rem;color:var(--text-light)"> / 晚（国庆）</span></div>
+                <div class="addr">新城区，马路宽、商场新、离渔人码头和月亮湾近。缺点是离烟台站 30 分钟车程，赶夜车要多留时间。</div>
+                <div class="book-btns"><a class="book-btn ctrip" data-kw="烟台莱山万象城" data-in="2026-10-04" data-out="2026-10-05" href="#">携程查看</a></div>
+            </div>
+            <div class="hotel-card">
+                <h4>养马岛民宿 <span style="font-size:.7rem;color:#b91c1c;font-weight:600">✗ 不推荐</span></h4>
+                <div class="stars">★★☆ 推荐度</div>
+                <div class="price">¥450-700<span style="font-size:.7rem;color:var(--text-light)"> / 晚（国庆）</span></div>
+                <div class="addr">只去半天岛就住岛上不划算：进出岛要额外花时间，国庆车辆限行 + 溢价高。这次行程已在市区订房 + 白天上岛，最优。</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 美食 -->
+    <div class="section-card">
+        <h2 class="section-title">🍽 必吃清单</h2>
+        <p class="section-sub">两座海滨城市，吃的主线完全不同：大连吃海胆和日料，烟台吃焖子和鲁菜。</p>
+        <table class="budget-table">
+            <tr><th style="width:16%">城市</th><th style="width:20%">美食</th><th>说明</th><th style="width:16%">参考价</th></tr>
+            <tr><td rowspan="4">大连</td><td>海胆饺子 / 蒜蓉海胆</td><td>大连招牌，10 月正是海胆肥美季。鲜甜不腥，必点。</td><td>¥60-90 / 份</td></tr>
+            <tr><td>大连焖子</td><td>地瓜淀粉煎成块，配蒜泥芝麻酱。街边小吃，和烟台焖子做法不同，两个都尝尝。</td><td>¥10-18 / 份</td></tr>
+            <tr><td>铁板鱿鱼 / 烤海肠</td><td>夜市和海鲜排档的常客，配啤酒。</td><td>¥25-45 / 份</td></tr>
+            <tr><td>咸鱼饼子</td><td>渔家传统搭配，咸香下饭，本地人才点的菜。</td><td>¥35-55 / 份</td></tr>
+            <tr><td rowspan="4">烟台</td><td>烟台焖子</td><td>配蒜泥 + 芝麻酱，和大连版完全不同，两个城市对比着吃很有意思。</td><td>¥15-30 / 份</td></tr>
+            <tr><td>鲅鱼水饺</td><td>烟台一绝，皮薄馅大，一口爆汁。早餐吃也很合适。</td><td>¥30-48 / 份</td></tr>
+            <tr><td>辣炒蛤蜊 / 烤海肠</td><td>本地人聚餐必点，旺角小渔村一类馆子的招牌。</td><td>¥38-60 / 份</td></tr>
+            <tr><td>海菜包子 / 蓬莱小面</td><td>早餐首选，鲜香实惠。蓬莱小面是烟台经典早点。</td><td>¥5-15 / 份</td></tr>
+        </table>
+    </div>
+
+    <!-- 避坑 -->
+    <div class="section-card">
+        <h2 class="section-title">⚠️ 避坑指南</h2>
+        <div class="tips-grid">
+            <div class="tips-box bad"><h4>❌ 千万别做</h4><ul>
+                <li>不要卡点去港口——大连湾港在 20km 外，堵车就没辙了</li>
+                <li>不要在船上买高价盒饭，上船前吃饱或自带干粮</li>
+                <li>不要在火车站、码头周边拉客的海鲜排档吃饭</li>
+                <li>不要买散席船票——6 小时夜航坐椅子，第二天直接报废</li>
+                <li>不要中午去獐岛，光线硬拍照不好看，人也最多</li>
+                <li>不要在养马岛开车乱逛，环岛路单行且窄</li>
+                <li>不要穿拖鞋下礁石区，湿滑容易摔倒</li>
+                <li>不要等到 9 月底才订房，国庆房源越晚越贵</li>
+                <li>不要在网红打卡点死磕——排队超 20 分钟直接换 Plan B</li>
+                <li>不要试图一天塞满 🔴 标记的点，必崩</li>
+                <li>不要国庆自驾去养马岛，限行 + 堵车双重打击</li>
+            </ul></div>
+            <div class="tips-box good"><h4>✅ 聪明做法</h4><ul>
+                <li>机票今天就订——这是全程最大的省钱/超支点</li>
+                <li>9/21 定闹钟抢 K286 硬卧，开票首日就没</li>
+                <li>轮渡下单备注"两人同行同房间"，一般会给安排</li>
+                <li>带耳塞上船，八人间夜里不会太安静</li>
+                <li>查"烟台潮汐表"小程序，退潮前 1 小时到獐岛赶海</li>
+                <li>秦风崖日落提前 30 分钟占位，好机位靠抢</li>
+                <li>10 月海边早晚 15℃，薄外套 + 长裤，看日出会冷</li>
+                <li>备肠胃药——海鲜 + 冷饮，肠胃弱的人必带</li>
+            </ul></div>
+        </div>
+    </div>
+
+</div>
+
+<!-- 腾讯地图 -->
+<script>
+const TENCENT_MAP_KEY = 'PBOBZ-S4XEN-YOVFW-STAR3-KJOME-4QBOO';
+var map = null, markers = [], routeLines = [], isSatellite = false, currentDay = 1;
+var highlightMarker = null, highlightLabel = null;
+
+var routes = {
+    1: [{lat:36.674,lng:117.021},{lat:36.857,lng:116.857},{lat:38.9657,lng:121.5386},{lat:38.918,lng:121.623},{lat:38.9180,lng:121.6230},{lat:38.8820,lng:121.6720},{lat:38.8700,lng:121.6800},{lat:38.9300,lng:121.6700}],
+    2: [{lat:38.918,lng:121.623},{lat:38.8700,lng:121.5900},{lat:38.8600,lng:121.6500},{lat:38.8800,lng:121.6100},{lat:39.0200,lng:121.7200},{lat:38.30,lng:121.30},{lat:37.5600,lng:121.3900}],
+    3: [{lat:37.5600,lng:121.3900},{lat:37.5450,lng:121.3930},{lat:37.5450,lng:121.3850},{lat:37.4615,lng:121.6085},{lat:37.4685,lng:121.6125},{lat:37.4645,lng:121.6185}],
+    4: [{lat:37.5450,lng:121.3850},{lat:37.5535,lng:121.3914},{lat:37.5465,lng:121.3885},{lat:37.5385,lng:121.4065},{lat:37.5325,lng:121.4205},{lat:37.5540,lng:121.3880}],
+    5: [{lat:37.5540,lng:121.3880},{lat:36.6730,lng:117.0210},{lat:36.674,lng:117.021}]
+};
+var dayColors = {1:'#ea580c',2:'#4f46e5',3:'#0284c7',4:'#059669',5:'#7c3aed'};
+
+function toggleSatellite(){
+    if(!map)return; isSatellite=!isSatellite;
+    map.setMapTypeId(isSatellite?qq.maps.MapTypeId.SATELLITE:qq.maps.MapTypeId.ROADMAP);
+    var b=document.getElementById('sat-toggle'); if(b) b.textContent=isSatellite?'🗺 地图':'🛰 卫星';
+}
+
+function switchDay(d){
+    document.querySelectorAll('.day-tab').forEach(function(t,i){t.classList.toggle('active',i===d-1)});
+    for(var i=1;i<=5;i++){var el=document.getElementById('day'+i); if(el) el.classList.toggle('active',i===d);}
+    currentDay=d; if(map) drawRoutes(d);
+}
+
+function loadMap(){
+    var s=document.createElement('script');
+    s.src='https://map.qq.com/api/js?v=2.exp&key='+TENCENT_MAP_KEY+'&callback=onMapLoaded';
+    s.onerror=function(){fallbackMap()}; document.head.appendChild(s);
+}
+
+function onMapLoaded(){
+    var lo=document.getElementById('map-loading'); if(lo) lo.style.display='none';
+    map=new qq.maps.Map(document.getElementById('map'),{center:new qq.maps.LatLng(38.0,121.0),zoom:7});
+    var cc={'景点':'#059669','美食':'#e11d48','文化':'#7c3aed','交通':'#4f46e5','住宿':'#ec4899','购物':'#d97706'};
+    var cards=document.querySelectorAll('.timeline-card');
+    for(var i=0;i<cards.length;i++){(function(card){
+        var la=parseFloat(card.getAttribute('data-lat')),lo2=parseFloat(card.getAttribute('data-lng'));
+        var cat=card.getAttribute('data-cat'),t=card.querySelector('.card-title').textContent;
+        if(!isNaN(la)&&!isNaN(lo2)){
+            var svg='<svg xmlns="http://www.w3.org/2000/svg" width="28" height="36"><circle cx="14" cy="14" r="12" fill="'+(cc[cat]||'#059669')+'" stroke="#fff" stroke-width="2"/><polygon points="14,34 8,24 20,24" fill="'+(cc[cat]||'#059669')+'"/></svg>';
+            var m=new qq.maps.Marker({position:new qq.maps.LatLng(la,lo2),map:map,title:t,
+                icon:new qq.maps.MarkerImage('data:image/svg+xml,'+encodeURIComponent(svg),new qq.maps.Size(28,36),new qq.maps.Point(0,0),new qq.maps.Point(14,36))});
+            markers.push({marker:m,card:card,title:t,lat:la,lng:lo2});
+            qq.maps.event.addListener(m,'click',(function(idx){return function(){highlightCard(idx)}})(markers.length-1));
+        }
+    })(cards[i])}
+    for(var j=0;j<cards.length;j++){(function(card,idx){
+        card.addEventListener('click',function(){
+            var la=parseFloat(card.getAttribute('data-lat')),lo2=parseFloat(card.getAttribute('data-lng'));
+            if(!isNaN(la)&&!isNaN(lo2)){map.setZoom(15);map.panTo(new qq.maps.LatLng(la,lo2));highlightCard(idx)}
+        })
+    })(cards[j],j)}
+    renderLegend(cc);
+    drawRoutes(1);
+}
+
+function renderLegend(cc){
+    var names={'景点':'景点','美食':'美食','文化':'文化','交通':'交通','住宿':'住宿','购物':'购物'};
+    var html='';
+    for(var k in names){ html+='<span class="legend-item"><span class="legend-dot" style="background:'+cc[k]+'"></span>'+names[k]+'</span>'; }
+    var el=document.getElementById('map-legend'); if(el) el.innerHTML=html;
+}
+
+function drawRoutes(day){
+    routeLines.forEach(function(l){l.setMap(null)}); routeLines=[];
+    var pts=routes[day]; if(!pts||pts.length<2)return;
+    var path=pts.map(function(p){return new qq.maps.LatLng(p.lat,p.lng)});
+    var line=new qq.maps.Polyline({path:path,map:map,strokeColor:dayColors[day]||'#ea580c',strokeWeight:3,strokeOpacity:.75,strokeDashStyle:'solid'});
+    routeLines.push(line);
+    var bounds=new qq.maps.LatLngBounds(); path.forEach(function(p){bounds.extend(p)});
+    map.fitBounds(bounds);
+}
+
+function highlightCard(idx){
+    document.querySelectorAll('.timeline-card').forEach(function(c){c.classList.remove('highlight')});
+    var cards=document.querySelectorAll('.timeline-card');
+    if(cards[idx]){cards[idx].classList.add('highlight');cards[idx].scrollIntoView({behavior:'smooth',block:'center'})}
+    if(!map)return;
+    if(highlightMarker){highlightMarker.setMap(null);highlightMarker=null}
+    if(highlightLabel){highlightLabel.setMap(null);highlightLabel=null}
+    var target=null;
+    for(var k=0;k<markers.length;k++){if(markers[k].card===cards[idx]){target=markers[k];break}}
+    if(!target)return;
+    var svg='<svg xmlns="http://www.w3.org/2000/svg" width="44" height="54"><circle cx="22" cy="20" r="16" fill="#ea580c" stroke="#fff" stroke-width="3"/><circle cx="22" cy="20" r="22" fill="none" stroke="#ea580c" stroke-width="2" opacity="0.4"><animate attributeName="r" from="16" to="28" dur="1s" repeatCount="indefinite"/><animate attributeName="opacity" from="0.5" to="0" dur="1s" repeatCount="indefinite"/></circle><polygon points="22,52 12,34 32,34" fill="#ea580c"/></svg>';
+    highlightMarker=new qq.maps.Marker({position:new qq.maps.LatLng(target.lat,target.lng),map:map,title:target.title,zIndex:999,
+        icon:new qq.maps.MarkerImage('data:image/svg+xml,'+encodeURIComponent(svg),new qq.maps.Size(44,54),new qq.maps.Point(0,0),new qq.maps.Point(22,54))});
+    var safeTitle=String(target.title).replace(/[<>&"]/g,'');
+    highlightLabel=new qq.maps.Label({position:new qq.maps.LatLng(target.lat+0.004,target.lng),map:map,
+        content:'<div style="background:rgba(0,0,0,.75);color:#fff;padding:4px 10px;border-radius:6px;font-size:12px;font-weight:600;white-space:nowrap">'+safeTitle+'</div>'});
+}
+
+function fallbackMap(){
+    var lo=document.getElementById('map-loading'); if(lo) lo.style.display='none';
+    document.getElementById('map').innerHTML='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 500" style="width:100%;height:100%;background:#eef4f9">'
+      +'<text x="300" y="60" text-anchor="middle" font-size="15" fill="#64748b">行程示意（地图 API 不可用）</text>'
+      +'<line x1="110" y1="400" x2="250" y2="130" stroke="#ea580c" stroke-width="3"/><text x="100" y="420" font-size="13" fill="#0c4a6e" font-weight="700">济南</text>'
+      +'<line x1="250" y1="130" x2="330" y2="300" stroke="#4f46e5" stroke-width="3" stroke-dasharray="6"/><text x="248" y="120" font-size="13" fill="#0c4a6e" font-weight="700">大连</text>'
+      +'<text x="290" y="215" font-size="11" fill="#4f46e5">🚢 渤海夜航</text>'
+      +'<line x1="330" y1="300" x2="110" y2="400" stroke="#7c3aed" stroke-width="3"/><text x="336" y="300" font-size="13" fill="#b45309" font-weight="700">烟台</text>'
+      +'<circle cx="110" cy="400" r="7" fill="#7c3aed"/><circle cx="250" cy="130" r="7" fill="#ea580c"/><circle cx="330" cy="300" r="7" fill="#4f46e5"/>'
+      +'</svg>';
+}
+
+loadMap();
+
+/* ===== 天气：大连(210200) + 烟台(370600) 分别请求，超出预报范围时用气候参考值 ===== */
+(function(){
+    var ICONS={'晴':'☀️','多云':'⛅','阴':'☁️','小雨':'🌦️','中雨':'🌧️','大雨':'🌧️','暴雨':'🌊','雷阵雨':'⛈️','阵雨':'🌦️','雾':'🌫️','霾':'🌫️','雪':'🌨️'};
+    function getIcon(w){for(var k in ICONS){if(w.indexOf(k)>=0)return ICONS[k];}return '🌤️';}
+    function upd(id,label,info){
+        var el=document.getElementById(id); if(!el||!info)return;
+        var dw=info.day.weather||'',nw=info.night.weather||'';
+        el.querySelector('.weather-icon').textContent=getIcon(dw);
+        el.querySelector('.weather-temp').textContent=info.night.temperature+'~'+info.day.temperature+'°C';
+        el.querySelector('.weather-desc').textContent=(dw===nw)?dw:(dw+'→'+nw);
+        el.querySelector('.weather-date').textContent=label;
+    }
+    function fmtLabel(dt){
+        var p=dt.split('-'), w=['周日','周一','周二','周三','周四','周五','周六'];
+        var d=new Date(dt+'T12:00:00+08:00');
+        return p[1]+'/'+p[2]+' '+w[d.getDay()];
+    }
+    function fetchCity(adcode,dates,ids){
+        var cb='wcb_'+adcode+'_'+Date.now();
+        window[cb]=function(d){
+            try{delete window[cb]}catch(e){}
+            if(d&&d.status===0&&d.result&&d.result.forecast){
+                var infos=d.result.forecast.infos||[];
+                dates.forEach(function(dt,i){
+                    for(var k=0;k<infos.length;k++){ if(infos[k].date===dt){ upd(ids[i],fmtLabel(dt),infos[k]); break; } }
+                });
+                var ue=document.getElementById('weather-update-time');
+                if(ue&&d.result.forecast.update_time) ue.textContent='实时更新于 '+d.result.forecast.update_time;
+            }
+        };
+        var s=document.createElement('script');
+        s.src='https://apis.map.qq.com/ws/weather/v1/?key='+TENCENT_MAP_KEY+'&adcode='+adcode+'&type=future&get_md=1&output=jsonp&callback='+cb;
+        s.onerror=function(){try{delete window[cb]}catch(e){}};
+        document.body.appendChild(s);
+        setTimeout(function(){ if(window[cb]){ try{delete window[cb]}catch(e){} } },8000);
+    }
+    // 距出发还有 32 天，超出 7 天预报范围；仍发起请求，命中则覆盖静态气候参考值
+    fetchCity('210200',['2026-10-02','2026-10-03'],['weather-d1','weather-d2']);
+    fetchCity('370600',['2026-10-04','2026-10-05'],['weather-d3','weather-d4']);
+})();
+</script>
+
+<!-- 携程酒店搜索：按关键词 + 日期跳转 -->
+<script>
+document.addEventListener('click',function(e){
+    var b=e.target.closest('.book-btn.ctrip[data-kw]');
+    if(!b)return;
+    e.preventDefault();
+    var kw=encodeURIComponent(b.dataset.kw),
+        ci=b.dataset.in, co=b.dataset.out,
+        m=window.innerWidth<=768,
+        url=m
+            ? 'https://m.ctrip.com/webapp/hotel/list?keyword='+kw+'&checkin='+ci+'&checkout='+co
+            : 'https://hotels.ctrip.com/hotels/list?keyword='+kw+'&checkin='+ci+'&checkout='+co;
+    window.open(url,'_blank');
+});
+</script>
+
+</body>
+</html>
