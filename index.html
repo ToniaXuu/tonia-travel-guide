@@ -130,6 +130,18 @@ body{animation:pageEnter .6s ease-out}
 @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
 .card-header-img .card-city{position:absolute;bottom:16px;left:20px;color:rgba(255,255,255,.95);font-size:1.6rem;font-weight:700;text-shadow:0 2px 8px rgba(0,0,0,.3);z-index:2}
 .card-header-img .card-date{position:absolute;top:16px;left:20px;color:rgba(255,255,255,.8);font-size:.78rem;background:rgba(255,255,255,.15);padding:3px 12px;border-radius:20px;backdrop-filter:blur(4px);z-index:2}
+/* 行程状态徽章 — JS 按 card-date 自动判断插入 */
+.card-status{
+    position:absolute;top:16px;right:16px;font-size:.72rem;font-weight:700;
+    padding:3px 12px;border-radius:20px;z-index:2;backdrop-filter:blur(4px);
+    display:inline-flex;align-items:center;gap:4px;letter-spacing:.5px;
+}
+.card-status.ongoing{background:rgba(230,126,34,.92);color:#fff;box-shadow:0 2px 10px rgba(230,126,34,.4)}
+.card-status.past{background:rgba(255,255,255,.78);color:#5a6c7d}
+/* 过期行程 — 轻度弱化但仍可点击回看 */
+.travel-card.past .card-header-img{filter:saturate(.45) brightness(.96)}
+.travel-card.past .trip-type{opacity:.55}
+.travel-card.past:hover{transform:translateY(-6px) scale(1.015)} /* 弱化但保留 hover 反馈 */
 /* 卡片内容 */
 .card-body{padding:20px}
 .trip-type{display:inline-block;font-size:.72rem;font-weight:600;padding:3px 10px;border-radius:12px;margin-bottom:6px}
@@ -196,7 +208,7 @@ body{animation:pageEnter .6s ease-out}
                     <h3>国庆跨海游 · 飞机+轮渡+夜车</h3>
                     <p>早班机飞大连，夜航轮渡跨渤海看日出，养马岛追橘子日落，K286 硬卧回济南……</p>
                     <div class="card-meta">
-                        <span>📅 4天3晚</span><span>🚢 夜航7h</span><span>💰 ¥5,386/2人</span>
+                        <span>📅 4天3晚</span><span>🚢 夜航7h</span><span>💰 ¥5,326/2人</span>
                     </div>
                 </div>
                 <div class="card-arrow">→</div>
@@ -317,6 +329,31 @@ document.getElementById('year-tabs').addEventListener('click',function(e){
     document.querySelectorAll('.year-content').forEach(function(c){c.classList.toggle('active',c.dataset.year===year)});
 });
 
+// ========== 行程状态自动标识（已过期 / 进行中） ==========
+// 解析卡片 .card-date 文本（如 "2026.10.02 — 10.06"），按当天日期自动打状态：
+// 结束日 < 今天 → 已完成（徽章+弱化）；今天在行程内 → 进行中（徽章）。未来行程不加徽章。
+(function(){
+    var today=new Date();today.setHours(0,0,0,0);
+    document.querySelectorAll('.travel-card .card-date').forEach(function(el){
+        var m=el.textContent.trim().match(/(\d{4})\.(\d{2})\.(\d{2})(?:\s*[—–-]\s*(\d{1,2})\.(\d{1,2}))?/);
+        if(!m)return;
+        var y=+m[1],sm=+m[2],sd=+m[3];
+        var em=m[4]?+m[4]:sm,ed=m[5]?+m[5]:sd;
+        var start=new Date(y,sm-1,sd),end=new Date(y,em-1,ed);
+        var card=el.closest('.travel-card'),img=el.parentElement;
+        if(today>end){
+            card.classList.add('past');
+            var b=document.createElement('div');
+            b.className='card-status past';b.textContent='✅ 已完成';
+            img.appendChild(b);
+        }else if(today>=start&&today<=end){
+            var b2=document.createElement('div');
+            b2.className='card-status ongoing';b2.textContent='🔥 进行中';
+            img.appendChild(b2);
+        }
+    });
+})();
+
 // ========== 页面过渡动画 ==========
 var transition=document.getElementById('page-transition');
 function navigateTo(e,url){
@@ -335,16 +372,17 @@ function navigateTo(e,url){
 
 // ========== 倒计时 ==========
 (function(){
-    // 大连·烟台国庆行程：2026-10-02 05:00 从制锦市出发
+    // 大连·烟台国庆行程：2026-10-02 05:00 从制锦市出发，10-06 23:59 结束
     var target=new Date('2026-10-02T05:00:00+08:00').getTime();
+    var tripEnd=new Date('2026-10-06T23:59:59+08:00').getTime();
     var de=document.getElementById('cd-days'),he=document.getElementById('cd-hours'),me=document.getElementById('cd-mins'),se=document.getElementById('cd-secs');
     var lbl=document.querySelector('.countdown-label');
     function pad(n){return n<10?'0'+n:n}
     function tick(){
-        var diff=target-Date.now();
+        var now=Date.now(),diff=target-now;
         if(diff<=0){
             de.textContent='00';he.textContent='00';me.textContent='00';se.textContent='00';
-            if(lbl)lbl.textContent='🎉 已在路上 · 大连·烟台';
+            if(lbl)lbl.textContent=now>tripEnd?'🏁 大连·烟台 · 行程已结束':'🎉 已在路上 · 大连·烟台';
             return}
         de.textContent=pad(Math.floor(diff/864e5));
         he.textContent=pad(Math.floor((diff%864e5)/36e5));
