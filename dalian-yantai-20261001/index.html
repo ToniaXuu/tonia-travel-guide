@@ -26,6 +26,30 @@ body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Noto Sans SC',s
 .back-btn{position:fixed;top:20px;left:20px;z-index:1000;background:rgba(255,255,255,.92);backdrop-filter:blur(10px);border:1px solid #e5eaf0;border-radius:30px;padding:8px 18px;text-decoration:none;color:var(--text);font-size:.85rem;font-weight:500;box-shadow:0 2px 8px rgba(0,0,0,.06);transition:all .2s;display:flex;align-items:center;gap:6px}
 .back-btn:hover{background:#fff;transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,0,0,.1)}
 
+/* ─── 方案切换器（A / B / C） ─── */
+.plan-switch{position:sticky;top:0;z-index:900;background:rgba(238,244,249,.93);backdrop-filter:blur(14px);border-bottom:1px solid #e2e8f0;padding:13px 20px 12px}
+.ps-inner{max-width:1280px;margin:0 auto;display:flex;gap:10px;overflow-x:auto;padding-left:118px;scrollbar-width:thin}
+.ps-tab{flex:1 1 0;min-width:196px;cursor:pointer;border:1px solid #dbe3ea;background:#fff;border-radius:12px;padding:10px 14px 11px;transition:all .22s ease;text-align:left}
+.ps-tab:hover{border-color:var(--orange);transform:translateY(-1px)}
+.ps-tab.active{border-color:transparent;color:#fff;box-shadow:0 6px 18px rgba(15,40,70,.18)}
+.ps-tab.active[data-plan="a"]{background:linear-gradient(118deg,#0c4a6e 0%,#0284c7 100%)}
+.ps-tab.active[data-plan="b"]{background:linear-gradient(118deg,#075985 0%,#0891b2 100%)}
+.ps-tab.active[data-plan="c"]{background:linear-gradient(118deg,#065f46 0%,#059669 100%)}
+.ps-name{font-size:.94rem;font-weight:800;letter-spacing:.5px;display:flex;align-items:center;gap:6px}
+.ps-name .ps-badge{font-size:.6rem;letter-spacing:1.5px;padding:2px 7px;border-radius:8px;background:rgba(255,255,255,.24);font-weight:700}
+.ps-desc{font-size:.72rem;opacity:.88;margin-top:3px;line-height:1.45}
+.ps-meta{font-size:.71rem;margin-top:6px;font-weight:700}
+.ps-tab.active .ps-meta{color:rgba(255,255,255,.95)}
+.ps-tab:not(.active) .ps-meta{color:var(--orange)}
+
+.plan-view{display:none}
+.plan-view.active{display:block;animation:planIn .4s ease-out}
+@keyframes planIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+/* Banner 变体 — 方案 B 海滨蓝 / 方案 C 泉城绿 */
+.banner.pb{background:linear-gradient(158deg,#05243c 0%,#0d4a70 36%,#1c7f9e 68%,#c2762c 100%)}
+.banner.pc{background:linear-gradient(158deg,#04331f 0%,#0d5c46 34%,#2f8f6b 68%,#d1a054 100%)}
+
 /* Banner — 纯 CSS 渐变 + 内联 SVG 场景（无外部图片依赖） */
 .banner{background:linear-gradient(163deg,#0a3555 0%,#0e4a70 32%,#2f6b7d 56%,#a35f22 80%,#b45309 100%);background-color:#0c4a6e;color:#fff;text-align:center;padding:70px 20px 40px;position:relative;overflow:hidden}
 .banner::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 28% 72%,rgba(255,255,255,.10) 0%,transparent 58%),radial-gradient(circle at 74% 26%,rgba(255,255,255,.06) 0%,transparent 58%);z-index:2}
@@ -48,7 +72,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Noto Sans SC',s
 /* 主布局 */
 .main-layout{max-width:1280px;margin:0 auto;padding:24px 20px 40px;display:flex;gap:28px}
 .left-panel{flex:0 0 520px;min-width:0}
-.right-panel{flex:1;min-width:380px;position:sticky;top:80px;height:calc(100vh - 100px)}
+.right-panel{flex:1;min-width:380px;position:sticky;top:118px;height:calc(100vh - 140px)}
 
 /* 天气 */
 .weather-widget{background:var(--card-bg);border-radius:14px;padding:18px;box-shadow:var(--shadow);margin-bottom:20px}
@@ -61,6 +85,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Noto Sans SC',s
 .weather-desc{font-size:.7rem;color:var(--text-light);margin-top:3px}
 .weather-date{font-size:.74rem;color:var(--text-light);margin-bottom:2px}
 .weather-update-time{font-size:.65rem;color:var(--gray-300);font-weight:400;margin-left:8px}
+.weather-note{font-size:.72rem;color:var(--text-light);line-height:1.65;margin-top:10px;padding:8px 11px;background:#fffbeb;border:1px solid #fde68a;border-radius:8px}
+.weather-note b{color:#92400e}
+/* 方案 B 只有 2 天，天气格按两列排 */
+.plan-view[data-plan="b"] .weather-grid{grid-template-columns:repeat(2,1fr)}
 
 /* Day Tabs */
 .day-tabs{display:flex;gap:8px;margin-bottom:16px;overflow-x:auto;padding-bottom:6px;scrollbar-width:thin}
@@ -110,7 +138,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Noto Sans SC',s
 
 /* 地图 */
 .map-container{background:#fff;border-radius:14px;overflow:hidden;box-shadow:var(--shadow);height:100%;position:relative;min-height:420px}
-#map{width:100%;height:100%}
+#map-a,#map-b,#map-c{width:100%;height:100%}
 .map-legend{position:absolute;bottom:16px;left:16px;background:rgba(255,255,255,.93);backdrop-filter:blur(8px);padding:10px 14px;border-radius:10px;font-size:.72rem;display:flex;gap:11px;flex-wrap:wrap;box-shadow:0 2px 8px rgba(0,0,0,.08);max-width:calc(100% - 32px)}
 .legend-item{display:flex;align-items:center;gap:4px;white-space:nowrap}
 .legend-dot{width:9px;height:9px;border-radius:50%}
@@ -182,7 +210,67 @@ body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Noto Sans SC',s
 .ticket-timeline .tk-title{font-size:.9rem;font-weight:600;margin:1px 0 2px}
 .ticket-timeline .tk-desc{font-size:.8rem;color:var(--text-light)}
 
+/* 备选方案（方案 B / 方案 C） */
+.plan-cmp{width:100%;border-collapse:collapse;font-size:.84rem;margin-bottom:4px}
+.plan-cmp th,.plan-cmp td{padding:11px 12px;border-bottom:1px solid #f1f5f9;text-align:left;vertical-align:top}
+.plan-cmp th{background:var(--gray-100);font-weight:600}
+.plan-cmp th:first-child,.plan-cmp td:first-child{color:var(--text);font-weight:600;white-space:nowrap;width:13%}
+.plan-cmp td.col-b,.plan-cmp th.col-b{background:#f0f9ff}
+.plan-cmp td.col-c,.plan-cmp th.col-c{background:#f0fdf4}
+.plan-cmp .big{font-size:1rem;font-weight:800;color:var(--orange);font-variant-numeric:tabular-nums}
+.plan-cmp .big.g{color:var(--green)}
+.plan-card{border:1px solid #e5eaf0;border-radius:14px;overflow:hidden;margin-top:20px}
+.plan-card .plan-head{padding:15px 20px 16px;color:#fff}
+.plan-card.pb .plan-head{background:linear-gradient(118deg,#0c4a6e 0%,#0284c7 100%)}
+.plan-card.pc .plan-head{background:linear-gradient(118deg,#065f46 0%,#059669 100%)}
+.plan-badge{display:inline-block;font-size:.66rem;letter-spacing:2.5px;font-weight:700;padding:3px 10px;border-radius:10px;background:rgba(255,255,255,.22);margin-bottom:7px}
+.plan-head h3{font-size:1.08rem;font-weight:700;letter-spacing:.5px}
+.plan-head p{font-size:.8rem;opacity:.92;margin-top:4px;line-height:1.55}
+.plan-body{padding:18px 20px 20px}
+.plan-day{margin-bottom:15px}
+.plan-day:last-child{margin-bottom:0}
+.plan-day-h{font-size:.86rem;font-weight:700;color:var(--ocean);margin-bottom:5px;display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+.plan-card.pc .plan-day-h{color:var(--green)}
+.plan-day-h .ph-note{font-size:.7rem;font-weight:500;color:var(--text-light)}
+.plan-tl{list-style:none;font-size:.83rem;color:var(--text-light);line-height:1.85}
+.plan-tl li{padding-left:15px;position:relative}
+.plan-tl li::before{content:'';position:absolute;left:2px;top:.78em;width:5px;height:5px;border-radius:50%;background:var(--gray-300)}
+.plan-tl b{color:var(--text);font-weight:600}
+.plan-tl .free{color:var(--green);font-weight:600}
+.plan-tl .fee{color:var(--coral);font-weight:600}
+.plan-split{display:grid;grid-template-columns:1.45fr 1fr;gap:16px;margin-top:16px;padding-top:16px;border-top:1px dashed #e2e8f0}
+.plan-note-box{border-radius:11px;padding:13px 15px;font-size:.8rem;line-height:1.8}
+.plan-note-box.pro{background:#f0fdf4;border:1px solid #bbf7d0;color:#065f46}
+.plan-note-box.con{background:#fff7ed;border:1px solid #fed7aa;color:#9a3412}
+.plan-note-box h4{font-size:.85rem;font-weight:800;margin-bottom:6px}
+.plan-note-box ul{padding-left:16px}
+.plan-note-box li{margin-bottom:4px}
+.plan-money{background:var(--gray-100);border-radius:11px;padding:13px 15px;font-size:.82rem}
+.plan-money .pm-row{display:flex;justify-content:space-between;gap:10px;padding:3px 0;color:var(--text-light)}
+.plan-money .pm-row span:last-child{font-variant-numeric:tabular-nums;color:var(--text);font-weight:600}
+.plan-money .pm-total{border-top:1px dashed #cbd5e1;margin-top:7px;padding-top:8px;font-weight:800;color:var(--orange);font-size:.95rem}
+.plan-money .pm-total span:last-child{color:var(--orange);font-size:1rem}
+.decide{display:grid;grid-template-columns:repeat(auto-fit,minmax(228px,1fr));gap:12px;margin-top:18px}
+.decide-item{border-radius:12px;padding:14px 16px;font-size:.82rem;line-height:1.7;border:1px solid #e5eaf0;background:#fff}
+.decide-item .d-k{font-size:.72rem;letter-spacing:1px;color:#fff;padding:2px 9px;border-radius:9px;display:inline-block;margin-bottom:7px;font-weight:700}
+.decide-item.d1{border-color:#bfdbfe;background:#eff6ff}.decide-item.d1 .d-k{background:var(--ocean)}
+.decide-item.d2{border-color:#fed7aa;background:#fff7ed}.decide-item.d2 .d-k{background:var(--orange)}
+.decide-item.d3{border-color:#bbf7d0;background:#f0fdf4}.decide-item.d3 .d-k{background:var(--green)}
+.decide-item.d4{border-color:#ddd6fe;background:#f5f3ff}.decide-item.d4 .d-k{background:var(--purple)}
+.decide-item b{color:var(--text)}
+.src-note{font-size:.72rem;color:var(--text-faint);margin-top:14px;line-height:1.7}
+
+/* 三方案共享区块（速览对比） */
+.shared-section{max-width:1280px;margin:0 auto;padding:0 20px 48px}
+
 @media(max-width:900px){
+    .ps-inner{padding-left:0}
+    .plan-switch{padding:11px 16px 10px}
+    .ps-tab{min-width:172px}
+    .plan-cmp{font-size:.78rem}
+    .plan-cmp th,.plan-cmp td{padding:9px 8px}
+    .plan-cmp th:first-child,.plan-cmp td:first-child{white-space:normal}
+    .plan-split{grid-template-columns:1fr}
     .main-layout{flex-direction:column}
     .left-panel{flex:auto}
     .right-panel{position:static;height:450px;min-width:auto}
@@ -196,6 +284,27 @@ body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Noto Sans SC',s
 <body>
 
 <a href="../" class="back-btn">← 返回旅行手记</a>
+
+<div class="plan-switch">
+    <div class="ps-inner">
+        <div class="ps-tab active" data-plan="a" onclick="switchPlan('a')">
+            <div class="ps-name">🌉 大连 + 烟台 跨海五日<span class="ps-badge">PLAN A</span></div>
+            <div class="ps-desc">飞机跨海 · 夜航轮渡 · 海上日出 · 养马岛日落</div>
+            <div class="ps-meta">10/02 - 10/06 · 5 天 · ¥4,996 / 2 人</div>
+        </div>
+        <div class="ps-tab" data-plan="b" onclick="switchPlan('b')">
+            <div class="ps-name">🌊 大连 48 小时来回<span class="ps-badge">PLAN B</span></div>
+            <div class="ps-desc">只飞大连 · 住 1 晚 · 砍掉所有睡不好的夜晚</div>
+            <div class="ps-meta">10/02 - 10/03 · 2 天 · ¥4,330 / 2 人</div>
+        </div>
+        <div class="ps-tab" data-plan="c" onclick="switchPlan('c')">
+            <div class="ps-name">⛲ 济南四日 · 南部山区<span class="ps-badge">PLAN C</span></div>
+            <div class="ps-desc">不出远门 · 主打南部山区 · 0 住宿费 · 0 抢票</div>
+            <div class="ps-meta">10/01 - 10/04 · 4 天 · ¥1,696 / 2 人</div>
+        </div>
+    </div>
+</div>
+<div class="plan-view active" data-plan="a">
 
 <div class="banner">
     <div class="banner-scene" aria-hidden="true">
@@ -265,30 +374,30 @@ body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Noto Sans SC',s
     <div class="left-panel">
         <!-- 天气 -->
         <div class="weather-widget">
-            <div class="weather-title">🌤️ 天气参考<span id="weather-update-time" class="weather-update-time"></span></div>
+            <div class="weather-title">🌤️ 天气参考<span data-wtime="a" class="weather-update-time"></span></div>
             <div class="weather-grid">
-                <div class="weather-day" id="weather-d1">
+                <div class="weather-day" data-adcode="210200" data-date="2026-10-02">
                     <div class="weather-city">大连</div>
                     <div class="weather-date">10/02 周五</div>
                     <div class="weather-icon">🌤️</div>
                     <div class="weather-temp">15~22°C</div>
                     <div class="weather-desc">晴间多云</div>
                 </div>
-                <div class="weather-day" id="weather-d2">
+                <div class="weather-day" data-adcode="210200" data-date="2026-10-03">
                     <div class="weather-city">大连</div>
                     <div class="weather-date">10/03 周六</div>
                     <div class="weather-icon">☀️</div>
                     <div class="weather-temp">16~23°C</div>
                     <div class="weather-desc">晴</div>
                 </div>
-                <div class="weather-day" id="weather-d3">
+                <div class="weather-day" data-adcode="370600" data-date="2026-10-04">
                     <div class="weather-city">烟台</div>
                     <div class="weather-date">10/04 周日</div>
                     <div class="weather-icon">🌅</div>
                     <div class="weather-temp">17~24°C</div>
                     <div class="weather-desc">晴 · 日出 05:52</div>
                 </div>
-                <div class="weather-day" id="weather-d4">
+                <div class="weather-day" data-adcode="370600" data-date="2026-10-05">
                     <div class="weather-city">烟台</div>
                     <div class="weather-date">10/05 周一</div>
                     <div class="weather-icon">⛅</div>
@@ -296,19 +405,20 @@ body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Noto Sans SC',s
                     <div class="weather-desc">多云</div>
                 </div>
             </div>
+            <div class="weather-note">⚠️ 距出发还有 31 天，超出 7 天预报范围；以上为大连 / 烟台<b>常年 10 月上旬气候参考值</b>，出发前 3 天务必再查实时预报。</div>
         </div>
 
         <!-- Day Tabs -->
         <div class="day-tabs">
-            <div class="day-tab active" onclick="switchDay(1)">Day1 · 10/02 飞大连</div>
-            <div class="day-tab" onclick="switchDay(2)">Day2 · 10/03 夜航</div>
-            <div class="day-tab" onclick="switchDay(3)">Day3 · 10/04 日出+养马岛</div>
-            <div class="day-tab" onclick="switchDay(4)">Day4 · 10/05 烟台市区</div>
-            <div class="day-tab" onclick="switchDay(5)">Day5 · 10/06 回济南</div>
+            <div class="day-tab active" onclick="switchDay(1,'a')">Day1 · 10/02 飞大连</div>
+            <div class="day-tab" onclick="switchDay(2,'a')">Day2 · 10/03 夜航</div>
+            <div class="day-tab" onclick="switchDay(3,'a')">Day3 · 10/04 日出+养马岛</div>
+            <div class="day-tab" onclick="switchDay(4,'a')">Day4 · 10/05 烟台市区</div>
+            <div class="day-tab" onclick="switchDay(5,'a')">Day5 · 10/06 回济南</div>
         </div>
 
         <!-- ============ Day 1 ============ -->
-        <div class="day-content active" id="day1">
+        <div class="day-content active" id="a-day1">
             <div class="timeline-card" data-cat="交通" data-lat="36.6699" data-lng="117.0127">
                 <div class="card-header"><div class="card-time">05:00 出门</div><div class="card-cat" data-cat="交通">交通</div></div>
                 <div class="card-title">制锦市 → 唐冶帝华鸿府接女朋友</div>
@@ -426,7 +536,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Noto Sans SC',s
         </div>
 
         <!-- ============ Day 2 ============ -->
-        <div class="day-content" id="day2">
+        <div class="day-content" id="a-day2">
             <div class="timeline-card" data-cat="住宿" data-lat="38.918" data-lng="121.623">
                 <div class="card-header"><div class="card-time">09:00 退房</div><div class="card-cat" data-cat="住宿">住宿</div></div>
                 <div class="card-title">退房寄存行李</div>
@@ -524,7 +634,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Noto Sans SC',s
         </div>
 
         <!-- ============ Day 3 ============ -->
-        <div class="day-content" id="day3">
+        <div class="day-content" id="a-day3">
             <div class="timeline-card key-moment" data-cat="交通" data-lat="37.5600" data-lng="121.3900">
                 <div class="card-header"><div class="card-time">05:50 抵达</div><div class="card-cat" data-cat="交通">交通</div></div>
                 <div class="card-title">烟台港客运站 · 下船</div>
@@ -621,7 +731,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Noto Sans SC',s
         </div>
 
         <!-- ============ Day 4 ============ -->
-        <div class="day-content" id="day4">
+        <div class="day-content" id="a-day4">
             <div class="timeline-card" data-cat="住宿" data-lat="37.5450" data-lng="121.3850">
                 <div class="card-header"><div class="card-time">09:00 退房</div><div class="card-cat" data-cat="住宿">住宿</div></div>
                 <div class="card-title">退房寄存 · 睡到自然醒</div>
@@ -718,7 +828,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Noto Sans SC',s
         </div>
 
         <!-- ============ Day 5 ============ -->
-        <div class="day-content" id="day5">
+        <div class="day-content" id="a-day5">
             <div class="timeline-card" data-cat="交通" data-lat="36.6814" data-lng="117.0281">
                 <div class="card-header"><div class="card-time">06:20 抵达</div><div class="card-cat" data-cat="交通">交通</div></div>
                 <div class="card-title">大明湖站 · 到济南了</div>
@@ -748,14 +858,14 @@ body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Noto Sans SC',s
     <!-- 地图 -->
     <div class="right-panel">
         <div class="map-container">
-            <div id="map"></div>
-            <div class="map-loading-overlay" id="map-loading">
+            <div id="map-a"></div>
+            <div class="map-loading-overlay" id="map-loading-a">
                 <div class="map-loading-spinner"></div>
                 <div style="font-size:.8rem;color:#888">地图加载中…</div>
             </div>
-            <button class="sat-toggle" id="sat-toggle" onclick="toggleSatellite()">🛰 卫星</button>
+            <button class="sat-toggle" id="sat-toggle-a" onclick="toggleSatellite('a')">🛰 卫星</button>
             <div class="map-hint">点击卡片定位 · 点标记回看行程</div>
-            <div class="map-legend" id="map-legend"></div>
+            <div class="map-legend" id="map-legend-a"></div>
         </div>
     </div>
 </div>
@@ -862,9 +972,9 @@ body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Noto Sans SC',s
         </div>
     </div>
 
-    <!-- 订票时间节点 -->
+    <!-- 订票时间节点（方案 A） -->
     <div class="section-card">
-        <h2 class="section-title">🎫 订票时间轴 · 别错过开售日</h2>
+        <h2 class="section-title">🎫 订票时间轴 · 方案 A 专用</h2>
         <p class="section-sub">今天 2026-08-31，距离出发 32 天。下面每一项的开售时间都不一样，按顺序来。</p>
         <ul class="ticket-timeline">
             <li>
@@ -1075,155 +1185,1279 @@ body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Noto Sans SC',s
     </div>
 
 </div>
+</div>
+
+<!-- ══════════════════ 方案 B · 只去大连 48 小时 ══════════════════ -->
+<div class="plan-view" data-plan="b">
+
+<div class="banner pb">
+    <div class="banner-scene" aria-hidden="true">
+        <svg viewBox="0 0 1600 260" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+            <!-- 落日 -->
+            <circle class="sun-halo" cx="1180" cy="112" r="96" fill="#ffb066" opacity=".2"/>
+            <circle cx="1180" cy="112" r="34" fill="#ffd79a" opacity=".8"/>
+            <!-- 云 -->
+            <g class="drift-cloud">
+                <ellipse cx="300" cy="58" rx="140" ry="15" fill="#ffffff" opacity=".08"/>
+                <ellipse cx="412" cy="46" rx="90" ry="11" fill="#ffffff" opacity=".06"/>
+                <ellipse cx="188" cy="50" rx="62" ry="9" fill="#ffffff" opacity=".05"/>
+            </g>
+            <g class="drift-cloud" style="animation-duration:44s;animation-delay:-12s">
+                <ellipse cx="820" cy="40" rx="128" ry="12" fill="#ffffff" opacity=".055"/>
+                <ellipse cx="930" cy="33" rx="70" ry="9" fill="#ffffff" opacity=".04"/>
+            </g>
+            <!-- 城市天际线 -->
+            <g fill="#04243a" opacity=".68">
+                <rect x="120" y="150" width="34" height="70"/><rect x="164" y="126" width="26" height="94"/>
+                <rect x="198" y="162" width="40" height="58"/><rect x="246" y="140" width="28" height="80"/>
+                <rect x="282" y="170" width="36" height="50"/><rect x="326" y="120" width="22" height="100"/>
+                <rect x="356" y="156" width="44" height="64"/><rect x="408" y="132" width="26" height="88"/>
+                <rect x="442" y="166" width="38" height="54"/><rect x="488" y="146" width="30" height="74"/>
+                <rect x="0" y="168" width="100" height="52"/><rect x="530" y="158" width="90" height="62"/>
+                <rect x="640" y="176" width="70" height="44"/><rect x="726" y="160" width="86" height="60"/>
+                <rect x="828" y="172" width="64" height="48"/><rect x="908" y="150" width="78" height="70"/>
+                <rect x="1002" y="164" width="58" height="56"/><rect x="1076" y="146" width="70" height="74"/>
+            </g>
+            <!-- 跨海大桥剪影 -->
+            <g stroke="#03182a" stroke-width="1" opacity=".4" fill="none">
+                <path d="M1290 138 L1196 182 M1290 138 L1236 182 M1290 138 L1290 184 M1290 138 L1344 182 M1290 138 L1384 182"/>
+            </g>
+            <rect x="1287" y="134" width="6" height="52" fill="#03182a" opacity=".7"/>
+            <path d="M1140 186 Q 1300 178 1460 184 T 1620 180" stroke="#03182a" stroke-width="3.2" fill="none" opacity=".75"/>
+            <!-- 海面 -->
+            <path d="M0 190 L1600 190 L1600 260 L0 260 Z" fill="#04243a" opacity=".74"/>
+            <path d="M1080 190 Q 1180 178 1280 190 Q 1180 202 1080 190 Z" fill="#ffc46b" opacity=".22"/>
+            <g fill="none" stroke="#7fd4e8" stroke-width="1.1" opacity=".2">
+                <path class="wave-line" d="M-60 208 Q 140 200 340 208 T 740 208 T 1140 208 T 1540 208 T 1940 208"/>
+                <path class="wave-line" d="M-60 230 Q 160 222 380 230 T 820 230 T 1260 230 T 1700 230 T 2140 230"/>
+                <path class="wave-line" d="M-60 252 Q 120 245 300 252 T 660 252 T 1020 252 T 1380 252 T 1740 252"/>
+            </g>
+            <!-- 飞机 -->
+            <g class="sail-boat" fill="#ffd79a" opacity=".7">
+                <path d="M420 78 L448 86 L436 92 L428 104 L420 96 L408 96 L400 104 L392 92 L380 86 Z" transform="rotate(-8 414 91)"/>
+            </g>
+            <g fill="#ffd79a" opacity=".35">
+                <circle cx="380" cy="92" r="2.4"/><circle cx="356" cy="94" r="2.4"/><circle cx="332" cy="96" r="2.4"/>
+            </g>
+        </svg>
+    </div>
+    <h1>🌊 方案 B · 大连 48 小时</h1>
+    <p>飞机往返 · 不坐船 · 不赶夜车 · 海滨精华一个不落</p>
+    <div class="banner-meta">
+        <span>✈️ 济南 07:30 起飞</span>
+        <span>🌅 渔人码头日落</span>
+        <span>✈️ 当日 20:15 落地</span>
+        <span>📅 2026.10.02 - 10.03</span>
+        <span>💰 两人 ¥4,330</span>
+    </div>
+</div>
+
+<div class="main-layout">
+    <div class="left-panel">
+        <!-- 天气 -->
+        <div class="weather-widget">
+            <div class="weather-title">🌤️ 天气参考<span class="weather-update-time" data-wtime="b"></span></div>
+            <div class="weather-grid">
+                <div class="weather-day" data-adcode="210200" data-date="2026-10-02">
+                    <div class="weather-city">大连</div>
+                    <div class="weather-date">10/02 周五</div>
+                    <div class="weather-icon">🌤️</div>
+                    <div class="weather-temp">15~22°C</div>
+                    <div class="weather-desc">晴间多云</div>
+                </div>
+                <div class="weather-day" data-adcode="210200" data-date="2026-10-03">
+                    <div class="weather-city">大连</div>
+                    <div class="weather-date">10/03 周六</div>
+                    <div class="weather-icon">☀️</div>
+                    <div class="weather-temp">16~23°C</div>
+                    <div class="weather-desc">晴</div>
+                </div>
+            </div>
+            <div class="weather-note">⚠️ 距出发还有 31 天，超出 7 天预报范围；以上为大连<b>常年 10 月上旬气候参考值</b>，出发前 3 天务必再查实时预报。</div>
+        </div>
+
+        <!-- Day Tabs -->
+        <div class="day-tabs">
+            <div class="day-tab active" onclick="switchDay(1,'b')">Day1 · 10/02 飞大连</div>
+            <div class="day-tab" onclick="switchDay(2,'b')">Day2 · 10/03 回济南</div>
+        </div>
+
+        <!-- ============ B · Day 1 ============ -->
+        <div class="day-content active" id="b-day1">
+            <div class="timeline-card" data-cat="交通" data-lat="36.6699" data-lng="117.0127">
+                <div class="card-header"><div class="card-time">05:00 出门</div><div class="card-cat" data-cat="交通">交通</div></div>
+                <div class="card-title">制锦市 → 唐冶帝华鸿府接女朋友</div>
+                <div class="card-subtitle">顺风车约 30 分钟 · 24km · 前一晚下预约单</div>
+                <div class="card-desc">和方案 A 完全一样的第一段：05:00 打顺风车走北园高架—工业北路—世纪大道，约 30 分钟到唐冶（24km，预约单约 ¥35）。清晨 5 点顺车少，<b>前一晚就在嘀嗒/哈啰下好预约单</b>，备好快车兜底（约 ¥65）。</div>
+                <div class="card-tags"><span class="tag">顺风车¥35</span><span class="tag">24km</span><span class="tag warn">务必 05:00 出门</span></div>
+            </div>
+
+            <div class="timeline-card" data-cat="交通" data-lat="36.6861" data-lng="117.2394">
+                <div class="card-header"><div class="card-time">05:35 会合</div><div class="card-cat" data-cat="交通">交通</div></div>
+                <div class="card-title">唐冶帝华鸿府 · 与女朋友会合</div>
+                <div class="card-subtitle">换顺风车直达机场 · 约 30 分钟 · 23km</div>
+                <div class="card-desc">接上人后叫第二辆顺风车直达机场（约 23km，两人分摊约 ¥40），06:10 前到航站楼。地铁 4 号线首班 06:00、到机场最快 06:50，赶不上 07:30 的飞机，别考虑。</div>
+                <div class="card-tags"><span class="tag">顺风车¥40</span><span class="tag">23km</span><span class="tag">06:10 前到</span></div>
+                <div class="card-note planb">🅱️ <b>Plan B：</b>下单 10 分钟没人接就切快车（唐冶→机场约 ¥65）。两段合计别超过 40 分钟，超时就直接第二段先走。</div>
+            </div>
+
+            <div class="timeline-card" data-cat="交通" data-lat="36.8534" data-lng="117.2170">
+                <div class="card-header"><div class="card-time">06:10 到机场</div><div class="card-cat" data-cat="交通">交通</div></div>
+                <div class="card-title">济南遥墙国际机场</div>
+                <div class="card-subtitle">距起飞 80 分钟 · 国庆安检排队</div>
+                <div class="card-desc">06:10 前到机场，距 07:30 起飞留 80 分钟。国庆早班机安检普遍 30-40 分钟，务必提前一天网上值机，现场只过安检。</div>
+                <div class="card-tags"><span class="tag">提前值机</span><span class="tag">身份证必带</span><span class="tag crowd2" title="国庆 06:00-08:00 是出港早高峰">🟠 早高峰排队</span></div>
+                <div class="card-note planb">🅱️ <b>Plan B：</b>实在担心就 04:40 出门，06:00 前到机场，多留半小时缓冲。</div>
+            </div>
+
+            <div class="timeline-card" data-cat="交通" data-lat="38.9657" data-lng="121.5386">
+                <div class="card-header"><div class="card-time">07:30 → 08:50</div><div class="card-cat" data-cat="交通">交通</div></div>
+                <div class="card-title">SC8771 山航 济南 → 大连</div>
+                <div class="card-subtitle">飞行 1 小时 20 分 · 波音 737</div>
+                <div class="card-desc">山航 SC8771，07:30 遥墙起飞，08:50 落地大连周水子 T2。准点率 97%，平均延误 6 分钟。平日 ¥400-510/人，国庆估 ¥600-950/人——这条线越早订越便宜。</div>
+                <div class="card-tags"><span class="tag">1h20m</span><span class="tag money">¥600-950/人</span><span class="tag warn">尽早订</span></div>
+            </div>
+
+            <div class="timeline-card" data-cat="住宿" data-lat="38.918" data-lng="121.623">
+                <div class="card-header"><div class="card-time">10:00 寄存</div><div class="card-cat" data-cat="住宿">住宿</div></div>
+                <div class="card-title">酒店寄存行李 · 轻装出发</div>
+                <div class="card-subtitle">地铁 2 号线直达 · 落地到市区约 50 分钟</div>
+                <div class="card-desc">落地取行李约 20 分钟，坐地铁 2 号线（周水子机场站 → 青泥洼桥/友好广场）约 30 分钟、¥4/人，不堵车最稳；打车 30-40 分钟 ¥35-45，国庆路面拥堵不推荐。10:00 到店寄存，14:00 后才有房。</div>
+                <div class="card-tags"><span class="tag">地铁2号线</span><span class="tag">¥4/人</span><span class="tag money">¥240-300/晚</span><span class="tag crowd2" title="国庆中午前后前台寄存排队">🟠 前台排队</span></div>
+                <div class="card-note planb">🅱️ <b>Plan B：</b>前台排队超 20 分钟，就用<b>就近商场存包柜</b>（青泥洼桥商圈很多），¥10-20/件，别把上午的时间耗在前台。</div>
+            </div>
+
+            <div class="timeline-card" data-cat="文化" data-lat="38.9180" data-lng="121.6230">
+                <div class="card-header"><div class="card-time">10:30 - 11:15</div><div class="card-cat" data-cat="文化">文化</div></div>
+                <div class="card-title">中山广场 · 百年建筑群</div>
+                <div class="card-subtitle">免费 · 放射状环形广场 · 落地热身刚好</div>
+                <div class="card-desc">大连近代建筑的核心区，放射状道路环绕一圈老洋行、老银行。广场是全开放空间，随便走不会挤，40 分钟足够拍完一圈。作为落地第一站，离酒店近、不用赶。</div>
+                <div class="card-tags"><span class="tag">免费</span><span class="tag">步行可达</span><span class="tag">拍照</span><span class="tag good">人流分散</span></div>
+            </div>
+
+            <div class="timeline-card" data-cat="文化" data-lat="38.9225" data-lng="121.6327">
+                <div class="card-header"><div class="card-time">11:15 - 12:15</div><div class="card-cat" data-cat="文化">文化</div></div>
+                <div class="card-title">南山旅游风情街</div>
+                <div class="card-subtitle">免费 · 日式建筑群 · 人比俄罗斯风情街少一大半</div>
+                <div class="card-desc">从中山广场步行或打车 10 分钟。一整片日式别墅改的街区，安静、出片、咖啡馆多。<b>这是俄罗斯风情街的最佳替代品</b>——国庆期间风情街那种窄街道人挤人，这里能悠闲散步。</div>
+                <div class="card-tags"><span class="tag">免费</span><span class="tag">咖啡馆多</span><span class="tag crowd1" title="街区大、巷子多，最抗挤">🟢 从容</span></div>
+            </div>
+
+            <div class="timeline-card" data-cat="美食" data-lat="38.9200" data-lng="121.6280">
+                <div class="card-header"><div class="card-time">12:30 - 13:40</div><div class="card-cat" data-cat="美食">美食</div></div>
+                <div class="card-title">午餐 · 焖子 / 海胆饺子 / 日料</div>
+                <div class="card-subtitle">青泥洼桥商圈 · 人均 ¥60-90</div>
+                <div class="card-desc">大连三件套：焖子（麻酱蒜汁炒凉粉）、海胆饺子、海鲜面。青泥洼桥一带选择多，避开 12:00-13:00 的饭点高峰能省 15 分钟排队。日料在大连性价比远高于济南，值得一试。</div>
+                <div class="card-tags"><span class="tag">人均¥60-90</span><span class="tag">焖子</span><span class="tag">海胆饺子</span><span class="tag">日料</span></div>
+            </div>
+
+            <div class="timeline-card highlight" data-cat="景点" data-lat="38.8820" data-lng="121.6720">
+                <div class="card-header"><div class="card-time">14:00 - 16:20</div><div class="card-cat" data-cat="景点">景点</div></div>
+                <div class="card-title">棒棰岛风景区</div>
+                <div class="card-subtitle">门票 ¥40 + 电瓶车 ¥20 · 全程最值得的一站</div>
+                <div class="card-desc">大连最好的海水浴场，三面环山一面临海，国庆 11:00-15:00 是团客高峰，<b>14:00 后进场正好赶上人流回落</b>。进景区坐电瓶车（¥20）直达海滨，步行要走 20 多分钟没必要省这个钱。棒棰岛是方案 B 的核心——两天里唯一的收费王牌景点。</div>
+                <div class="card-tags"><span class="tag">¥40+¥20</span><span class="tag">海水浴场</span><span class="tag crowd2" title="11:00-15:00 团客高峰">🟠 建议 14:00 后进</span></div>
+                <div class="card-note planb">🅱️ <b>Plan B：</b>门口堵车或排队过长，改<b>海之韵公园</b>（¥20，海岸栈道 + 怪坡）或<b>傅家庄公园</b>（免费），同一片海岸线。</div>
+            </div>
+
+            <div class="timeline-card key-moment" data-cat="景点" data-lat="38.8700" data-lng="121.6800">
+                <div class="card-header"><div class="card-time">16:30 - 18:00</div><div class="card-cat" data-cat="景点">景点</div></div>
+                <div class="card-title">🌅 老虎滩渔人码头 · 日落</div>
+                <div class="card-subtitle">免费 · 10 月大连日落约 17:20 · 提前 40 分钟占位</div>
+                <div class="card-desc">方案 B 的情绪高点。欧式渔港 + 停泊的渔船，防波堤上拍日落是整个大连最出片的角度。<b>16:30 就要到</b>——国庆防波堤 17:00 后站满人，好机位靠抢。日落看完别急着走，蓝调时刻（日落后 20 分钟）灯光亮起来更好看。</div>
+                <div class="card-tags"><span class="tag">免费</span><span class="tag">17:20 日落</span><span class="tag crowd2" title="16:30-17:30 防波堤挤满">🟠 提前 40 分钟占位</span></div>
+                <div class="card-note planb">🅱️ <b>Plan B：</b>防波堤挤满就打车 8 分钟去<b>北大桥 / 燕窝岭</b>，同一片海同一次日落，视野更开阔，人少一大半。</div>
+            </div>
+
+            <div class="timeline-card" data-cat="美食" data-lat="38.9000" data-lng="121.6400">
+                <div class="card-header"><div class="card-time">18:30 - 20:00</div><div class="card-cat" data-cat="美食">美食</div></div>
+                <div class="card-title">晚餐 · 海鲜正餐</div>
+                <div class="card-subtitle">延安路 / 天津街 · 人均 ¥120-160</div>
+                <div class="card-desc">两天只有一顿正经海鲜，别省：海胆蒸蛋、蒜蓉扇贝、鲅鱼饺子、海肠捞饭。<b>国庆晚饭高峰 18:00-19:30 要排队</b>，18:30 到店通常等 20-30 分钟，可以先用手机取号再去逛。</div>
+                <div class="card-tags"><span class="tag">人均¥120-160</span><span class="tag">海胆</span><span class="tag">鲅鱼饺子</span><span class="tag warn">建议先取号</span></div>
+            </div>
+
+            <div class="timeline-card" data-cat="景点" data-lat="38.9265" data-lng="121.6599">
+                <div class="card-header"><div class="card-time">20:00 - 21:00</div><div class="card-cat" data-cat="景点">景点</div></div>
+                <div class="card-title">15 库 · 港湾广场夜景</div>
+                <div class="card-subtitle">免费 · 老码头文创街区 · 坐着看夜景</div>
+                <div class="card-desc">老码头仓库改的文创街区，咖啡馆、酒吧、露台都有，正对港湾的灯光夜景。<b>这是东港音乐喷泉的替代方案</b>——喷泉 20:00-20:30 岸边根本站不下人，这里能坐着慢慢看。</div>
+                <div class="card-tags"><span class="tag">免费</span><span class="tag">夜景</span><span class="tag crowd1" title="人流分散，照常安排">🟢 从容</span></div>
+            </div>
+
+            <div class="timeline-card" data-cat="住宿" data-lat="38.918" data-lng="121.623">
+                <div class="card-header"><div class="card-time">21:30 回店</div><div class="card-cat" data-cat="住宿">住宿</div></div>
+                <div class="card-title">回酒店 · 早点睡</div>
+                <div class="card-subtitle">第二天是 08:40 起的硬仗</div>
+                <div class="card-desc">方案 B 只有这一晚，选地铁 2 号线沿线（西安路 / 马栏广场 / 青泥洼桥），¥240-300/晚。晚上别贪玩——Day2 要 08:40 上莲花山，睡不够第二天直接崩。</div>
+                <div class="card-tags"><span class="tag">¥240-300/晚</span><span class="tag good">睡够 7 小时</span></div>
+            </div>
+        </div>
+
+        <!-- ============ B · Day 2 ============ -->
+        <div class="day-content" id="b-day2">
+            <div class="timeline-card highlight" data-cat="景点" data-lat="38.8800" data-lng="121.6100">
+                <div class="card-header"><div class="card-time">08:40 - 10:30</div><div class="card-cat" data-cat="景点">景点</div></div>
+                <div class="card-title">莲花山观景台 · 跨海大桥最佳机位</div>
+                <div class="card-subtitle">小火车往返 ¥80/人 · 9 点前排队最短</div>
+                <div class="card-desc">俯瞰大连湾和星海湾跨海大桥的唯一好角度，早上空气通透、光线侧打最适合拍照。<b>国庆小火车 13:00-17:00 排队常超 1 小时，务必上午来</b>。徒步上山约 25 分钟，队伍太长就直接走上去，反而更快。</div>
+                <div class="card-tags"><span class="tag">¥80/人</span><span class="tag">跨海大桥</span><span class="tag crowd3" title="13:00-17:00 排队超 1 小时">🔴 必须上午去</span></div>
+                <div class="card-note planb">🅱️ <b>Plan B：</b>小火车排队超 30 分钟就<b>徒步上山</b>（约 25 分钟，林荫路不晒）；或者改去<b>东港 / 富力中心高层观景</b>，零排队。</div>
+            </div>
+
+            <div class="timeline-card" data-cat="景点" data-lat="38.9128" data-lng="121.6997">
+                <div class="card-header"><div class="card-time">11:00 - 12:30</div><div class="card-cat" data-cat="景点">景点</div></div>
+                <div class="card-title">海之韵公园</div>
+                <div class="card-subtitle">¥20 · 海岸栈道 + 怪坡 · 人少</div>
+                <div class="card-desc">大连最东端的海滨公园，18.8 米高的海之韵雕塑、海底大峡谷、怪坡（车往坡上滑的错觉）。海岸栈道长、人流分散，国庆也能从容走完。从莲花山打车过来约 25 分钟。</div>
+                <div class="card-tags"><span class="tag">¥20</span><span class="tag">海岸栈道</span><span class="tag">怪坡</span><span class="tag crowd1" title="人流分散">🟢 从容</span></div>
+            </div>
+
+            <div class="timeline-card" data-cat="美食" data-lat="38.918" data-lng="121.623">
+                <div class="card-header"><div class="card-time">12:30 - 13:40</div><div class="card-cat" data-cat="美食">美食</div></div>
+                <div class="card-title">午餐 + 退房取行李</div>
+                <div class="card-subtitle">回酒店附近吃 · 顺手取行李</div>
+                <div class="card-desc">回酒店片区吃最后一顿（人均 ¥50-70），顺便退房取行李。之后带着行李玩——大连站、青泥洼桥商圈都有存包柜，或者干脆寄存在酒店到 16:00。</div>
+                <div class="card-tags"><span class="tag">人均¥50-70</span><span class="tag">酒店可寄存到 16:00</span></div>
+            </div>
+
+            <div class="timeline-card" data-cat="文化" data-lat="38.9278" data-lng="121.6357">
+                <div class="card-header"><div class="card-time">14:00 - 15:20</div><div class="card-cat" data-cat="文化">文化</div></div>
+                <div class="card-title">俄罗斯风情街（或大连自然博物馆）</div>
+                <div class="card-subtitle">免费 · 19-20 世纪俄式小街 · 下雨就换室内</div>
+                <div class="card-desc">胜利桥西北侧的小街，39 栋俄式、欧式建筑。安排在最后是因为它<b>离大连站近、顺路</b>，而且限时的网红街区逛 40 分钟足够。国庆 10:00-16:00 最挤，15:00 后团客开始撤，正好捡漏。</div>
+                <div class="card-tags"><span class="tag">免费</span><span class="tag">限时 40 分钟</span><span class="tag crowd3" title="国庆 10:00-16:00 街道窄、人挤人">🔴 建议 15:00 后</span></div>
+                <div class="card-note planb">🅱️ <b>Plan B：</b>下雨或排队过长，改去<b>大连自然博物馆</b>（免费，需预约）或<b>贝壳博物馆</b>，室内不受天气影响。</div>
+            </div>
+
+            <div class="timeline-card" data-cat="购物" data-lat="38.918" data-lng="121.623">
+                <div class="card-header"><div class="card-time">15:30 - 16:20</div><div class="card-cat" data-cat="购物">购物</div></div>
+                <div class="card-title">伴手礼 · 海产品</div>
+                <div class="card-subtitle">大商 / 麦凯乐 / 大连站周边 · 预算 ¥150-250</div>
+                <div class="card-desc">鱿鱼丝、虾酱、海苔、贝柱干。青泥洼桥的大商新玛特和麦凯乐超市都能一站式搞定，<b>比景区便宜三成以上</b>，而且能刷卡开发票。别在棒棰岛、渔人码头门口买，价格翻倍。</div>
+                <div class="card-tags"><span class="tag">¥150-250</span><span class="tag">超市比景区便宜</span><span class="tag good">可开发票</span></div>
+            </div>
+
+            <div class="timeline-card" data-cat="交通" data-lat="38.9657" data-lng="121.5386">
+                <div class="card-header"><div class="card-time">16:30 → 17:20</div><div class="card-cat" data-cat="交通">交通</div></div>
+                <div class="card-title">地铁 2 号线 → 周水子机场</div>
+                <div class="card-subtitle">直达 · 30-40 分钟 · ¥4-6/人</div>
+                <div class="card-desc">周水子机场站就在地铁 2 号线上，从青泥洼桥/友好广场出发 30-40 分钟，<b>国庆傍晚路面拥堵，地铁是唯一确定性选择</b>。16:30 出发，17:20 到机场，距 18:50 起飞留 90 分钟。</div>
+                <div class="card-tags"><span class="tag">地铁2号线</span><span class="tag">¥4-6/人</span><span class="tag good">不堵车</span><span class="tag warn">17:20 前到</span></div>
+                <div class="card-note warn">⚠️ <b>方案 B 唯一的红线：17:20 必须到机场。</b>比计划晚 40 分钟就可能误机，而改签国庆晚班机基本没票。16:30 从市区出发，别拖。</div>
+            </div>
+
+            <div class="timeline-card" data-cat="交通" data-lat="38.9657" data-lng="121.5386">
+                <div class="card-header"><div class="card-time">18:50 → 20:15</div><div class="card-cat" data-cat="交通">交通</div></div>
+                <div class="card-title">9C6596 春秋航空 大连 → 济南</div>
+                <div class="card-subtitle">飞行 1 小时 25 分 · 空客 A320</div>
+                <div class="card-desc">首选班次：18:50 周水子起飞，20:15 落地济南遥墙。平日 ¥208-400/人，国庆估 ¥600-800/人。想再玩久一点可以改订<b>山航 SC8772 21:55 → 23:15</b>，多出 3 小时，但到家就半夜了。</div>
+                <div class="card-tags"><span class="tag">1h25m</span><span class="tag money">¥600-800/人</span><span class="tag">春秋无免费餐食</span></div>
+                <div class="card-note">💡 春秋是廉航，行李额要单独买（20 寸登机箱免费额度够两人用）。如果买了伴手礼箱子变大，提前在 App 上加购托运额，机场现场买贵一倍。</div>
+            </div>
+
+            <div class="timeline-card" data-cat="交通" data-lat="36.8534" data-lng="117.2170">
+                <div class="card-header"><div class="card-time">20:15 落地</div><div class="card-cat" data-cat="交通">交通</div></div>
+                <div class="card-title">济南遥墙国际机场 · 落地</div>
+                <div class="card-subtitle">取行李 20 分钟 · 21:00 出机场</div>
+                <div class="card-desc">20:15 落地，取行李约 20 分钟，21:00 左右出闸。此时地铁 3 号线仍有车（末班约 22:00），但拖着行李换乘麻烦，建议直接打车回市区（约 ¥80-100）。</div>
+                <div class="card-tags"><span class="tag">打车¥80-100</span><span class="tag">21:30 到家</span><span class="tag good">10/04 还能休一天</span></div>
+            </div>
+
+            <div class="timeline-card" data-cat="交通" data-lat="36.6699" data-lng="117.0127">
+                <div class="card-header"><div class="card-time">21:30 到家</div><div class="card-cat" data-cat="交通">交通</div></div>
+                <div class="card-title">回到制锦市 · 行程结束</div>
+                <div class="card-subtitle">2 天 1 晚 · 10/04-10/07 完全自由</div>
+                <div class="card-desc">全程 40 小时，实际游玩约 26 小时。相比方案 A 省下 3 天假期：10/04 能睡到自然醒、10/05-10/07 还能安排别的（或者干脆什么都不干）。这就是方案 B 最大的价值——<b>用钱换时间</b>。</div>
+                <div class="card-tags"><span class="tag">省 3 天假期</span><span class="tag">无夜航无夜车</span><span class="tag good">睡够两晚</span></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="right-panel">
+        <div class="map-container">
+            <div id="map-b"></div>
+            <div class="map-loading-overlay" id="map-loading-b">
+                <div class="map-loading-spinner"></div>
+                <div style="font-size:.8rem;color:#5b6b7c">地图加载中…</div>
+            </div>
+            <div class="map-hint">点击卡片可定位</div>
+            <button class="sat-toggle" id="sat-toggle-b" onclick="toggleSatellite('b')">🛰 卫星</button>
+            <div class="map-legend" id="map-legend-b"></div>
+        </div>
+    </div>
+</div>
+
+<div class="detail-section">
+
+    <!-- B · 订票 -->
+    <div class="section-card">
+        <h2 class="section-title">🎫 方案 B 要订什么 · 什么时候订</h2>
+        <p class="section-sub">比方案 A 简单太多——只需要盯机票和 1 晚酒店，没有抢票硬仗。</p>
+        <ul class="ticket-timeline">
+            <li>
+                <div class="tk-date">现在就能订 · 越早越便宜</div>
+                <div class="tk-title">✈️ 往返机票（去 SC8771 / 回 9C6596）</div>
+                <div class="tk-desc">去程 SC8771 济南 07:30→大连 08:50；回程 9C6596 大连 18:50→济南 20:15（或 SC8772 21:55→23:15）。<b>国庆往返合计估 ¥1,350-1,750/人</b>，这是全程最大变量。<b>现在就下单锁定</b>，别等 9 月底。</div>
+            </li>
+            <li>
+                <div class="tk-date">现在就能订 · 只要 1 晚</div>
+                <div class="tk-title">🏨 大连 10/02 一晚（地铁 2 号线沿线）</div>
+                <div class="tk-desc">只住一晚，预算可以给足一点（¥260-400）。位置第一：地铁站 500 米内 + 步行能到吃饭的地方。订<b>免费取消</b>的，方便后面调。</div>
+            </li>
+            <li>
+                <div class="tk-date">出发前 3 天</div>
+                <div class="tk-title">🎫 棒棰岛 / 莲花山门票</div>
+                <div class="tk-desc">这两个都能在美团/携程提前买（棒棰岛 ¥40、莲花山小火车 ¥80），现场买也行，但国庆窗口排队 15-20 分钟。提前买省事。</div>
+            </li>
+            <li class="done">
+                <div class="tk-date">出发前 2 天</div>
+                <div class="tk-title">📋 出发前 Checklist</div>
+                <div class="tk-desc">身份证 + 充电宝 + 薄外套（海边傍晚风大）+ 防晒 + 空行李袋（装伴手礼）。手机装好：航旅纵横、腾讯地图、大众点评。</div>
+            </li>
+        </ul>
+    </div>
+
+    <!-- B · 预算 -->
+    <div class="section-card">
+        <h2 class="section-title">💰 方案 B 预算明细 · 两人总计</h2>
+        <p class="section-sub">两天一夜，机票占了 67%。想省钱只能从机票和餐饮下手。</p>
+        <table class="budget-table">
+            <tr><th style="width:16%">类别</th><th>项目</th><th style="width:20%">单价</th><th style="width:14%" class="num">小计</th></tr>
+            <tr><td rowspan="2">✈️ 机票</td><td>去程 SC8771 济南→大连（国庆估 ¥750/人）</td><td>¥750 × 2 人</td><td class="num">¥1,500</td></tr>
+            <tr><td>回程 9C6596 大连→济南（国庆估 ¥700/人）</td><td>¥700 × 2 人</td><td class="num">¥1,400</td></tr>
+            <tr class="subtotal"><td colspan="2">机票小计</td><td class="num"></td><td class="num">¥2,900</td></tr>
+
+            <tr><td>🏨 住宿</td><td>大连 10/02 · 1 晚（地铁 2 号线沿线）</td><td>¥260 / 晚</td><td class="num">¥260</td></tr>
+            <tr class="subtotal"><td colspan="2">住宿小计</td><td class="num"></td><td class="num">¥260</td></tr>
+
+            <tr><td rowspan="2">🚕 市内交通</td><td>济南：顺风车 制锦市→唐冶→机场 + 回程打车</td><td>—</td><td class="num">¥150</td></tr>
+            <tr><td>大连：地铁 2 号线往返机场 + 日常公交地铁 + 市内打车</td><td>—</td><td class="num">¥200</td></tr>
+            <tr class="subtotal"><td colspan="2">市内交通小计</td><td class="num"></td><td class="num">¥350</td></tr>
+
+            <tr><td>🍜 餐饮</td><td>2 天 × 2 人（含 1 顿海鲜正餐 ¥280）</td><td>¥150 / 人 / 天</td><td class="num">¥600</td></tr>
+            <tr><td rowspan="3">🎫 门票</td><td>棒棰岛 门票 ¥40 + 电瓶车 ¥20</td><td>¥60 × 2 人</td><td class="num">¥120</td></tr>
+            <tr><td>莲花山观景台 + 往返小火车</td><td>¥80 × 2 人</td><td class="num">¥160</td></tr>
+            <tr><td>海之韵公园</td><td>¥20 × 2 人</td><td class="num">¥40</td></tr>
+            <tr class="subtotal"><td colspan="2">餐饮 + 门票小计</td><td class="num"></td><td class="num">¥920</td></tr>
+
+            <tr><td>🎁 其他</td><td>伴手礼、零食饮料、机动备用</td><td>—</td><td class="num">¥400</td></tr>
+            <tr class="total"><td colspan="3">合计（两人）</td><td class="num">¥4,830</td></tr>
+            <tr class="total"><td colspan="3">人均 / 人均每天</td><td class="num">¥2,415 / ¥1,208</td></tr>
+        </table>
+        <div style="margin-top:16px;padding:14px 16px;border-radius:10px;background:#fff7ed;border-left:3px solid var(--orange);font-size:.83rem;color:#7c2d12;line-height:1.65">
+            <b>💱 关于 ¥4,830 和 ¥4,330 的差：</b>上面总览表里的 <b>¥4,330</b> 是"精简版"（伴手礼 ¥100、市内交通 ¥150）；这张明细表是"从容版"（伴手礼 ¥400、市内交通 ¥350，含回程打车）。两个人玩一趟带点东西回家，¥4,600-4,800 是更现实的数。<br>
+            <b>三个省钱旋钮：</b>① <b>机票（±¥800）</b>——最大变量，压到 ¥600/人往返能省 ¥800；② <b>伴手礼 ¥400</b>——降到 ¥150 毫无压力；③ <b>海鲜正餐</b>——从 ¥280 砍到 ¥180，少吃一道海胆。<br>
+            <b>底线：</b>机票涨到 ¥950/人 + 全程打车，总支出约 ¥5,600，仍在 ¥6,000 预算内。
+        </div>
+    </div>
+
+    <!-- B · 避坑 -->
+    <div class="section-card">
+        <h2 class="section-title">⚠️ 方案 B 避坑指南</h2>
+        <p class="section-sub">两天的行程容错率很低，这几点踩中一个就能毁掉半天。</p>
+        <div class="tips-grid">
+            <div class="tips-box bad">
+                <h4>❌ 别这么干</h4>
+                <ul>
+                    <li><b>别把莲花山放到下午</b>——小火车排队 1 小时起，下午去等于白排</li>
+                    <li><b>别掐着日落时间到渔人码头</b>——17:20 日落，16:30 就要站在防波堤上</li>
+                    <li><b>别坐高铁回济南</b>——6 小时 ¥516，比飞机贵还多耗 4.5 小时</li>
+                    <li><b>别带大件行李去机场</b>——春秋廉航托运现场买贵一倍，提前 App 加购</li>
+                    <li><b>别在景区门口买海产品</b>——价格是超市的三倍</li>
+                </ul>
+            </div>
+            <div class="tips-box good">
+                <h4>✅ 这么做更顺</h4>
+                <ul>
+                    <li><b>14:00 后进场棒棰岛</b>——团客高峰已过，光线也更柔和</li>
+                    <li><b>15:00 后再去俄罗斯风情街</b>——最后一站顺路，且团客开始撤</li>
+                    <li><b>地铁 2 号线往返机场</b>——周水子站直达，国庆唯一不堵的选择</li>
+                    <li><b>海鲜晚饭先取号</b>——18:30 到店取号，等位时去旁边逛</li>
+                    <li><b>回程选 18:50 那班</b>——21:30 到家还能睡个好觉，次日不废</li>
+                </ul>
+            </div>
+        </div>
+        <div style="margin-top:16px;padding:15px 17px;border-radius:12px;background:#fef2f2;border:1px solid #fecaca">
+            <div style="font-size:.95rem;font-weight:800;color:#b91c1c;margin-bottom:8px">⛔ 方案 B 的唯一时间红线</div>
+            <div style="font-size:.84rem;color:#7f1d1d;line-height:1.85">
+                <b>10/03 17:20 · 必须到周水子机场</b>——18:50 的飞机，国庆晚班机基本无票可改。方案 B 只有这一条红线（方案 A 有三条），这也是它最大的优势。
+            </div>
+        </div>
+    </div>
+
+</div>
+</div>
+
+<!-- ══════════════════ 方案 C · 济南四日 · 南部山区 ══════════════════ -->
+<div class="plan-view" data-plan="c">
+
+<div class="banner pc">
+    <div class="banner-scene" aria-hidden="true">
+        <svg viewBox="0 0 1600 260" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+            <!-- 朝阳 -->
+            <circle class="sun-halo" cx="1330" cy="76" r="86" fill="#ffd79a" opacity=".16"/>
+            <circle cx="1330" cy="76" r="30" fill="#ffe9b8" opacity=".66"/>
+            <!-- 云 -->
+            <g class="drift-cloud">
+                <ellipse cx="240" cy="54" rx="138" ry="14" fill="#ffffff" opacity=".075"/>
+                <ellipse cx="352" cy="43" rx="86" ry="10" fill="#ffffff" opacity=".055"/>
+            </g>
+            <g class="drift-cloud" style="animation-duration:40s;animation-delay:-10s">
+                <ellipse cx="900" cy="38" rx="120" ry="12" fill="#ffffff" opacity=".05"/>
+                <ellipse cx="1010" cy="31" rx="72" ry="8" fill="#ffffff" opacity=".038"/>
+            </g>
+            <!-- 千佛山山峦 -->
+            <path d="M0 150 L120 128 L246 148 L378 112 L512 146 L648 118 L788 150 L920 126 L1060 152 L1200 124 L1340 150 L1470 130 L1600 148 L1600 260 L0 260 Z" fill="#052e22" opacity=".38"/>
+            <!-- 佛山倒影：大明湖水面 -->
+            <path d="M0 186 L1600 186 L1600 260 L0 260 Z" fill="#06382a" opacity=".62"/>
+            <!-- 超然楼剪影 -->
+            <g fill="#031f16" opacity=".8">
+                <rect x="1122" y="130" width="58" height="56"/>
+                <path d="M1112 130 L1151 108 L1190 130 Z"/>
+                <rect x="1146" y="94" width="10" height="16"/>
+                <rect x="1130" y="142" width="8" height="10"/><rect x="1146" y="142" width="8" height="10"/><rect x="1162" y="142" width="8" height="10"/>
+            </g>
+            <!-- 泉水喷涌 -->
+            <g fill="#8fe3c4" opacity=".5">
+                <circle cx="360" cy="176" r="5"><animate attributeName="cy" values="178;158;178" dur="2.6s" repeatCount="indefinite"/><animate attributeName="opacity" values=".7;.1;.7" dur="2.6s" repeatCount="indefinite"/></circle>
+                <circle cx="392" cy="176" r="4"><animate attributeName="cy" values="178;160;178" dur="2.6s" begin="-.5s" repeatCount="indefinite"/><animate attributeName="opacity" values=".7;.1;.7" dur="2.6s" begin="-.5s" repeatCount="indefinite"/></circle>
+                <circle cx="424" cy="176" r="5.5"><animate attributeName="cy" values="178;156;178" dur="2.6s" begin="-1s" repeatCount="indefinite"/><animate attributeName="opacity" values=".7;.1;.7" dur="2.6s" begin="-1s" repeatCount="indefinite"/></circle>
+            </g>
+            <!-- 水纹 -->
+            <g fill="none" stroke="#8fe3c4" stroke-width="1.1" opacity=".16">
+                <path class="wave-line" d="M-60 204 Q 140 197 340 204 T 740 204 T 1140 204 T 1540 204 T 1940 204"/>
+                <path class="wave-line" d="M-60 226 Q 160 219 380 226 T 820 226 T 1260 226 T 1700 226 T 2140 226"/>
+                <path class="wave-line" d="M-60 248 Q 120 241 300 248 T 660 248 T 1020 248 T 1380 248 T 1740 248"/>
+            </g>
+            <!-- 摇橹船 -->
+            <g class="sail-boat">
+                <g fill="#031f16" opacity=".85">
+                    <path d="M700 200 L778 200 L768 210 L710 210 Z"/>
+                    <path d="M726 200 L726 182 L748 182 L748 200 Z"/>
+                </g>
+            </g>
+        </svg>
+    </div>
+    <h1>🏠 方案 C · 济南四日</h1>
+    <p>不出远门 · 零住宿费 · 零抢票 · 三天扎进南部山区</p>
+    <div class="banner-meta">
+        <span>💧 趵突泉 · 黑虎泉 · 大明湖</span>
+        <span>⛰️ 九如山 · 青铜山大峡谷</span>
+        <span>🗿 四门塔 · 龙门山</span>
+        <span>📅 2026.10.01 - 10.04</span>
+        <span>💰 两人 ¥1,696</span>
+    </div>
+</div>
+
+<div class="main-layout">
+    <div class="left-panel">
+        <!-- 天气 -->
+        <div class="weather-widget">
+            <div class="weather-title">🌤️ 天气参考<span class="weather-update-time" data-wtime="c"></span></div>
+            <div class="weather-grid">
+                <div class="weather-day" data-adcode="370100" data-date="2026-10-01">
+                    <div class="weather-city">济南</div>
+                    <div class="weather-date">10/01 周四</div>
+                    <div class="weather-icon">☀️</div>
+                    <div class="weather-temp">16~26°C</div>
+                    <div class="weather-desc">晴</div>
+                </div>
+                <div class="weather-day" data-adcode="370100" data-date="2026-10-02">
+                    <div class="weather-city">济南</div>
+                    <div class="weather-date">10/02 周五</div>
+                    <div class="weather-icon">☀️</div>
+                    <div class="weather-temp">17~26°C</div>
+                    <div class="weather-desc">晴</div>
+                </div>
+                <div class="weather-day" data-adcode="370100" data-date="2026-10-03">
+                    <div class="weather-city">济南</div>
+                    <div class="weather-date">10/03 周六</div>
+                    <div class="weather-icon">⛅</div>
+                    <div class="weather-temp">16~25°C</div>
+                    <div class="weather-desc">多云</div>
+                </div>
+                <div class="weather-day" data-adcode="370100" data-date="2026-10-04">
+                    <div class="weather-city">济南</div>
+                    <div class="weather-date">10/04 周日</div>
+                    <div class="weather-icon">🌤️</div>
+                    <div class="weather-temp">15~24°C</div>
+                    <div class="weather-desc">晴间多云</div>
+                </div>
+            </div>
+            <div class="weather-note">⚠️ 距出发还有 30 天，超出 7 天预报范围；以上为济南<b>常年 10 月上旬气候参考值</b>，10 月济南昼夜温差可达 10℃，早晚要带外套。</div>
+            <div style="font-size:.7rem;color:var(--text-faint);margin-top:8px;line-height:1.6">10 月上旬济南常年 15-26°C，昼夜温差 8-10°C，早晚加件薄外套。10/05-10/07 出发前再看一次预报。</div>
+        </div>
+
+        <!-- Day Tabs -->
+        <div class="day-tabs">
+            <div class="day-tab active" onclick="switchDay(1,'c')">Day1 · 10/01 老城泉水</div>
+            <div class="day-tab" onclick="switchDay(2,'c')">Day2 · 10/02 九如山</div>
+            <div class="day-tab" onclick="switchDay(3,'c')">Day3 · 10/03 青铜山大峡谷</div>
+            <div class="day-tab" onclick="switchDay(4,'c')">Day4 · 10/04 柳埠四门塔</div>
+        </div>
+
+        <!-- ============ C · Day 1 ============ -->
+        <div class="day-content active" id="c-day1">
+            <div class="timeline-card" data-cat="交通" data-lat="36.6699" data-lng="117.0127">
+                <div class="card-header"><div class="card-time">07:30 出门</div><div class="card-cat" data-cat="交通">交通</div></div>
+                <div class="card-title">制锦市出发 · 步行就到</div>
+                <div class="card-subtitle">到五龙潭步行约 10 分钟 · 或骑共享单车 4 分钟</div>
+                <div class="card-desc">方案 C 最大的福利：出门就是景区。家在制锦市，到五龙潭 1.2km，步行 10 分钟、骑车 4 分钟，<b>不用开车、不用找车位、不用赶车次</b>。7 点半出门，8 点前进五龙潭——国庆期间这是全天最舒服的两小时。</div>
+                <div class="card-tags"><span class="tag">步行 10 分钟</span><span class="tag">零通勤成本</span><span class="tag good">7:30 出门</span></div>
+            </div>
+
+            <div class="timeline-card" data-cat="景点" data-lat="36.666" data-lng="117.0147">
+                <div class="card-header"><div class="card-time">08:00 - 08:50</div><div class="card-cat" data-cat="景点">景点</div></div>
+                <div class="card-title">五龙潭公园</div>
+                <div class="card-subtitle">免费 · 7:00 开园 · 27 处泉池</div>
+                <div class="card-desc">济南最被低估的免费名泉园。五龙戏水、古温泉、月牙泉（"月牙飞瀑"是济南七十二泉里最有意思的一处），园子不大但泉水密度极高。<b>7 点开园就进，8 点前人极少</b>，等 9 点后乌泱泱的团客就到了。</div>
+                <div class="card-tags"><span class="tag">免费</span><span class="tag">月牙飞瀑</span><span class="tag crowd1" title="早起 + 园子小，8 点前很从容">🟢 8 点前从容</span></div>
+            </div>
+
+            <div class="timeline-card highlight" data-cat="景点" data-lat="36.6608" data-lng="117.0154">
+                <div class="card-header"><div class="card-time">09:00 - 10:30</div><div class="card-cat" data-cat="景点">景点</div></div>
+                <div class="card-title">趵突泉公园</div>
+                <div class="card-subtitle">¥40 / 人 · 学生半价 · 7:00-19:00</div>
+                <div class="card-desc">天下第一泉，三股水从池底腾空。李清照纪念堂、万竹园、漱玉泉都在园内。<b>国庆这里是全济南人最多的地方，务必 9 点前进园</b>——10 点后从南门进要排 20 分钟，观澜亭前根本挤不进去。</div>
+                <div class="card-tags"><span class="tag">¥40</span><span class="tag">三股水</span><span class="tag">李清照纪念堂</span><span class="tag crowd3" title="10:00-16:00 全济南人最多">🔴 必须早进</span></div>
+                <div class="card-note planb">🅱️ <b>Plan B：</b>南门排队太长就走<b>北门 / 东门</b>，人少一半。实在挤就改天再来——方案 C 的优势就是随时能改。</div>
+            </div>
+
+            <div class="timeline-card" data-cat="景点" data-lat="36.6611" data-lng="117.0220">
+                <div class="card-header"><div class="card-time">10:40 - 11:10</div><div class="card-cat" data-cat="景点">景点</div></div>
+                <div class="card-title">泉城广场</div>
+                <div class="card-subtitle">免费 · 泉标 · 音乐喷泉 10:00/15:00/20:00</div>
+                <div class="card-desc">济南的城市客厅，泉标雕塑正对趵突泉东门。上午 10:00 有一场音乐喷泉（约 25 分钟），看完刚好顺着护城河往黑虎泉走。</div>
+                <div class="card-tags"><span class="tag">免费</span><span class="tag">音乐喷泉</span><span class="tag crowd2" title="广场开阔，但节假日人流集中">🟠 拥挤</span></div>
+            </div>
+
+            <div class="timeline-card key-moment" data-cat="景点" data-lat="36.6630" data-lng="117.0316">
+                <div class="card-header"><div class="card-time">11:20 - 12:00</div><div class="card-cat" data-cat="景点">景点</div></div>
+                <div class="card-title">黑虎泉 · 接一瓶泉水</div>
+                <div class="card-subtitle">免费 · 三虎头喷涌 · 本地人的日常</div>
+                <div class="card-desc">护城河南岸，三股泉水从石雕虎头喷出，声如虎啸。<b>带个空瓶子，这里能直接接泉水喝</b>——清晨水质最好，接回去泡茶是老济南的日常操作。旁边就是解放阁（周二至周日 9:00-17:00 免费登阁）。</div>
+                <div class="card-tags"><span class="tag">免费</span><span class="tag good">可接泉水</span><span class="tag">解放阁免费登</span><span class="tag crowd1" title="沿河步道长，人流分散">🟢 从容</span></div>
+            </div>
+
+            <div class="timeline-card" data-cat="美食" data-lat="36.6637" data-lng="117.0312">
+                <div class="card-header"><div class="card-time">12:10 - 13:30</div><div class="card-cat" data-cat="美食">美食</div></div>
+                <div class="card-title">午餐 · 宽厚里 / 芙蓉街</div>
+                <div class="card-subtitle">人均 ¥40-60 · 油旋、甜沫、把子肉</div>
+                <div class="card-desc">宽厚里离黑虎泉 5 分钟，芙蓉街再往北一点。油旋（济南人的酥皮烧饼）、甜沫（咸味小米粥）、把子肉、草包包子，是本地早午餐的正确打开方式。<b>12 点正是饭点高峰</b>，先取号再逛，或者干脆 11:30 提前吃。</div>
+                <div class="card-tags"><span class="tag">人均¥40-60</span><span class="tag">油旋</span><span class="tag">甜沫</span><span class="tag warn">12 点排队</span></div>
+            </div>
+
+            <div class="timeline-card" data-cat="文化" data-lat="36.6691" data-lng="117.0243">
+                <div class="card-header"><div class="card-time">13:40 - 15:00</div><div class="card-cat" data-cat="文化">文化</div></div>
+                <div class="card-title">曲水亭街 → 百花洲</div>
+                <div class="card-subtitle">免费 · 老济南的"小江南"</div>
+                <div class="card-desc">"家家泉水、户户垂杨"的原型地：一条小溪顺着街边流，两侧是青砖老屋。往北走到百花洲，是济南唯一成片保留的泉畔老街区，比芙蓉街安静十倍。下午在这找个临水的茶馆坐一小时，是方案 C 里最奢侈的时刻。</div>
+                <div class="card-tags"><span class="tag">免费</span><span class="tag">临水茶馆</span><span class="tag good">最出片</span><span class="tag crowd1" title="巷子多，人流分散">🟢 从容</span></div>
+            </div>
+
+            <div class="timeline-card highlight" data-cat="景点" data-lat="36.6749" data-lng="117.0217">
+                <div class="card-header"><div class="card-time">17:30 - 19:30</div><div class="card-cat" data-cat="景点">景点</div></div>
+                <div class="card-title">大明湖 · 超然楼亮灯</div>
+                <div class="card-subtitle">免费 · 18:50 亮灯 · 登楼 ¥40 可选</div>
+                <div class="card-desc">Day1 的收尾。<b>18:50 超然楼准时亮灯</b>，是这两年济南最火的夜景瞬间（2026-03-25 起亮灯时间调整为 18:50，22:00 关）。<b>18:20 前到湖北岸占机位</b>，灯一亮整个楼金碧辉煌。登楼 ¥40/人，不上楼在岸上拍反而更好看。</div>
+                <div class="card-tags"><span class="tag">免费</span><span class="tag">18:50 亮灯</span><span class="tag">登楼¥40</span><span class="tag crowd2" title="亮灯前后 30 分钟北岸站满">🟠 提前 30 分钟占位</span></div>
+                <div class="card-note">💡 中间 15:00-17:30 留了 2.5 小时空白——回趟家歇脚或者去恒隆逛一圈。<b>这是方案 C 的精髓：不用把每分钟排满。</b></div>
+            </div>
+
+            <div class="timeline-card" data-cat="交通" data-lat="36.6699" data-lng="117.0127">
+                <div class="card-header"><div class="card-time">19:40 回家</div><div class="card-cat" data-cat="交通">交通</div></div>
+                <div class="card-title">步行回制锦市</div>
+                <div class="card-subtitle">约 15 分钟 · 或骑共享单车 6 分钟</div>
+                <div class="card-desc">看完美景走回家，全程 1.4km。<b>这一天走下来约 3km、花掉 ¥80（两张趵突泉门票）+ 一顿午饭钱</b>，这就是在家门口旅游的成本。</div>
+                <div class="card-tags"><span class="tag">步行 15 分钟</span><span class="tag good">Day1 门票仅 ¥80</span></div>
+            </div>
+        </div>
+
+        <!-- ============ C · Day 2（南部山区① · 九如山） ============ -->
+        <div class="day-content" id="c-day2">
+            <div class="timeline-card" data-cat="交通" data-lat="36.6699" data-lng="117.0127">
+                <div class="card-header"><div class="card-time">08:30 出发</div><div class="card-cat" data-cat="交通">交通</div></div>
+                <div class="card-title">自驾前往南部山区</div>
+                <div class="card-subtitle">约 40km · 1 小时 · 走二环南路 / 港九路</div>
+                <div class="card-desc">国庆高速免费，但南部山区的省道和景区停车场照样堵。<b>8 点半出发，9 点半前进山</b>，中午以后进山的车能排到山门口。油费 + 停车约 ¥60。</div>
+                <div class="card-tags"><span class="tag">40km/1h</span><span class="tag">油费+停车¥60</span><span class="tag warn">务必早出</span></div>
+            </div>
+
+            <div class="timeline-card highlight" data-cat="景点" data-lat="36.4885" data-lng="117.2982">
+                <div class="card-header"><div class="card-time">09:30 - 14:00</div><div class="card-cat" data-cat="景点">景点</div></div>
+                <div class="card-title">九如山休闲旅游度假区</div>
+                <div class="card-subtitle">¥79 / 人（学生 ¥49）· 8:30-18:00 · 36 平方公里</div>
+                <div class="card-desc">南部山区最大牌的一个：九道峡谷、十几处瀑布群、木屋酒店藏在林子里。主打的是溪流和负氧离子，<b>4.5 小时走完主线刚好</b>。园内有手作体验（口红、香囊、咖啡 ¥29 起），情侣玩比纯看景有意思。</div>
+                <div class="card-tags"><span class="tag">¥79</span><span class="tag">瀑布群</span><span class="tag">手作体验</span><span class="tag crowd2" title="园区大，但入口和摆渡车排队">🟠 建议 9:30 前进</span></div>
+            </div>
+
+            <div class="timeline-card" data-cat="美食" data-lat="36.4885" data-lng="117.2982">
+                <div class="card-header"><div class="card-time">12:00 - 13:00</div><div class="card-cat" data-cat="美食">美食</div></div>
+                <div class="card-title">山里农家乐</div>
+                <div class="card-subtitle">人均 ¥50-70 · 柴火鸡、山野菜、泉水豆腐</div>
+                <div class="card-desc">九如山周边的农家乐基本都不踩雷，柴火炖鸡和泉水豆腐是标配。<b>13:00 后上菜会慢</b>，建议 12 点前点菜。山里气温比市区低 3-5°C，怕冷的带件外套。</div>
+                <div class="card-tags"><span class="tag">人均¥50-70</span><span class="tag">柴火鸡</span><span class="tag">比市区低 3-5°C</span></div>
+            </div>
+
+            <div class="timeline-card" data-cat="景点" data-lat="36.5047" data-lng="117.1606">
+                <div class="card-header"><div class="card-time">14:30 - 17:00</div><div class="card-cat" data-cat="景点">景点</div></div>
+                <div class="card-title">红叶谷（九如山二选一）</div>
+                <div class="card-subtitle">¥75 / 人 · 7:30-17:00 · 距九如山约 20km</div>
+                <div class="card-desc">如果你更想要"秋色"，红叶谷是济南最出名的一个。但要看清时间——见下方红字警告。两个景区<b>不建议同一天都去</b>，都是 4 小时起步，赶场只会两头糟。</div>
+                <div class="card-tags"><span class="tag">¥75</span><span class="tag">二选一</span><span class="tag crowd2" title="10 月中旬后为高峰期">🟠 视季节</span></div>
+                <div class="card-note planb">🅱️ <b>Plan B：</b>体力还行可以加<b>青铜山大峡谷</b>（历城区锦绣川老庄村北，¥99 起，玻璃吊桥 + 高空漂流），但那会是连轴转的一天，不推荐。</div>
+            </div>
+
+            <div style="margin:12px 0;padding:13px 15px;border-radius:11px;background:#fef2f2;border:1px solid #fecaca;font-size:.83rem;color:#7f1d1d;line-height:1.8">
+                ⚠️ <b>10 月上旬红叶还没红——别冲着红叶去。</b>红叶谷的最佳观赏期是 <b>10 月中旬到 11 月中旬</b>，国庆假期叶子基本还是绿的。这趟能看到的是溪流瀑布和山色，期待值调对才不会失望。<b>想看红叶就推到 10/20 之后单独去一天</b>，那才是它最好的时候。
+            </div>
+
+            <div class="timeline-card" data-cat="交通" data-lat="36.6699" data-lng="117.0127">
+                <div class="card-header"><div class="card-time">17:30 - 18:40</div><div class="card-cat" data-cat="交通">交通</div></div>
+                <div class="card-title">返程回家</div>
+                <div class="card-subtitle">避开 16:00-17:00 出山高峰</div>
+                <div class="card-desc">山里的车 16 点开始往外涌，17:30 走反而顺畅些。19 点前到家，晚餐在家吃或者顺路在仲宫吃个农家菜。</div>
+                <div class="card-tags"><span class="tag">40km</span><span class="tag good">19:00 前到家</span></div>
+            </div>
+        </div>
+
+        <!-- ============ C · Day 3（南部山区② · 青铜山大峡谷） ============ -->
+        <div class="day-content" id="c-day3">
+            <div class="timeline-card" data-cat="交通" data-lat="36.6699" data-lng="117.0127">
+                <div class="card-header"><div class="card-time">08:00 出发</div><div class="card-cat" data-cat="交通">交通</div></div>
+                <div class="card-title">自驾前往青铜山大峡谷</div>
+                <div class="card-subtitle">约 30km · 50 分钟 · 省道 103 → 仲宫转 S327</div>
+                <div class="card-desc">10/03 是周六，整个假期人流最大的一天。<b>8 点出发，9 点前到景区停车场</b>，赶第一拨入园；9 点半以后进山的车能从仲宫大桥排到景区门口。油费 + 停车约 ¥60。</div>
+                <div class="card-tags"><span class="tag">30km/50min</span><span class="tag">油费+停车¥60</span><span class="tag warn">周六务必赶早</span></div>
+            </div>
+
+            <div class="timeline-card highlight" data-cat="景点" data-lat="36.5305" data-lng="117.1216">
+                <div class="card-header"><div class="card-time">09:00 - 12:30</div><div class="card-cat" data-cat="景点">景点</div></div>
+                <div class="card-title">青铜山大峡谷</div>
+                <div class="card-subtitle">¥99 / 人（学生 ¥69）· 8:00-18:00 · 2026 年新晋国家 4A</div>
+                <div class="card-desc">南部山区这两年最出圈的一个：<b>齐鲁第一大佛</b>（唐代开凿，高 8 米，全国重点文保）、<b>锦绣宫溶洞</b>（常年恒温 18℃，济南罕见的钟乳石溶洞）、<b>龙宫</b>龙文化主题宫殿、<b>山东首条挂壁玻璃栈道</b>（208 米，悬空百米）。门票含大佛 + 溶洞 + 龙宫 + 玻璃栈道；<b>7D 玻璃吊桥（356 米长、落差 130 米）+ 玻璃滑道套票 ¥167</b>，想要刺激就加钱上套票。</div>
+                <div class="card-tags"><span class="tag">¥99</span><span class="tag">千年大佛</span><span class="tag">18℃溶洞</span><span class="tag">玻璃吊桥¥167套票</span><span class="tag crowd2" title="周六人多，9 点前进园体验最好">🟠 周六赶早</span></div>
+                <div class="card-note good">✅ <b>情侣提示：</b>溶洞里 18℃ 恒温，进洞前把外套带上；吊桥恐高慎选，桥面有 7D 碎裂特效。</div>
+            </div>
+
+            <div class="timeline-card" data-cat="美食" data-lat="36.5305" data-lng="117.1216">
+                <div class="card-header"><div class="card-time">12:40 - 13:40</div><div class="card-cat" data-cat="美食">美食</div></div>
+                <div class="card-title">午餐 · 银河餐厅 / 山下农家乐</div>
+                <div class="card-subtitle">人均 ¥50-70</div>
+                <div class="card-desc">景区里的银河餐厅在溶洞出口附近，走木栈道 15 分钟就到；不赶时间就开去锦绣川边的农家乐，泉水豆腐和炖鸡都地道。饭后沿<b>锦绣川水库环湖路</b>兜一段风再回市区，湖景免费。</div>
+                <div class="card-tags"><span class="tag">人均¥50-70</span><span class="tag">泉水豆腐</span><span class="tag good">环湖路顺路兜风</span></div>
+            </div>
+
+            <div class="timeline-card" data-cat="交通" data-lat="36.6699" data-lng="117.0127">
+                <div class="card-header"><div class="card-time">14:30 到家</div><div class="card-cat" data-cat="交通">交通</div></div>
+                <div class="card-title">回家午休 · 方案 C 的节奏</div>
+                <div class="card-subtitle">14:30-17:00 在家歇着，傍晚自由安排</div>
+                <div class="card-desc">上午山里走了大半天的台阶，下午回家补觉。<b>晚上想出门就在家附近吃个晚饭散个步，不想动就在家躺着</b>——假期第三天，别把自己排崩。</div>
+                <div class="card-tags"><span class="tag">回家午休</span><span class="tag good">错峰出行</span></div>
+            </div>
+        </div>
+
+        <!-- ============ C · Day 4（南部山区③ · 柳埠四门塔+龙门山） ============ -->
+        <div class="day-content" id="c-day4">
+            <div class="timeline-card" data-cat="交通" data-lat="36.6699" data-lng="117.0127">
+                <div class="card-header"><div class="card-time">08:30 出发</div><div class="card-cat" data-cat="交通">交通</div></div>
+                <div class="card-title">自驾前往柳埠</div>
+                <div class="card-subtitle">约 35km · 1 小时 · 全程省道 103 一路向南</div>
+                <div class="card-desc">柳埠是南部山区文化最重的一片：四门塔、千佛崖都在这条山谷里。省道 103 国庆上午车多，<b>还是那句老话，9 点半前进山</b>。油费约 ¥50。</div>
+                <div class="card-tags"><span class="tag">35km/1h</span><span class="tag">油费¥50</span><span class="tag warn">省道车多</span></div>
+            </div>
+
+            <div class="timeline-card highlight" data-cat="文化" data-lat="36.4533" data-lng="117.1358">
+                <div class="card-header"><div class="card-time">09:30 - 12:00</div><div class="card-cat" data-cat="文化">文化</div></div>
+                <div class="card-title">四门塔风景区</div>
+                <div class="card-subtitle">¥40 / 人（优惠票 ¥27）· 8:00-17:00</div>
+                <div class="card-desc"><b>中国现存最古老的石塔</b>——隋代四门塔，与赵州桥同时期的石质建筑，单层方塔、四面各开一门，全国仅此一处。往山上走还有<b>千佛崖隋唐造像</b>、唐代龙虎塔和墓塔林，是济南宗教石刻艺术价值最高的一片。游客不多，山谷里有涌泉和竹林，秋天最好看。</div>
+                <div class="card-tags"><span class="tag">¥40</span><span class="tag">最古老石塔</span><span class="tag">千佛崖造像</span><span class="tag crowd1" title="文化景点，客流温和">🟢 从容</span></div>
+            </div>
+
+            <div class="timeline-card" data-cat="美食" data-lat="36.4533" data-lng="117.1358">
+                <div class="card-header"><div class="card-time">12:10 - 13:20</div><div class="card-cat" data-cat="美食">美食</div></div>
+                <div class="card-title">柳埠农家菜午餐</div>
+                <div class="card-subtitle">人均 ¥40-60 · 山野菜、炖鸡、泉水豆腐</div>
+                <div class="card-desc">S103 沿线全是农家乐，挑人多的进基本不踩雷。柳埠这一片的泉水豆腐和炸花椒芽是特色，人均四五十吃得很扎实。</div>
+                <div class="card-tags"><span class="tag">人均¥40-60</span><span class="tag">农家菜</span><span class="tag">泉水豆腐</span></div>
+            </div>
+
+            <div class="timeline-card" data-cat="景点" data-lat="36.4459" data-lng="117.1836">
+                <div class="card-header"><div class="card-time">13:40 - 16:30</div><div class="card-cat" data-cat="景点">景点</div></div>
+                <div class="card-title">龙门山景区</div>
+                <div class="card-subtitle">¥19.9 起（门市 ¥60）· 距四门塔约 15 分钟车程</div>
+                <div class="card-desc">号称"南山秘境"：济南名泉<b>龙门泉的源头</b>，四条山谷溪水潺潺，山不高、坡不陡，<b>2-3 小时轻松徒步</b>，适合四门塔爬完不想太累的下午。也可以换成<b>药乡国家森林公园</b>（¥40，森林覆盖率 90%，比市区低 8-10℃）。</div>
+                <div class="card-tags"><span class="tag">¥19.9 起</span><span class="tag">泉源谷</span><span class="tag">轻松徒步</span><span class="tag crowd1" title="小众，游客少">🟢 从容</span></div>
+            </div>
+
+            <div class="timeline-card" data-cat="交通" data-lat="36.6699" data-lng="117.0127">
+                <div class="card-header"><div class="card-time">17:00 - 18:10</div><div class="card-cat" data-cat="交通">交通</div></div>
+                <div class="card-title">返程回家</div>
+                <div class="card-subtitle">35km · 避开出山晚高峰</div>
+                <div class="card-desc">柳埠到市区走 S103 原路返回，17 点出发错开 16 点的出山高峰。<b>Day4 门票只花 ¥80（两张四门塔）</b>，龙门山票钱另计。</div>
+                <div class="card-tags"><span class="tag">35km</span><span class="tag good">Day4 门票 ¥80</span></div>
+            </div>
+        </div>
+
+        <!-- ============ C · 留白说明（10/05 - 10/07） ============ -->
+        <div style="margin:16px 0 4px;padding:15px 17px;border-radius:12px;background:#f0fdf4;border:1px solid #bbf7d0">
+            <div style="font-size:.95rem;font-weight:800;color:#065f46;margin-bottom:8px">📅 10/05 - 10/07 · 留白三天，怎么舒服怎么来</div>
+            <div style="font-size:.83rem;color:#065f46;line-height:1.9">
+                四天把济南玩到位，<b>剩下三天不排死</b>——这是在自家门口过节的底气：<br>
+                · <b>什么都不干</b>——睡到自然醒，家附近遛弯喝咖啡，假期本身也需要留白；<br>
+                · <b>加场石崮寨</b>——门票 ¥39.9（刺激套票 ¥89.9：魔毯 + 玻璃吊桥 + 滑道 + 云端漂流），半天搞定，回程顺路看<b>卧虎山水库日落</b>；<br>
+                · <b>换口味去章丘</b>——百脉泉 ¥50 + 明水古城 ¥98，待到 19:30 看泉秀 + 无人机表演，是济南最惊艳的夜；<br>
+                · <b>市区收尾</b>——千佛山晨爬（6:30 前免票）+ 山东博物馆（免费，公众号提前预约）+ 一顿老牌鲁菜收尾；<br>
+                · <b>出城一日</b>——泰安高铁约 20 分钟 / 曲阜 30-40 分钟，人均 +¥200 起。
+            </div>
+        </div>
+    </div>
+
+    <div class="right-panel">
+        <div class="map-container">
+            <div id="map-c"></div>
+            <div class="map-loading-overlay" id="map-loading-c">
+                <div class="map-loading-spinner"></div>
+                <div style="font-size:.8rem;color:#5b6b7c">地图加载中…</div>
+            </div>
+            <div class="map-hint">点击卡片可定位</div>
+            <button class="sat-toggle" id="sat-toggle-c" onclick="toggleSatellite('c')">🛰 卫星</button>
+            <div class="map-legend" id="map-legend-c"></div>
+        </div>
+    </div>
+</div>
+
+<div class="detail-section">
+
+    <!-- C · 门票与预约 -->
+    <div class="section-card">
+        <h2 class="section-title">🎫 方案 C 门票与预约清单</h2>
+        <p class="section-sub">四天只进三次山。正日子需要提前准备的只有两件事：南部山区门票、青铜山套票；留白三天的加场另列在表尾。</p>
+        <table class="budget-table">
+            <tr><th style="width:22%">项目</th><th style="width:14%">价格</th><th style="width:14%">是否必去</th><th>说明</th></tr>
+            <tr><td>五龙潭 / 大明湖 / 黑虎泉 / 曲水亭街 / 百花洲 / 泉城广场</td><td class="num" style="text-align:left"><b style="color:var(--green)">免费</b></td><td>⭐ 必去</td><td>Day1 主线，走完约 3km，一张票都不用买</td></tr>
+            <tr><td>趵突泉</td><td class="num" style="text-align:left">¥40</td><td>⭐ 必去</td><td>学生半价 ¥20；60 岁以上、军人、残疾人等凭证件免费</td></tr>
+            <tr><td>大明湖 · 超然楼登楼</td><td class="num" style="text-align:left">¥40</td><td>可选</td><td>不登楼也能拍亮灯全景，岸上角度更好</td></tr>
+            <tr><td>九如山</td><td class="num" style="text-align:left">¥79</td><td>⭐ 必去</td><td>学生 ¥49；手作体验 ¥29 起；与红叶谷二选一</td></tr>
+            <tr><td>红叶谷</td><td class="num" style="text-align:left">¥75</td><td>二选一</td><td>学生 ¥35.9；<b>红叶最佳期 10 月中旬-11 月中旬</b>，国庆上旬叶子还绿</td></tr>
+            <tr><td>青铜山大峡谷</td><td class="num" style="text-align:left">¥99</td><td>⭐ 必去</td><td>学生 ¥69；门票含大佛+溶洞+龙宫+玻璃栈道；<b>7D 玻璃吊桥+玻璃滑道套票 ¥167</b></td></tr>
+            <tr><td>四门塔</td><td class="num" style="text-align:left">¥40</td><td>⭐ 必去</td><td>优惠票 ¥27；中国现存最古老石塔 + 千佛崖造像</td></tr>
+            <tr><td>龙门山 / 药乡森林公园</td><td class="num" style="text-align:left">¥19.9 起 / ¥40</td><td>推荐</td><td>Day4 下午二选一，都是轻量徒步</td></tr>
+            <tr><td>石崮寨（留白加场）</td><td class="num" style="text-align:left">¥39.9</td><td>可选</td><td>刺激套票 ¥89.9（魔毯+玻璃吊桥+滑道+云端漂流）；回程顺路卧虎山水库日落</td></tr>
+            <tr><td>百脉泉 / 明水古城（留白加场）</td><td class="num" style="text-align:left">¥50 / ¥98</td><td>可选</td><td>章丘一日；明水古城含 19:30 泉秀 + 无人机表演；摇橹船 ¥60 可选</td></tr>
+            <tr><td>千佛山 / 山东博物馆 / 山东美术馆（留白加场）</td><td class="num" style="text-align:left"><b style="color:var(--green)">免费</b></td><td>可选</td><td>千佛山<b>早 6:30 前免票</b>；省博必须公众号预约；美术馆免约</td></tr>
+            <tr><td>朱家峪（留白加场）</td><td class="num" style="text-align:left">¥38</td><td>可选</td><td>学生 ¥18-20；600 年石头古村落，闯关东取景地</td></tr>
+            <tr><td>方特东方神画 / 济南野生动物世界</td><td class="num" style="text-align:left">¥199 / ¥155</td><td>可选</td><td>大学生 ¥99.9 / ¥59.9；留白最后一天想玩乐园再考虑</td></tr>
+        </table>
+        <div style="margin-top:16px;padding:14px 16px;border-radius:10px;background:#ecfdf5;border-left:3px solid var(--green);font-size:.83rem;color:#065f46;line-height:1.7">
+            <b>📅 两件要提前做的事：</b><br>
+            ① <b>南部山区门票</b>——九如山 / 青铜山大峡谷 / 龙门山提前一天在美团 / 携程买，能省 ¥5-20 且不用窗口排队；青铜山想玩玻璃吊桥直接买 ¥167 套票。<br>
+            ② <b>留白加场的票</b>——省博（公众号预约，提前 1-2 天）、明水古城（携程/美团 ¥98，有时 ¥88）按当天计划再买，不用现在下手。
+        </div>
+    </div>
+
+    <!-- C · 预算 -->
+    <div class="section-card">
+        <h2 class="section-title">💰 方案 C 预算明细 · 两人 4 天</h2>
+        <p class="section-sub">住自己家是最大的省钱项——最贵的一笔钱直接消失。正日子 4 天，留白 3 天基本只花饭钱。</p>
+        <table class="budget-table">
+            <tr><th style="width:16%">类别</th><th>项目</th><th style="width:20%">单价</th><th style="width:14%" class="num">小计</th></tr>
+            <tr><td rowspan="4">🎫 门票</td><td>Day1 趵突泉 + 超然楼登楼</td><td>(¥40 + ¥40) × 2 人</td><td class="num">¥160</td></tr>
+            <tr><td>Day2 九如山</td><td>¥79 × 2 人</td><td class="num">¥158</td></tr>
+            <tr><td>Day3 青铜山大峡谷</td><td>¥99 × 2 人</td><td class="num">¥198</td></tr>
+            <tr><td>Day4 四门塔（龙门山 ¥19.9 可选另计）</td><td>¥40 × 2 人</td><td class="num">¥80</td></tr>
+            <tr class="subtotal"><td colspan="2">门票小计</td><td class="num"></td><td class="num">¥596</td></tr>
+
+            <tr><td>🏨 住宿</td><td>住自己家</td><td>¥0</td><td class="num">¥0</td></tr>
+            <tr class="subtotal"><td colspan="2">住宿小计</td><td class="num"></td><td class="num">¥0</td></tr>
+
+            <tr><td>🚗 交通</td><td>油费 + 停车（南部山区三趟）+ 市区地铁公交</td><td>—</td><td class="num">¥360</td></tr>
+            <tr class="subtotal"><td colspan="2">交通小计</td><td class="num"></td><td class="num">¥360</td></tr>
+
+            <tr><td>🍜 餐饮</td><td>4 天 × 2 人（早餐在家，含 10/04 晚鲁菜收尾 ¥200）</td><td>¥80 / 人 / 天</td><td class="num">¥640</td></tr>
+            <tr><td>🎁 其他</td><td>零食饮料、停车零钱、机动备用</td><td>—</td><td class="num">¥100</td></tr>
+            <tr class="total"><td colspan="3">合计（两人 4 天）</td><td class="num">¥1,696</td></tr>
+            <tr class="total"><td colspan="3">人均 / 人均每天</td><td class="num">¥848 / ¥212</td></tr>
+        </table>
+        <div style="margin-top:16px;padding:14px 16px;border-radius:10px;background:#fff7ed;border-left:3px solid var(--orange);font-size:.83rem;color:#7c2d12;line-height:1.65">
+            <b>💱 三档预算：</b><br>
+            ① <b>抠门版 ≈ ¥1,300</b>——砍掉青铜山大峡谷（换锦绣川水库环湖 + 门牙村农家乐）+ 超然楼不登楼 + 龙门山不进，门票压到 ¥320 以内；<br>
+            ② <b>标准版 ¥1,696</b>——就是上面这张表，该看的都看了；<br>
+            ③ <b>豪华版 ≈ ¥2,300</b>——标准版 + 留白加场石崮寨套票（¥180）+ 青铜山升级套票（+¥136）+ 九如山手作体验（¥58 起）。<br>
+            <b>对照方案 A：</b>同样是国庆假期，方案 A 两人 ¥4,996 玩 5 天，方案 C 两人 ¥1,696 玩 4 天 + 3 天留白——<b>省下的 ¥3,300 够再安排一次周边短途</b>。
+        </div>
+    </div>
+
+    <!-- C · 避坑 -->
+    <div class="section-card">
+        <h2 class="section-title">⚠️ 方案 C 避坑指南</h2>
+        <p class="section-sub">在家门口也会踩坑——这几个是本地人最容易翻车的地方。</p>
+        <div class="tips-grid">
+            <div class="tips-box bad">
+                <h4>❌ 别这么干</h4>
+                <ul>
+                    <li><b>别 10 点后去趵突泉</b>——全济南人最多的地方，18:00 后进园反而清静</li>
+                    <li><b>别冲着红叶去南部山区</b>——10 月上旬叶子还绿，最佳期在 10 月中下旬</li>
+                    <li><b>别 9 点半后才到青铜山大峡谷</b>——10/03 是周六，停车场一位难求，玻璃吊桥要排长队</li>
+                    <li><b>别中午进山</b>——省道 103 / S327 中午 11 点后开始堵，错峰早出是铁律</li>
+                    <li><b>别把留白三天排满</b>——前四天已经连轴转，留一天什么都不干</li>
+                </ul>
+            </div>
+            <div class="tips-box good">
+                <h4>✅ 这么做更顺</h4>
+                <ul>
+                    <li><b>四天三种山景不重样</b>——瀑布（九如山）→ 溶洞玻璃桥（青铜山）→ 古塔石刻（柳埠），体验完全错开</li>
+                    <li><b>上午出门、下午回家躲太阳</b>——这是住在家里的最大优势，别浪费</li>
+                    <li><b>山里气温低 3-5°C</b>——早晚进山带件外套，溶洞里常年 18℃</li>
+                    <li><b>留白加场优先石崮寨</b>——半天搞定 + 回程顺路卧虎山水库日落，性价比最高</li>
+                    <li><b>累了就砍项目</b>——没有沉没成本，转身就回家</li>
+                </ul>
+            </div>
+        </div>
+        <div style="margin-top:16px;padding:15px 17px;border-radius:12px;background:#f5f3ff;border:1px solid #ddd6fe">
+            <div style="font-size:.95rem;font-weight:800;color:#5b21b6;margin-bottom:8px">🚄 想出城？从留白三天里挑一天加周边（高铁 30 分钟内，人均 +¥200 起）</div>
+            <div style="font-size:.84rem;color:#5b21b6;line-height:1.9">
+                · <b>泰安泰山</b>——济南西→泰安高铁约 20 分钟，红门徒步进山门票约 ¥115。10 月山顶气温比市区低 8-10°C，带厚外套。<br>
+                · <b>曲阜三孔</b>——济南西→曲阜东高铁 30-40 分钟，三孔联票 ¥140，一天来回够用。<br>
+                · <b>淄博</b>——自驾 1.5h，八大局 + 海岱楼，但 6 月刚去过可以直接跳过。<br>
+                <b>做法：</b>从 10/05-10/07 里挑一天当日往返，南部山区的山爬累了就去平地上看看人文，节奏刚好互补。
+            </div>
+        </div>
+    </div>
+
+</div>
+</div>
+
+<!-- ══════════════════ 三方案共享：速览对比 ══════════════════ -->
+<div class="shared-section">
+    <!-- 备选方案 B / C -->
+    <div class="section-card">
+        <h2 class="section-title">🔀 三方案速览对比 · 用哪个页签？</h2>
+        <p class="section-sub">
+            三个方案现在是 <b>顶部三个页签</b>，架构完全平级，随时互切。下面这张表用来快速决定该看哪一个：<b>方案 A</b> 大连 + 烟台跨海五日；<b>方案 B</b> 只飞大连、48 小时来回；<b>方案 C</b> 不出远门，四天扎进南部山区，剩下三天留白。
+            两个方案都不用抢 K286 火车票，也都不用赶 22:50 的夜航船。
+        </p>
+
+        <table class="plan-cmp">
+            <tr>
+                <th>对比项</th>
+                <th>方案 A · 原计划<br><span style="font-weight:400;font-size:.75rem;color:var(--text-light)">大连 + 烟台跨海</span></th>
+                <th class="col-b">方案 B · 只去大连<br><span style="font-weight:400;font-size:.75rem;color:var(--text-light)">2 天 1 晚，飞机往返</span></th>
+                <th class="col-c">方案 C · 济南四日<br><span style="font-weight:400;font-size:.75rem;color:var(--text-light)">南部山区为主 + 3 天留白</span></th>
+            </tr>
+            <tr>
+                <td>占用时间</td>
+                <td>5 天（10/02 - 10/06）</td>
+                <td class="col-b">2 天（10/02 - 10/03）</td>
+                <td class="col-c">4 天（10/01 - 10/04）<br><span style="font-size:.75rem;color:var(--text-light)">10/05-07 留白，累了就撤</span></td>
+            </tr>
+            <tr>
+                <td>大交通</td>
+                <td>飞机 + 轮渡 + 夜车<br>¥2,226</td>
+                <td class="col-b">往返机票<br>¥2,900</td>
+                <td class="col-c">自驾 / 地铁 / 公交<br>¥360</td>
+            </tr>
+            <tr>
+                <td>住宿</td>
+                <td>2 晚酒店 + 钟点房<br>¥640</td>
+                <td class="col-b">1 晚酒店<br>¥260</td>
+                <td class="col-c">住自己家<br><b style="color:var(--green)">¥0</b></td>
+            </tr>
+            <tr>
+                <td>两人合计</td>
+                <td><span class="big">¥4,996</span></td>
+                <td class="col-b"><span class="big">¥4,330</span></td>
+                <td class="col-c"><span class="big g">¥1,696</span><br><span style="font-size:.75rem;color:var(--text-light)">抠门版 ¥1,300 / 豪华版 ¥2,300</span></td>
+            </tr>
+            <tr>
+                <td>人均</td>
+                <td>¥2,498</td>
+                <td class="col-b">¥2,165</td>
+                <td class="col-c"><b style="color:var(--green)">¥848</b></td>
+            </tr>
+            <tr>
+                <td>人均 / 天</td>
+                <td>¥500 · 性价比最高</td>
+                <td class="col-b">¥1,083 · 机票摊薄不够</td>
+                <td class="col-c">¥212 · 压倒性便宜</td>
+            </tr>
+            <tr>
+                <td>体力消耗</td>
+                <td>★★★★☆<br>夜航 + 夜车，全程无整觉</td>
+                <td class="col-b">★★☆☆☆<br>1 个整天 + 2 个半天</td>
+                <td class="col-c">★★☆☆☆<br>山要爬，但每天回家睡自己床</td>
+            </tr>
+            <tr>
+                <td>抢票压力</td>
+                <td>🔴 高<br>9/21 抢 K286 + 盯轮渡放票</td>
+                <td class="col-b">🟠 中<br>只需盯机票</td>
+                <td class="col-c">🟢 零<br>省博提前预约即可</td>
+            </tr>
+            <tr>
+                <td>情绪高点</td>
+                <td>甲板迎海上日出<br>养马岛果冻海</td>
+                <td class="col-b">棒棰岛 + 渔人码头日落<br>莲花山跨海大桥</td>
+                <td class="col-c">九如山瀑布群<br>青铜山溶洞 + 7D 玻璃吊桥</td>
+            </tr>
+        </table>
+
+        <div style="padding:13px 16px;border-radius:11px;background:#f8fafc;border:1px dashed #cbd5e1;font-size:.84rem;line-height:1.8;color:var(--text-light);margin:4px 0 4px">
+            👆 <b>方案 B / C 已经升级成和方案 A 平级的独立页签</b>——点页面顶部的 <b>「🅱 大连 48h」</b> / <b>「🅲 济南四日」</b> 切换器，
+            就能看到各自的专属 banner、天气、逐日时间轴、地图、订票与预算明细，架构和方案 A 完全一致。
+        </div>
+        <div class="decide">
+            <div class="decide-item d1">
+                <span class="d-k">想值回票价</span>
+                假期够 5 天、想留下最难忘的画面 → <b>方案 A</b>。跨渤海夜航看日出 + 养马岛果冻海，是另两个方案给不了的。
+            </div>
+            <div class="decide-item d2">
+                <span class="d-k">只有两三天</span>
+                10/04 之后要上班、或体力不想透支 → <b>方案 B</b>。海滨精华保留，砍掉所有"睡不好的夜晚"。
+            </div>
+            <div class="decide-item d3">
+                <span class="d-k">只想躺平</span>
+                不想抢票、不想挤、预算优先 → <b>方案 C</b>。四天南部山区 + 三天留白，人均 ¥848，随时能回家。
+            </div>
+            <div class="decide-item d4">
+                <span class="d-k">折中玩法</span>
+                <b>C 打底 + 周边一日</b>——中间抽一天高铁去泰安爬泰山或曲阜看三孔，人均多花 ¥200，既出了门又不折腾。
+            </div>
+        </div>
+
+        <p class="src-note">
+            价格核实于 2026-09-01（携程 / 同程公开票务数据）：趵突泉 ¥40、超然楼 ¥40、九如山 ¥79、红叶谷 ¥74.8、青铜山大峡谷 ¥99（玻璃吊桥+滑道套票 ¥167）、四门塔 ¥40、龙门山 ¥19.9 起、石崮寨 ¥39.9（套票 ¥89.9）、明水古城 ¥98、百脉泉 ¥50、朱家峪 ¥38、方特东方神画 ¥199、济南野生动物世界 ¥155；大明湖、五龙潭、黑虎泉、山东博物馆、千佛山早 6:30 前免票。大连→济南航班 1h10m-1h25m，平日 ¥208-610，国庆按 ¥600-900/人估；高铁 G1251 二等座 ¥516.5 / 6h02m。<b>国庆期间票价与班次以实时查询为准。</b>
+        </p>
+    </div>
+</div>
+
 
 <!-- 腾讯地图 -->
 <script>
 const TENCENT_MAP_KEY = 'PBOBZ-S4XEN-YOVFW-STAR3-KJOME-4QBOO';
-var map = null, markers = [], routeLines = [], isSatellite = false, currentDay = 1;
-var highlightMarker = null, highlightLabel = null;
 
-var routes = {
-    1: [{lat:36.6699,lng:117.0127},{lat:36.6861,lng:117.2394},{lat:36.8534,lng:117.2170},{lat:38.9657,lng:121.5386},{lat:38.918,lng:121.623},{lat:38.9180,lng:121.6230},{lat:38.8820,lng:121.6720},{lat:38.8700,lng:121.6800},{lat:38.9300,lng:121.6700}],
-    2: [{lat:38.918,lng:121.623},{lat:38.8700,lng:121.5900},{lat:38.8600,lng:121.6500},{lat:38.8800,lng:121.6100},{lat:39.0200,lng:121.7200},{lat:38.30,lng:121.30},{lat:37.5600,lng:121.3900}],
-    3: [{lat:37.5600,lng:121.3900},{lat:37.5450,lng:121.3930},{lat:37.5450,lng:121.3850},{lat:37.4615,lng:121.6085},{lat:37.4685,lng:121.6125},{lat:37.4645,lng:121.6185}],
-    4: [{lat:37.5450,lng:121.3850},{lat:37.5535,lng:121.3914},{lat:37.5465,lng:121.3885},{lat:37.5385,lng:121.4065},{lat:37.5325,lng:121.4205},{lat:37.5540,lng:121.3880}],
-    5: [{lat:37.5540,lng:121.3880},{lat:36.6814,lng:117.0281},{lat:36.6699,lng:117.0127}]
+/* ══════════════════ 三方案公共配置 ══════════════════ */
+var PLAN_DAYS   = { a:5, b:2, c:4 };
+var PLAN_CENTER = { a:[38.00,121.00], b:[36.75,119.30], c:[36.55,117.15] };
+var PLAN_ZOOM   = { a:7, b:6, c:10 };
+var CAT_COLOR   = {'景点':'#059669','美食':'#e11d48','文化':'#7c3aed','交通':'#4f46e5','住宿':'#ec4899','购物':'#d97706'};
+var dayColors   = {1:'#ea580c',2:'#4f46e5',3:'#0284c7',4:'#059669',5:'#7c3aed',6:'#d97706',7:'#e11d48'};
+
+/* 方案 A 手工校准过的路线（含轮渡航线中点）；方案 B / C 留空 → 自动从当天卡片坐标推导 */
+var PLAN_ROUTES = {
+    a: {
+        1: [{lat:36.6699,lng:117.0127},{lat:36.6861,lng:117.2394},{lat:36.8534,lng:117.2170},{lat:38.9657,lng:121.5386},{lat:38.9180,lng:121.6230},{lat:38.8820,lng:121.6720},{lat:38.8700,lng:121.6800},{lat:38.9300,lng:121.6700}],
+        2: [{lat:38.9180,lng:121.6230},{lat:38.8700,lng:121.5900},{lat:38.8600,lng:121.6500},{lat:38.8800,lng:121.6100},{lat:39.0200,lng:121.7200},{lat:38.30,lng:121.30},{lat:37.5600,lng:121.3900}],
+        3: [{lat:37.5600,lng:121.3900},{lat:37.5450,lng:121.3930},{lat:37.5450,lng:121.3850},{lat:37.4615,lng:121.6085},{lat:37.4685,lng:121.6125},{lat:37.4645,lng:121.6185}],
+        4: [{lat:37.5450,lng:121.3850},{lat:37.5535,lng:121.3914},{lat:37.5465,lng:121.3885},{lat:37.5385,lng:121.4065},{lat:37.5325,lng:121.4205},{lat:37.5540,lng:121.3880}],
+        5: [{lat:37.5540,lng:121.3880},{lat:36.6814,lng:117.0281},{lat:36.6699,lng:117.0127}]
+    },
+    b: {}, c: {}
 };
-var dayColors = {1:'#ea580c',2:'#4f46e5',3:'#0284c7',4:'#059669',5:'#7c3aed'};
 
-function toggleSatellite(){
-    if(!map)return; isSatellite=!isSatellite;
-    map.setMapTypeId(isSatellite?qq.maps.MapTypeId.SATELLITE:qq.maps.MapTypeId.ROADMAP);
-    var b=document.getElementById('sat-toggle'); if(b) b.textContent=isSatellite?'🗺 地图':'🛰 卫星';
-}
+var currentPlan = 'a';
+var maps = { a:null, b:null, c:null };
+var markersMap = { a:[], b:[], c:[] };
+var routeLines = { a:[], b:[], c:[] };
+var satState   = { a:false, b:false, c:false };
+var currentDay = { a:1, b:1, c:1 };
+var hlMarker   = { a:null, b:null, c:null };
+var hlLabel    = { a:null, b:null, c:null };
+var weatherLoaded = { a:false, b:false, c:false };
 
-function switchDay(d){
-    document.querySelectorAll('.day-tab').forEach(function(t,i){t.classList.toggle('active',i===d-1)});
-    for(var i=1;i<=5;i++){var el=document.getElementById('day'+i); if(el) el.classList.toggle('active',i===d);}
-    currentDay=d; if(map) drawRoutes(d);
-}
+var mapApiReady = false, mapApiLoading = false, mapApiFailed = false;
+var apiCallbacks = [];
 
-function loadMap(){
-    var s=document.createElement('script');
-    s.src='https://map.qq.com/api/js?v=2.exp&key='+TENCENT_MAP_KEY+'&callback=onMapLoaded';
-    s.onerror=function(){fallbackMap()}; document.head.appendChild(s);
-}
+function view(p){ return document.querySelector('.plan-view[data-plan="'+p+'"]'); }
+function cards(p){ var v=view(p); return v ? v.querySelectorAll('.timeline-card') : []; }
 
-function onMapLoaded(){
-    var lo=document.getElementById('map-loading'); if(lo) lo.style.display='none';
-    map=new qq.maps.Map(document.getElementById('map'),{center:new qq.maps.LatLng(38.0,121.0),zoom:7});
-    var cc={'景点':'#059669','美食':'#e11d48','文化':'#7c3aed','交通':'#4f46e5','住宿':'#ec4899','购物':'#d97706'};
-    var cards=document.querySelectorAll('.timeline-card');
-    for(var i=0;i<cards.length;i++){(function(card){
-        var la=parseFloat(card.getAttribute('data-lat')),lo2=parseFloat(card.getAttribute('data-lng'));
-        var cat=card.getAttribute('data-cat'),t=card.querySelector('.card-title').textContent;
-        if(!isNaN(la)&&!isNaN(lo2)){
-            var svg='<svg xmlns="http://www.w3.org/2000/svg" width="28" height="36"><circle cx="14" cy="14" r="12" fill="'+(cc[cat]||'#059669')+'" stroke="#fff" stroke-width="2"/><polygon points="14,34 8,24 20,24" fill="'+(cc[cat]||'#059669')+'"/></svg>';
-            var m=new qq.maps.Marker({position:new qq.maps.LatLng(la,lo2),map:map,title:t,
-                icon:new qq.maps.MarkerImage('data:image/svg+xml,'+encodeURIComponent(svg),new qq.maps.Size(28,36),new qq.maps.Point(0,0),new qq.maps.Point(14,36))});
-            markers.push({marker:m,card:card,title:t,lat:la,lng:lo2});
-            qq.maps.event.addListener(m,'click',(function(idx){return function(){highlightCard(idx)}})(markers.length-1));
-        }
-    })(cards[i])}
-    for(var j=0;j<cards.length;j++){(function(card,idx){
-        card.addEventListener('click',function(){
-            var la=parseFloat(card.getAttribute('data-lat')),lo2=parseFloat(card.getAttribute('data-lng'));
-            if(!isNaN(la)&&!isNaN(lo2)){map.setZoom(15);map.panTo(new qq.maps.LatLng(la,lo2));highlightCard(idx)}
-        })
-    })(cards[j],j)}
-    renderLegend(cc);
-    drawRoutes(1);
-}
-
-function renderLegend(cc){
-    var names={'景点':'景点','美食':'美食','文化':'文化','交通':'交通','住宿':'住宿','购物':'购物'};
-    var html='';
-    for(var k in names){ html+='<span class="legend-item"><span class="legend-dot" style="background:'+cc[k]+'"></span>'+names[k]+'</span>'; }
-    var el=document.getElementById('map-legend'); if(el) el.innerHTML=html;
-}
-
-function drawRoutes(day){
-    routeLines.forEach(function(l){l.setMap(null)}); routeLines=[];
-    var pts=routes[day]; if(!pts||pts.length<2)return;
-    var path=pts.map(function(p){return new qq.maps.LatLng(p.lat,p.lng)});
-    var line=new qq.maps.Polyline({path:path,map:map,strokeColor:dayColors[day]||'#ea580c',strokeWeight:3,strokeOpacity:.75,strokeDashStyle:'solid'});
-    routeLines.push(line);
-    var bounds=new qq.maps.LatLngBounds(); path.forEach(function(p){bounds.extend(p)});
-    map.fitBounds(bounds);
-}
-
-function highlightCard(idx){
-    document.querySelectorAll('.timeline-card').forEach(function(c){c.classList.remove('highlight')});
-    var cards=document.querySelectorAll('.timeline-card');
-    if(cards[idx]){cards[idx].classList.add('highlight');cards[idx].scrollIntoView({behavior:'smooth',block:'center'})}
-    if(!map)return;
-    if(highlightMarker){highlightMarker.setMap(null);highlightMarker=null}
-    if(highlightLabel){highlightLabel.setMap(null);highlightLabel=null}
-    var target=null;
-    for(var k=0;k<markers.length;k++){if(markers[k].card===cards[idx]){target=markers[k];break}}
-    if(!target)return;
-    var svg='<svg xmlns="http://www.w3.org/2000/svg" width="44" height="54"><circle cx="22" cy="20" r="16" fill="#ea580c" stroke="#fff" stroke-width="3"/><circle cx="22" cy="20" r="22" fill="none" stroke="#ea580c" stroke-width="2" opacity="0.4"><animate attributeName="r" from="16" to="28" dur="1s" repeatCount="indefinite"/><animate attributeName="opacity" from="0.5" to="0" dur="1s" repeatCount="indefinite"/></circle><polygon points="22,52 12,34 32,34" fill="#ea580c"/></svg>';
-    highlightMarker=new qq.maps.Marker({position:new qq.maps.LatLng(target.lat,target.lng),map:map,title:target.title,zIndex:999,
-        icon:new qq.maps.MarkerImage('data:image/svg+xml,'+encodeURIComponent(svg),new qq.maps.Size(44,54),new qq.maps.Point(0,0),new qq.maps.Point(22,54))});
-    var safeTitle=String(target.title).replace(/[<>&"]/g,'');
-    highlightLabel=new qq.maps.Label({position:new qq.maps.LatLng(target.lat+0.004,target.lng),map:map,
-        content:'<div style="background:rgba(0,0,0,.75);color:#fff;padding:4px 10px;border-radius:6px;font-size:12px;font-weight:600;white-space:nowrap">'+safeTitle+'</div>'});
-}
-
-function fallbackMap(){
-    var lo=document.getElementById('map-loading'); if(lo) lo.style.display='none';
-    document.getElementById('map').innerHTML='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 500" style="width:100%;height:100%;background:#eef4f9">'
-      +'<text x="300" y="60" text-anchor="middle" font-size="15" fill="#64748b">行程示意（地图 API 不可用）</text>'
-      +'<line x1="110" y1="400" x2="250" y2="130" stroke="#ea580c" stroke-width="3"/><text x="100" y="420" font-size="13" fill="#0c4a6e" font-weight="700">济南</text>'
-      +'<line x1="250" y1="130" x2="330" y2="300" stroke="#4f46e5" stroke-width="3" stroke-dasharray="6"/><text x="248" y="120" font-size="13" fill="#0c4a6e" font-weight="700">大连</text>'
-      +'<text x="290" y="215" font-size="11" fill="#4f46e5">🚢 渤海夜航</text>'
-      +'<line x1="330" y1="300" x2="110" y2="400" stroke="#7c3aed" stroke-width="3"/><text x="336" y="300" font-size="13" fill="#b45309" font-weight="700">烟台</text>'
-      +'<circle cx="110" cy="400" r="7" fill="#7c3aed"/><circle cx="250" cy="130" r="7" fill="#ea580c"/><circle cx="330" cy="300" r="7" fill="#4f46e5"/>'
-      +'</svg>';
-}
-
-loadMap();
-
-/* ===== 天气：大连(210200) + 烟台(370600) 分别请求，超出预报范围时用气候参考值 ===== */
-(function(){
-    var ICONS={'晴':'☀️','多云':'⛅','阴':'☁️','小雨':'🌦️','中雨':'🌧️','大雨':'🌧️','暴雨':'🌊','雷阵雨':'⛈️','阵雨':'🌦️','雾':'🌫️','霾':'🌫️','雪':'🌨️'};
-    function getIcon(w){for(var k in ICONS){if(w.indexOf(k)>=0)return ICONS[k];}return '🌤️';}
-    function upd(id,label,info){
-        var el=document.getElementById(id); if(!el||!info)return;
-        var dw=info.day.weather||'',nw=info.night.weather||'';
-        el.querySelector('.weather-icon').textContent=getIcon(dw);
-        el.querySelector('.weather-temp').textContent=info.night.temperature+'~'+info.day.temperature+'°C';
-        el.querySelector('.weather-desc').textContent=(dw===nw)?dw:(dw+'→'+nw);
-        el.querySelector('.weather-date').textContent=label;
+/* ══════════════════ 方案切换 ══════════════════ */
+function switchPlan(p){
+    if(!PLAN_DAYS[p]) return;
+    currentPlan = p;
+    document.querySelectorAll('.ps-tab').forEach(function(t){
+        t.classList.toggle('active', t.getAttribute('data-plan')===p);
+    });
+    document.querySelectorAll('.plan-view').forEach(function(v){
+        v.classList.toggle('active', v.getAttribute('data-plan')===p);
+    });
+    if(maps[p]){
+        resizeMap(p); drawRoutes(currentDay[p], p);
+    } else if(mapApiReady){
+        initMap(p);
+    } else if(!mapApiFailed){
+        loadMapApi(function(){ initMap(p); });
+    } else {
+        fallbackMap(p);
     }
-    function fmtLabel(dt){
-        var p=dt.split('-'), w=['周日','周一','周二','周三','周四','周五','周六'];
-        var d=new Date(dt+'T12:00:00+08:00');
-        return p[1]+'/'+p[2]+' '+w[d.getDay()];
+    if(!weatherLoaded[p]){ loadWeather(p); }
+    var top = document.querySelector('.plan-switch');
+    if(top && window.scrollY > top.offsetTop){
+        window.scrollTo({ top: top.offsetTop - 4, behavior:'smooth' });
+    } else {
+        window.scrollTo({ top:0, behavior:'smooth' });
     }
-    function fetchCity(adcode,dates,ids){
-        var cb='wcb_'+adcode+'_'+Date.now();
-        window[cb]=function(d){
-            try{delete window[cb]}catch(e){}
-            if(d&&d.status===0&&d.result&&d.result.forecast){
-                var infos=d.result.forecast.infos||[];
-                dates.forEach(function(dt,i){
-                    for(var k=0;k<infos.length;k++){ if(infos[k].date===dt){ upd(ids[i],fmtLabel(dt),infos[k]); break; } }
-                });
-                var ue=document.getElementById('weather-update-time');
-                if(ue&&d.result.forecast.update_time) ue.textContent='实时更新于 '+d.result.forecast.update_time;
+}
+
+function resizeMap(p){
+    var m = maps[p]; if(!m) return;
+    try{ qq.maps.event.trigger(m,'resize'); }catch(e){ try{ m.panTo(m.getCenter()); }catch(e2){} }
+}
+
+/* ══════════════════ Day 切换（按方案作用域） ══════════════════ */
+function switchDay(d, p){
+    p = p || currentPlan;
+    var v = view(p); if(!v) return;
+    v.querySelectorAll('.day-tab').forEach(function(t,i){ t.classList.toggle('active', i===d-1); });
+    for(var i=1;i<=PLAN_DAYS[p];i++){
+        var el = document.getElementById(p+'-day'+i);
+        if(el) el.classList.toggle('active', i===d);
+    }
+    currentDay[p] = d;
+    if(maps[p]) drawRoutes(d, p);
+}
+
+/* ══════════════════ 地图 API 加载（只加载一次） ══════════════════ */
+function loadMapApi(cb){
+    if(cb) apiCallbacks.push(cb);
+    if(mapApiReady){ flushApi(); return; }
+    if(mapApiLoading || mapApiFailed) return;
+    mapApiLoading = true;
+    var s = document.createElement('script');
+    s.src = 'https://map.qq.com/api/js?v=2.exp&key=' + TENCENT_MAP_KEY + '&callback=onMapApiReady';
+    s.onerror = function(){ mapApiFailed = true; fallbackMap('a'); };
+    document.head.appendChild(s);
+}
+function onMapApiReady(){
+    mapApiReady = true; mapApiLoading = false;
+    flushApi();
+}
+function flushApi(){
+    var list = apiCallbacks.slice(); apiCallbacks = [];
+    list.forEach(function(f){ try{ f(); }catch(e){} });
+}
+
+/* ══════════════════ 初始化某个方案的地图 ══════════════════ */
+function initMap(p){
+    if(maps[p]) return;
+    var el = document.getElementById('map-'+p);
+    if(!el) return;
+    var c = PLAN_CENTER[p];
+    try{
+        maps[p] = new qq.maps.Map(el, { center:new qq.maps.LatLng(c[0], c[1]), zoom:PLAN_ZOOM[p] });
+    }catch(e){ fallbackMap(p); return; }
+    var lo = document.getElementById('map-loading-'+p); if(lo) lo.style.display='none';
+    bindCards(p);
+    renderLegend(p);
+    drawRoutes(currentDay[p], p);
+}
+
+function bindCards(p){
+    var list = cards(p);
+    for(var i=0;i<list.length;i++){
+        (function(card, idx){
+            var la = parseFloat(card.getAttribute('data-lat'));
+            var ln = parseFloat(card.getAttribute('data-lng'));
+            if(isNaN(la) || isNaN(ln)) return;
+            var cat = card.getAttribute('data-cat') || '景点';
+            var tEl = card.querySelector('.card-title');
+            var t = tEl ? tEl.textContent : '';
+            var color = CAT_COLOR[cat] || '#059669';
+            var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="28" height="36">'
+                    + '<circle cx="14" cy="14" r="12" fill="'+color+'" stroke="#fff" stroke-width="2"/>'
+                    + '<polygon points="14,34 8,24 20,24" fill="'+color+'"/></svg>';
+            var m = new qq.maps.Marker({
+                position:new qq.maps.LatLng(la,ln), map:maps[p], title:t,
+                icon:new qq.maps.MarkerImage('data:image/svg+xml,'+encodeURIComponent(svg),
+                    new qq.maps.Size(28,36), new qq.maps.Point(0,0), new qq.maps.Point(14,36))
+            });
+            markersMap[p].push({ marker:m, card:card, title:t, lat:la, lng:ln, plan:p });
+            qq.maps.event.addListener(m,'click', function(){ highlightCard(idx, p); });
+            card.addEventListener('click', function(){
+                var mp = maps[p]; if(!mp) return;
+                mp.setZoom(15); mp.panTo(new qq.maps.LatLng(la,ln));
+                highlightCard(idx, p);
+            });
+        })(list[i], i);
+    }
+}
+
+function renderLegend(p){
+    var el = document.getElementById('map-legend-'+p); if(!el) return;
+    var html = '';
+    for(var k in CAT_COLOR){
+        html += '<span class="legend-item"><span class="legend-dot" style="background:'+CAT_COLOR[k]+'"></span>'+k+'</span>';
+    }
+    el.innerHTML = html;
+}
+
+/* ══════════════════ 路线：优先手工路线，否则从当天卡片推导 ══════════════════ */
+function getRoutePoints(p, day){
+    if(PLAN_ROUTES[p] && PLAN_ROUTES[p][day]) return PLAN_ROUTES[p][day];
+    var dc = document.getElementById(p+'-day'+day);
+    if(!dc) return null;
+    var out = [], seen = {};
+    dc.querySelectorAll('.timeline-card').forEach(function(c){
+        var la = parseFloat(c.getAttribute('data-lat'));
+        var ln = parseFloat(c.getAttribute('data-lng'));
+        if(isNaN(la) || isNaN(ln)) return;
+        var key = la.toFixed(4)+','+ln.toFixed(4);
+        if(seen[key]) return;
+        seen[key] = 1; out.push({lat:la, lng:ln});
+    });
+    return out;
+}
+
+function drawRoutes(day, p){
+    p = p || currentPlan;
+    var m = maps[p]; if(!m) return;
+    routeLines[p].forEach(function(l){ l.setMap(null); });
+    routeLines[p] = [];
+    var pts = getRoutePoints(p, day);
+    if(!pts || pts.length < 2) return;
+    var path = pts.map(function(x){ return new qq.maps.LatLng(x.lat, x.lng); });
+    routeLines[p].push(new qq.maps.Polyline({
+        path:path, map:m, strokeColor:dayColors[day] || '#ea580c',
+        strokeWeight:3, strokeOpacity:.75, strokeDashStyle:'solid'
+    }));
+    var b = new qq.maps.LatLngBounds();
+    path.forEach(function(x){ b.extend(x); });
+    m.fitBounds(b);
+}
+
+/* ══════════════════ 卡片高亮 ══════════════════ */
+function highlightCard(idx, p){
+    p = p || currentPlan;
+    var list = cards(p);
+    list.forEach(function(c){ c.classList.remove('highlight'); });
+    var card = list[idx]; if(!card) return;
+    card.classList.add('highlight');
+    card.scrollIntoView({ behavior:'smooth', block:'center' });
+    var m = maps[p]; if(!m) return;
+    if(hlMarker[p]){ hlMarker[p].setMap(null); hlMarker[p]=null; }
+    if(hlLabel[p]){ hlLabel[p].setMap(null); hlLabel[p]=null; }
+    var target = null;
+    for(var k=0;k<markersMap[p].length;k++){
+        if(markersMap[p][k].card === card){ target = markersMap[p][k]; break; }
+    }
+    if(!target) return;
+    var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="44" height="54">'
+            + '<circle cx="22" cy="20" r="16" fill="#ea580c" stroke="#fff" stroke-width="3"/>'
+            + '<circle cx="22" cy="20" r="22" fill="none" stroke="#ea580c" stroke-width="2" opacity="0.4">'
+            +   '<animate attributeName="r" from="16" to="28" dur="1s" repeatCount="indefinite"/>'
+            +   '<animate attributeName="opacity" from="0.5" to="0" dur="1s" repeatCount="indefinite"/>'
+            + '</circle><polygon points="22,52 12,34 32,34" fill="#ea580c"/></svg>';
+    hlMarker[p] = new qq.maps.Marker({
+        position:new qq.maps.LatLng(target.lat, target.lng), map:m, title:target.title, zIndex:999,
+        icon:new qq.maps.MarkerImage('data:image/svg+xml,'+encodeURIComponent(svg),
+            new qq.maps.Size(44,54), new qq.maps.Point(0,0), new qq.maps.Point(22,54))
+    });
+    var safeTitle = String(target.title).replace(/[<>&"]/g,'');
+    hlLabel[p] = new qq.maps.Label({
+        position:new qq.maps.LatLng(target.lat+0.004, target.lng), map:m,
+        content:'<div style="background:rgba(0,0,0,.75);color:#fff;padding:4px 10px;border-radius:6px;font-size:12px;font-weight:600;white-space:nowrap">'+safeTitle+'</div>'
+    });
+}
+
+/* ══════════════════ 卫星 / 地图切换 ══════════════════ */
+function toggleSatellite(p){
+    p = p || currentPlan;
+    var m = maps[p]; if(!m) return;
+    satState[p] = !satState[p];
+    m.setMapTypeId(satState[p] ? qq.maps.MapTypeId.SATELLITE : qq.maps.MapTypeId.ROADMAP);
+    var b = document.getElementById('sat-toggle-'+p);
+    if(b) b.textContent = satState[p] ? '🗺 地图' : '🛰 卫星';
+}
+
+/* ══════════════════ 地图不可用时的降级示意图 ══════════════════ */
+function fallbackMap(p){
+    var lo = document.getElementById('map-loading-'+p); if(lo) lo.style.display='none';
+    var el = document.getElementById('map-'+p); if(!el) return;
+    var svg;
+    if(p === 'a'){
+        svg = '<text x="300" y="60" text-anchor="middle" font-size="15" fill="#64748b">大连 · 烟台 行程示意（地图 API 不可用）</text>'
+            + '<line x1="110" y1="400" x2="250" y2="130" stroke="#ea580c" stroke-width="3"/><text x="100" y="420" font-size="13" fill="#0c4a6e" font-weight="700">济南</text>'
+            + '<line x1="250" y1="130" x2="330" y2="300" stroke="#4f46e5" stroke-width="3" stroke-dasharray="6"/><text x="248" y="120" font-size="13" fill="#0c4a6e" font-weight="700">大连</text>'
+            + '<text x="290" y="215" font-size="11" fill="#4f46e5">🚢 渤海夜航</text>'
+            + '<line x1="330" y1="300" x2="110" y2="400" stroke="#7c3aed" stroke-width="3"/><text x="336" y="300" font-size="13" fill="#b45309" font-weight="700">烟台</text>'
+            + '<circle cx="110" cy="400" r="7" fill="#7c3aed"/><circle cx="250" cy="130" r="7" fill="#ea580c"/><circle cx="330" cy="300" r="7" fill="#4f46e5"/>';
+    } else if(p === 'b'){
+        svg = '<text x="300" y="60" text-anchor="middle" font-size="15" fill="#64748b">大连 48 小时示意（地图 API 不可用）</text>'
+            + '<line x1="120" y1="380" x2="360" y2="140" stroke="#0284c7" stroke-width="3"/><text x="108" y="400" font-size="13" fill="#0c4a6e" font-weight="700">济南遥墙</text>'
+            + '<text x="248" y="215" font-size="11" fill="#0284c7">✈ SC8771 / 9C6596</text>'
+            + '<circle cx="360" cy="140" r="8" fill="#0284c7"/><text x="372" y="132" font-size="13" fill="#0c4a6e" font-weight="700">大连周水子</text>'
+            + '<circle cx="410" cy="205" r="7" fill="#059669"/><text x="422" y="200" font-size="12" fill="#059669">棒棰岛</text>'
+            + '<circle cx="430" cy="290" r="7" fill="#e11d48"/><text x="442" y="286" font-size="12" fill="#e11d48">渔人码头</text>'
+            + '<circle cx="330" cy="250" r="7" fill="#7c3aed"/><text x="290" y="268" font-size="12" fill="#7c3aed">中山广场</text>'
+            + '<circle cx="120" cy="380" r="7" fill="#4f46e5"/>';
+    } else {
+        svg = '<text x="300" y="60" text-anchor="middle" font-size="15" fill="#64748b">济南四日 · 南部山区示意（地图 API 不可用）</text>'
+            + '<circle cx="300" cy="230" r="7" fill="#059669"/><text x="312" y="248" font-size="12" fill="#0c4a6e" font-weight="700">市区泉水圈（Day1 老城）</text>'
+            + '<circle cx="470" cy="150" r="7" fill="#ea580c"/><text x="482" y="146" font-size="12" fill="#ea580c">九如山（Day2）</text>'
+            + '<circle cx="380" cy="330" r="7" fill="#e11d48"/><text x="392" y="348" font-size="12" fill="#e11d48">青铜山大峡谷（Day3）</text>'
+            + '<circle cx="330" cy="430" r="7" fill="#7c3aed"/><text x="342" y="448" font-size="12" fill="#7c3aed">四门塔 · 龙门山（Day4）</text>'
+            + '<circle cx="180" cy="330" r="7" fill="#0284c7"/><text x="192" y="348" font-size="12" fill="#0284c7">石崮寨（留白加场）</text>';
+    }
+    el.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 500" style="width:100%;height:100%;background:#eef4f9">'+svg+'</svg>';
+}
+
+/* ══════════════════ 天气：按方案 / 按 adcode 属性驱动 ══════════════════ */
+var ICONS = {'晴':'☀️','多云':'⛅','阴':'☁️','小雨':'🌦️','中雨':'🌧️','大雨':'🌧️','暴雨':'🌊','雷阵雨':'⛈️','阵雨':'🌦️','雾':'🌫️','霾':'🌫️','雪':'🌨️'};
+function getIcon(w){ for(var k in ICONS){ if(w.indexOf(k) >= 0) return ICONS[k]; } return '🌤️'; }
+function fmtLabel(dt){
+    var p = dt.split('-'), w = ['周日','周一','周二','周三','周四','周五','周六'];
+    var d = new Date(dt + 'T12:00:00+08:00');
+    return p[1] + '/' + p[2] + ' ' + w[d.getDay()];
+}
+function updCell(el, label, info){
+    if(!el || !info) return;
+    var dw = info.day.weather || '', nw = info.night.weather || '';
+    el.querySelector('.weather-icon').textContent = getIcon(dw);
+    el.querySelector('.weather-temp').textContent = info.night.temperature + '~' + info.day.temperature + '°C';
+    el.querySelector('.weather-desc').textContent = (dw === nw) ? dw : (dw + '→' + nw);
+    el.querySelector('.weather-date').textContent = label;
+}
+function fetchCityWeather(adcode, cells, p){
+    var cb = 'wcb_' + adcode + '_' + p + '_' + Date.now();
+    window[cb] = function(d){
+        try{ delete window[cb]; }catch(e){}
+        if(!(d && d.status === 0 && d.result && d.result.forecast)) return;
+        var infos = d.result.forecast.infos || [];
+        cells.forEach(function(cell){
+            var dt = cell.getAttribute('data-date');
+            for(var k=0;k<infos.length;k++){
+                if(infos[k].date === dt){ updCell(cell, fmtLabel(dt), infos[k]); break; }
             }
-        };
-        var s=document.createElement('script');
-        s.src='https://apis.map.qq.com/ws/weather/v1/?key='+TENCENT_MAP_KEY+'&adcode='+adcode+'&type=future&get_md=1&output=jsonp&callback='+cb;
-        s.onerror=function(){try{delete window[cb]}catch(e){}};
-        document.body.appendChild(s);
-        setTimeout(function(){ if(window[cb]){ try{delete window[cb]}catch(e){} } },8000);
-    }
-    // 距出发还有 32 天，超出 7 天预报范围；仍发起请求，命中则覆盖静态气候参考值
-    fetchCity('210200',['2026-10-02','2026-10-03'],['weather-d1','weather-d2']);
-    fetchCity('370600',['2026-10-04','2026-10-05'],['weather-d3','weather-d4']);
-})();
+        });
+        var v = view(p);
+        var ue = v ? v.querySelector('.weather-update-time[data-wtime="'+p+'"]') : null;
+        if(ue && d.result.forecast.update_time) ue.textContent = '实时更新于 ' + d.result.forecast.update_time;
+    };
+    var s = document.createElement('script');
+    s.src = 'https://apis.map.qq.com/ws/weather/v1/?key=' + TENCENT_MAP_KEY
+          + '&adcode=' + adcode + '&type=future&get_md=1&output=jsonp&callback=' + cb;
+    s.onerror = function(){ try{ delete window[cb]; }catch(e){} };
+    document.body.appendChild(s);
+    setTimeout(function(){ if(window[cb]){ try{ delete window[cb]; }catch(e){} } }, 8000);
+}
+function loadWeather(p){
+    if(weatherLoaded[p]) return;
+    weatherLoaded[p] = true;
+    var v = view(p); if(!v) return;
+    var groups = {};
+    v.querySelectorAll('.weather-day[data-adcode]').forEach(function(c){
+        var a = c.getAttribute('data-adcode');
+        (groups[a] = groups[a] || []).push(c);
+    });
+    for(var a in groups){ fetchCityWeather(a, groups[a], p); }
+}
+
+/* ══════════════════ 启动 ══════════════════ */
+loadMapApi(function(){ initMap('a'); });
+loadWeather('a');
+
+window.addEventListener('resize', function(){ resizeMap(currentPlan); });
 </script>
 
 <!-- 携程酒店直达预订：按酒店ID + 日期跳详情页 -->
