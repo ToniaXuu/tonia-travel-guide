@@ -84,27 +84,7 @@ body{
 body{animation:pageEnter .6s ease-out}
 @keyframes pageEnter{from{opacity:0}to{opacity:1}}
 
-/* 页面过渡遮罩 */
-#page-transition{
-    position:fixed;inset:0;z-index:9999;
-    background:radial-gradient(circle at center,rgba(228,240,234,.94),rgba(226,222,238,.96));
-    pointer-events:none;opacity:0;transition:opacity .35s ease;
-    display:flex;align-items:center;justify-content:center;
-}
-#page-transition.active{opacity:1}
-#page-transition .ripple{
-    width:0;height:0;border-radius:50%;
-    background:rgba(255,255,255,.4);
-    position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
-    transition:width .45s cubic-bezier(.26,.53,.74,.98),height .45s cubic-bezier(.26,.53,.74,.98);
-}
-#page-transition.active .ripple{width:120vmax;height:120vmax}
-#page-transition .loading-dots{position:relative;z-index:1;display:flex;gap:9px}
-#page-transition .dot{width:8px;height:8px;border-radius:50%;background:#fff;animation:dotBounce 1.2s ease-in-out infinite}
-#page-transition .dot:nth-child(1){animation-delay:0s;background:var(--teal)}
-#page-transition .dot:nth-child(2){animation-delay:.15s;background:var(--lav)}
-#page-transition .dot:nth-child(3){animation-delay:.3s;background:var(--teal)}
-@keyframes dotBounce{0%,80%,100%{transform:translateY(0)}40%{transform:translateY(-12px)}}
+/* 页面过渡已统一到共享资产的 #loader（纯中心扩散涟漪），此处不再单独实现 */
 
 /* 背景粒子层由 assets/ui.css 的 #fx 提供（全站统一） */
 
@@ -296,9 +276,6 @@ body{animation:pageEnter .6s ease-out}
 [data-theme="dark"] .card-status.past{background:rgba(45,50,58,.9);color:#b9b5ad}
 [data-theme="dark"] .archive-card.past .card-media i{filter:saturate(.6) brightness(.8)}
 [data-theme="dark"] .footer .f-meta a{border-bottom-color:rgba(143,163,184,.35)}
-[data-theme="dark"] #page-transition{
-    background:radial-gradient(circle at center,rgba(24,42,36,.95),rgba(30,28,40,.97));
-}
 [data-theme="dark"] .next-trip{box-shadow:0 8px 30px rgba(0,0,0,.45)}
 [data-theme="dark"] .next-trip:hover{box-shadow:0 14px 44px rgba(0,0,0,.6)}
 
@@ -334,11 +311,7 @@ body{animation:pageEnter .6s ease-out}
 <body>
 
 <canvas id="fx"></canvas>
-<div id="loader"
-     data-title="TONIA'S TRAVEL JOURNAL"
-     data-sub="✈ 旅行手记"
-     data-hints="正在打开手账…|整理旅行档案…|接入实时天气…|校准出发倒计时…|就绪"></div>
-<div id="page-transition"><div class="ripple"></div><div class="loading-dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div></div>
+<div id="loader"></div>
 
 <div class="app">
 
@@ -543,21 +516,13 @@ document.getElementById('year-tabs').addEventListener('click',function(e){
     });
 })();
 
-// ========== 页面过渡动画 ==========
-var transition=document.getElementById('page-transition');
+// ========== 页面跳转：统一走共享资产的涟漪离场效果 ==========
+// 入场与离场共用同一套视觉（#loader 的中心扩散涟漪），不再有第二套过渡
 function navigateTo(e,url){
-    e.preventDefault();
-    transition.classList.add('active');
-    setTimeout(function(){window.location.href=url},350);
+    if(e&&e.preventDefault)e.preventDefault();
+    if(window.TG&&TG.exitTo){TG.exitTo(url);}else{window.location.href=url;}
     return false;
 }
-// 从子页面返回时检测 referrer
-(function(){
-    if(document.referrer&&(document.referrer.includes('yantai')||document.referrer.includes('zibo')||document.referrer.includes('dalian'))){
-        transition.classList.add('active');
-        setTimeout(function(){transition.classList.remove('active')},100);
-    }
-})();
 
 // ========== NEXT TRIP 倒计时（天 / 时 / 分） ==========
 (function(){

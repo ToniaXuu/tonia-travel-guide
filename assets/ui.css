@@ -112,39 +112,57 @@ body{
 /* ══════════════ 粒子画布（全屏背景，canvas#fx） ══════════════ */
 #fx{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;display:block}
 
-/* ══════════════ 加载遮罩 ══════════════ */
+/* ══════════════ 加载遮罩（全站唯一 · 纯中心扩散涟漪） ══════════════
+   无百分比、无文字、无进度条、无跳点 —— 只有一圈从中心向外扩散的涟漪。
+   入场：底盘即满屏覆盖（不闪内容），涟漪在中心循环扩散。
+   离场：底盘由中心扩散到满屏（翻页感），到达后跳转。
+   ────────────────────────────────────────────────────────────── */
 #loader{
-    position:fixed;inset:0;z-index:9000;display:flex;flex-direction:column;
-    align-items:center;justify-content:center;gap:26px;
-    background:radial-gradient(ellipse at 50% 34%,#12304d 0%,#0a1d2f 52%,#060f1a 100%);
-    transition:opacity .6s ease,visibility .6s ease;
+    position:fixed;inset:0;z-index:9000;overflow:hidden;
+    display:grid;place-items:center;pointer-events:none;
+    transition:opacity .42s ease,visibility .42s ease;
 }
 #loader.done{opacity:0;visibility:hidden}
-.ld-mark{position:relative;width:88px;height:88px;display:grid;place-items:center}
-.ld-ring{position:absolute;inset:0;border-radius:50%;border:2px solid rgba(255,255,255,.09)}
-.ld-ring.arc{
-    border-color:transparent;border-top-color:#38bdf8;border-right-color:#38bdf8;
-    animation:ldSpin 1.05s cubic-bezier(.5,.15,.5,.85) infinite;
+#loader.done .ld-wave{animation:none}
+
+/* 覆盖底盘 */
+#loader .ld-disc{
+    position:absolute;top:50%;left:50%;
+    width:170vmax;height:170vmax;border-radius:50%;
+    transform:translate(-50%,-50%) scale(1);
+    background:var(--bg);
 }
-.ld-ring.arc2{
-    inset:11px;border-color:transparent;border-bottom-color:#7dd3fc;
-    animation:ldSpin 1.5s linear infinite reverse;opacity:.7;
+/* 离场：先把底盘缩到 0（无过渡，避免看到"先缩小"的错觉） */
+#loader.leaving{
+    opacity:1;visibility:visible;transition:none;   /* 立即实心，不要先淡入一次 */
 }
-@keyframes ldSpin{to{transform:rotate(360deg)}}
-.ld-pct{font-size:1.02rem;font-weight:800;color:#e6f3ff;font-variant-numeric:tabular-nums;letter-spacing:.5px}
-.ld-title{
-    font-size:.9rem;letter-spacing:5px;color:rgba(226,240,255,.82);font-weight:600;
-    text-align:center;padding:0 24px;
+#loader.leaving .ld-disc{
+    transform:translate(-50%,-50%) scale(0);
+    transition:none;
 }
-.ld-sub{font-size:.7rem;letter-spacing:2.5px;color:rgba(160,196,228,.6);margin-top:-16px}
-.ld-bar{width:min(300px,60vw);height:3px;border-radius:2px;background:rgba(255,255,255,.1);overflow:hidden}
-.ld-bar i{
-    display:block;height:100%;width:0;border-radius:2px;
-    background:linear-gradient(90deg,#0ea5e9,#38bdf8 55%,#a5e8ff);
-    box-shadow:0 0 12px rgba(56,189,248,.7);
-    transition:width .32s cubic-bezier(.3,.8,.4,1);
+/* 再扩散到满屏（时长与 ui.js 里的跳转延时对齐） */
+#loader.leaving.grow .ld-disc{
+    transform:translate(-50%,-50%) scale(1);
+    transition:transform .56s cubic-bezier(.32,.72,.24,1);
 }
-.ld-hint{font-size:.7rem;color:rgba(150,186,216,.55);letter-spacing:1px;height:1em}
+
+/* 向外扩散的涟漪环（三圈错峰）
+   用 width/height 而非 transform:scale —— scale 会把 2px 描边等比放大到十几像素，
+   这里保证环在任何半径下都保持同一粗细 */
+#loader .ld-wave{
+    position:absolute;top:50%;left:50%;
+    width:26px;height:26px;box-sizing:border-box;
+    border-radius:50%;border:2px solid var(--accent);
+    transform:translate(-50%,-50%);
+    opacity:0;animation:ldWave 1.7s cubic-bezier(.2,.55,.3,1) infinite;
+}
+#loader .ld-wave + .ld-wave{animation-delay:.57s}
+#loader .ld-wave + .ld-wave + .ld-wave{animation-delay:1.14s}
+@keyframes ldWave{
+    0%  {width:26px;height:26px;opacity:.55}
+    60% {opacity:.14}
+    100%{width:820px;height:820px;opacity:0}
+}
 
 /* 首屏内容入场 */
 .stage-in{animation:stageIn .62s cubic-bezier(.22,.86,.34,1) both}

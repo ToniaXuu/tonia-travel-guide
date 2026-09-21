@@ -337,19 +337,8 @@
 <!-- 增强版粒子背景（Canvas，支持鼠标交互） -->
 <canvas id="fx" aria-hidden="true"></canvas>
 
-<!-- 首屏加载遮罩 -->
-<div id="loader" role="status" aria-live="polite">
-    <div class="ld-mark">
-        <span class="ld-ring"></span>
-        <span class="ld-ring arc"></span>
-        <span class="ld-ring arc2"></span>
-    </div>
-    <div class="ld-pct" data-ld-pct>0%</div>
-    <div class="ld-title">大连 · 夜航跨海四日</div>
-    <div class="ld-sub">DALIAN → YANTAI → JINAN</div>
-    <div class="ld-bar"><i data-ld-bar></i></div>
-    <div class="ld-hint" data-ld-hint>正在准备行程…</div>
-</div>
+<!-- 首屏加载遮罩（内容由 assets/ui.js 统一注入） -->
+<div id="loader" role="status" aria-live="polite"></div>
 
 <div class="app">
 <aside class="rail">

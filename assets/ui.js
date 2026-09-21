@@ -3,7 +3,7 @@
    ---------------------------------------------------------------
    ① 主题管理：手动浅色 / 手动深色 / 自定义时段（支持跨零点）/ 跟随系统
    ② 增强粒子背景：鼠标斥力 + 光标光晕 + 点击涟漪冲击波
-   ③ 首屏加载动画（自动填充 #loader 内容）
+   ③ 首屏加载动画：纯中心扩散涟漪（无文字/百分比），内容自动注入
    ④ 左侧导航交互：方案页签切换（data-plan）/ 章节锚点滚动（data-target）
 
    页面只需放好 DOM 骨架，行为全部由本文件接管：
@@ -13,6 +13,7 @@
 
    对外 API（window.TG）：
      TG.loaderDone()      提前结束加载动画（如等地图就绪后）
+     TG.exitTo(url)       离场：涟漪扩散铺满全屏后跳转（页内跳转统一走这个）
      TG.setTheme(mode)    代码方式切换主题
      TG.theme             当前生效的 'light' | 'dark'
    派发事件：
@@ -415,66 +416,30 @@
     }
 
     /* ══════════════════════════════════════════════════════════
-       ③ 首屏加载动画
+       ③ 首屏加载动画（全站唯一，纯中心扩散涟漪，无文字/百分比）
        ══════════════════════════════════════════════════════════ */
-    var loaderDone = false;
+    var leaving = false;
+
     function initLoader() {
         var box = document.getElementById('loader');
         if (!box) return;
 
-        /* 页面只写 <div id="loader"></div>，内容由这里补齐 */
-        if (!box.children.length) {
-            var title = box.getAttribute('data-title') || 'TONIA TRAVEL JOURNAL';
-            var sub = box.getAttribute('data-sub') || 'T R A V E L   G U I D E';
-            box.innerHTML =
-                '<div class="ld-mark">' +
-                  '<div class="ld-ring"></div>' +
-                  '<div class="ld-ring arc"></div>' +
-                  '<div class="ld-ring arc2"></div>' +
-                  '<div class="ld-pct" data-ld-pct>0%</div>' +
-                '</div>' +
-                '<div class="ld-title">' + title + '</div>' +
-                '<div class="ld-sub">' + sub + '</div>' +
-                '<div class="ld-bar"><i data-ld-bar></i></div>' +
-                '<div class="ld-hint" data-ld-hint></div>';
-        }
+        /* 页面只写 <div id="loader"></div>，内容一律由这里注入，
+           避免各页自己写一份导致样式/结构走样 */
+        box.innerHTML =
+            '<span class="ld-disc"></span>' +
+            '<span class="ld-wave"></span>' +
+            '<span class="ld-wave"></span>' +
+            '<span class="ld-wave"></span>';
 
-        var pctEl = box.querySelector('[data-ld-pct]');
-        var barEl = box.querySelector('[data-ld-bar]');
-        var hintEl = box.querySelector('[data-ld-hint]');
-        var hints = (box.getAttribute('data-hints') || '正在准备行程…|校准轮渡时刻…|接入实时天气…|加载交互地图…|就绪').split('|');
-        var p = 0, hi = -1, done = false;
-
-        function paint() {
-            if (pctEl) pctEl.textContent = Math.round(p) + '%';
-            if (barEl) barEl.style.width = p + '%';
-            var span = 92 / hints.length;
-            var idx = Math.min(hints.length - 1, Math.floor(p / span));
-            if (idx !== hi) { hi = idx; if (hintEl) hintEl.textContent = hints[idx]; }
-        }
-
-        /* 缓慢逼近 92%，真正就绪时再冲 100%——避免"进度条骗人"的观感 */
-        var timer = setInterval(function () {
-            if (done) return;
-            p += Math.max(1.2, (92 - p) * 0.12);
-            if (p > 92) p = 92;
-            paint();
-        }, 90);
-
+        var done = false;
         function finish() {
             if (done) return;
-            done = true; loaderDone = true;
-            clearInterval(timer);
-            p = 100; paint();
-            if (hintEl) hintEl.textContent = hints[hints.length - 1];
-            setTimeout(function () {
-                box.classList.add('done');
-                setTimeout(function () { box.style.display = 'none'; }, 700);
-            }, 220);
+            done = true;
+            box.classList.add('done');   /* 只隐藏，不移除节点，便于离场复用 */
         }
         TG.loaderDone = finish;
 
-        paint();
         /* 页面没有主动结束时，load 事件 + 3.2s 兜底，绝不卡住首屏 */
         var t0 = Date.now();
         (function wait() {
@@ -482,8 +447,23 @@
             if (Date.now() - t0 > 3200) { finish(); return; }
             setTimeout(wait, 150);
         })();
-        window.addEventListener('load', function () { setTimeout(finish, 700); });
+        window.addEventListener('load', function () { setTimeout(finish, 900); });
     }
+
+    /* 离场：同一套涟漪由中心扩散铺满全屏，再跳转 —— 与入场共用一套视觉语言 */
+    function exitTo(url) {
+        var box = document.getElementById('loader');
+        if (!box || reduceMotion()) { window.location.href = url; return; }
+        if (leaving) return;             /* 连点保护，避免重复跳转 */
+        leaving = true;
+        box.classList.remove('done', 'grow');
+        box.classList.add('leaving');
+        void box.offsetWidth;            /* 强制回流：确保底盘从 scale(0) 起步 */
+        box.classList.add('grow');
+        /* 与 ui.css 里 .56s 的扩散时长对齐：动画结束后再跳，确保已铺满 */
+        setTimeout(function () { window.location.href = url; }, 600);
+    }
+    TG.exitTo = exitTo;
 
     /* ══════════════════════════════════════════════════════════
        ④ 左侧导航
@@ -567,6 +547,32 @@
     }
 
     /* ══════════════════════════════════════════════════════════
+       ⑤ 站内跳转统一接管
+       ──────────────────────────────────────────────────────────
+       所有站内 <a> 点击都走 TG.exitTo 的涟漪离场，保证「离场 → 入场」
+       是同一种视觉。页面不需要再各自写 onclick。
+       ══════════════════════════════════════════════════════════ */
+    function initNav() {
+        document.addEventListener('click', function (e) {
+            if (e.defaultPrevented) return;                       /* 页面已自行处理 */
+            if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+            var a = e.target.closest && e.target.closest('a[href]');
+            if (!a) return;
+            if (a.target && a.target !== '_self') return;
+            if (a.hasAttribute('download')) return;
+            var href = a.getAttribute('href');
+            if (!href || href.charAt(0) === '#') return;
+            if (/^(mailto:|tel:|javascript:)/i.test(href)) return;
+            var url;
+            try { url = new URL(href, location.href); } catch (err) { return; }
+            if (url.origin !== location.origin) return;            /* 外链不接管 */
+            if (url.pathname === location.pathname && url.search === location.search) return;
+            e.preventDefault();
+            exitTo(url.href);
+        });
+    }
+
+    /* ══════════════════════════════════════════════════════════
        启动
        ══════════════════════════════════════════════════════════ */
     function boot() {
@@ -574,6 +580,7 @@
         initFX();
         initRail();
         initLoader();
+        initNav();
         document.documentElement.setAttribute('data-ui-ready', '1');
     }
     if (document.readyState === 'loading') {

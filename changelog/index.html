@@ -262,10 +262,7 @@ body{
 <body>
 
 <canvas id="fx"></canvas>
-<div id="loader"
-     data-title="C H A N G E L O G"
-     data-sub="✈ 每一次改动都算数"
-     data-hints="正在读取迭代日志…|统计版本与条目…|整理时间轴…|就绪"></div>
+<div id="loader"></div>
 
 <div class="app">
 
@@ -356,7 +353,8 @@ body{
                     <li data-type="feat"><span class="k feat">新增</span><b>深色 / 浅色双主题</b>，四种模式：手动浅色、手动深色、<b>按自定义时段自动切换</b>（支持跨零点）、跟随系统实时联动</li>
                     <li data-type="feat"><span class="k feat">新增</span>主题偏好在 CSS 之前预置应用（零闪白/闪黑），并存 localStorage，多标签页之间自动同步</li>
                     <li data-type="feat"><span class="k feat">新增</span>重写<b>增强版粒子背景</b>：Canvas 全屏、鼠标引力排斥 + 光标光晕 + 悬停连线 + <b>点击涟漪与冲击波</b>，粒子数量按视口面积自适应、切后台自动暂停</li>
-                    <li data-type="feat"><span class="k feat">新增</span>首屏加载动效：双层旋转弧 + 百分比进度 + 分阶段文案，等地图就绪或 3.2s 兜底自动淡出</li>
+                    <li data-type="feat"><span class="k feat">新增</span><b>全站统一加载效果</b>：只有一圈从中心向外扩散的涟漪，配纯色全屏覆盖，<b>取消百分比、文案、进度条与跳动圆点</b>；底色跟随各页主题变量，深浅色都自适配</li>
+                    <li data-type="feat"><span class="k feat">新增</span>离场与入场<b>共用同一套视觉</b>：点击站内链接（含卡片、返回、页脚入口）时涟漪由中心扩散铺满全屏再跳转，到达后由新页的涟漪接续，全程只有一种转场语言</li>
                     <li data-type="impr"><span class="k impr">优化</span>共享资产只提供结构与变量，<b>各页保留自己的色彩气质</b>：主页/版本更新暖白、烟台冷蓝、淄博暖橙、大连蓝调，只覆盖 <code>:root</code> 变量即可</li>
                     <li data-type="feat"><span class="k feat">新增</span>方案 A 行程重排：<b>10/02 - 10/05 四天</b>，大连玩满三个整天（新增<b>金石滩一日</b>：滨海国家地质公园 + 十里黄金海岸），10/04 22:50 夜航，10/05 08:30 高铁返济南</li>
                     <li data-type="impr"><span class="k impr">优化</span>夜航改走「金石滩 → 地铁 3 号线大连湾站 → 打车 3km 到港」，全程轨道、避开市区晚高峰，比原方案打车 20km 稳得多</li>
@@ -365,6 +363,7 @@ body{
                     <li data-type="fix"><span class="k fix">修复</span>flex 外壳下内容区被宽表格撑开导致 banner 右侧被裁——给内容区加 <code>min-width:0</code>，宽表格改为卡片内横向滚动</li>
                     <li data-type="fix"><span class="k fix">修复</span>矮屏下左侧栏方案卡片被 flex 压扁并裁掉文字（改为 <code>flex:0 0 auto</code> + 容器滚动）</li>
                     <li data-type="fix"><span class="k fix">修复</span>移动端主题面板定位失效——父级 <code>backdrop-filter</code> 会使其成为 fixed 定位的包含块，窄屏下已禁用</li>
+                    <li data-type="fix"><span class="k fix">修复</span>从首页点卡片会<b>先播一遍旧转场、再播一遍新加载动画</b>——首页遗留的 <code>#page-transition</code>（旧涟漪 + 三个跳动圆点）已整块移除，全站只剩一套加载效果</li>
                     <li data-type="fix"><span class="k fix">修复</span>老页面里写死的浅色内联样式（说明框、表格底纹）在深色下依然刺眼——用属性子串选择器统一兜底，不改动历史标记</li>
                     <li data-type="fix"><span class="k fix">修复</span>左栏占用 268px 后原有 <code>@media</code> 断点全部失效导致横向溢出，断点统一后移到 1240px 并逐宽度复测 430 / 768 / 1024 / 1280 / 1440</li>
                 </ul>
