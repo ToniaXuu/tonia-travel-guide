@@ -50,6 +50,11 @@ body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Noto Sans SC',s
 .weather-desc{font-size:0.75rem;color:var(--text-light);margin-top:4px}
 .weather-date{font-size:0.78rem;color:var(--text-light);margin-bottom:6px}
 .weather-update-time{font-size:0.65rem;color:var(--gray-300);font-weight:400;margin-left:8px}
+/* 实时天气条 */
+.weather-now{display:flex;flex-wrap:wrap;gap:6px 14px;margin:-2px 0 12px;padding:8px 11px;border-radius:9px;background:linear-gradient(118deg,#0c4a6e0d,#0284c70d);border:1px solid #e2eef6;font-size:0.72rem;color:var(--text-light);line-height:1.5}
+.weather-now span{white-space:nowrap}
+.weather-now span[data-w-state="fail"]{color:#b91c1c}
+.weather-day[data-w-state="fail"] .weather-desc{color:#b91c1c}
 
 /* Day Tabs */
 .day-tabs{display:flex;gap:8px;margin-bottom:16px}
@@ -152,23 +157,27 @@ body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Noto Sans SC',s
 
 <div class="main-layout">
     <div class="left-panel">
-        <!-- 天气小组件 -->
+        <!-- 天气小组件（Open-Meteo：当日历史实况 + 实时） -->
         <div class="weather-widget">
-            <div class="weather-title">🌤️ 天气预报<span id="weather-update-time" class="weather-update-time"></span></div>
+            <div class="weather-title">🌤️ 当日实况 · 回看<span id="weather-update-time" class="weather-update-time"></span></div>
+            <div class="weather-now" data-weather-now>
+                <span data-now-city data-city="淄博" data-lat="36.8131" data-lng="118.0550"></span>
+            </div>
             <div class="weather-grid">
-                <div class="weather-day" id="weather-day1">
-                    <div class="weather-date">6月19日 周五</div>
-                    <div class="weather-icon">🌤️</div>
-                    <div class="weather-temp">23~33°C</div>
-                    <div class="weather-desc">晴间多云</div>
+                <div class="weather-day" data-date="2026-06-19" data-lat="36.8131" data-lng="118.0550" data-city="淄博" data-cards="#day1">
+                    <div class="weather-date">06/19 周五</div>
+                    <div class="weather-icon">—</div>
+                    <div class="weather-temp">—</div>
+                    <div class="weather-desc">加载中…</div>
                 </div>
-                <div class="weather-day" id="weather-day2">
-                    <div class="weather-date">6月20日 周六</div>
-                    <div class="weather-icon">⛅</div>
-                    <div class="weather-temp">24~34°C</div>
-                    <div class="weather-desc">多云</div>
+                <div class="weather-day" data-date="2026-06-20" data-lat="36.8131" data-lng="118.0550" data-city="淄博" data-cards="#day2">
+                    <div class="weather-date">06/20 周六</div>
+                    <div class="weather-icon">—</div>
+                    <div class="weather-temp">—</div>
+                    <div class="weather-desc">加载中…</div>
                 </div>
             </div>
+            <div class="weather-note" style="font-size:.72rem;color:var(--text-light);line-height:1.65;margin-top:10px;padding:8px 11px;background:#f0f9ff;border:1px solid #bae6fd;border-radius:8px">📡 这两格是<b>旅行当天的真实历史天气</b>（Open-Meteo 历史库）；上方一行是淄博<b>此刻实时天气</b>。</div>
         </div>
 
         <!-- Day Tabs -->
@@ -414,6 +423,9 @@ body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Noto Sans SC',s
     </div>
 </div>
 
+<!-- 实时天气模块（Open-Meteo，免 Key / 历史实况 + 实时） -->
+<script src="../assets/weather.js"></script>
+
 <!-- 腾讯地图 -->
 <script>
 const TENCENT_MAP_KEY = 'PBOBZ-S4XEN-YOVFW-STAR3-KJOME-4QBOO';
@@ -503,58 +515,9 @@ function fallbackMap(){
 }
 
 loadMap();
-// ========== 实时天气（与烟台页一致）==========
-(function() {
-    var WEATHER_ICONS = {'晴':'☀️','多云':'⛅','阴':'☁️','小雨':'🌦️','中雨':'🌧️','大雨':'🌧️','暴雨':'🌊','雷阵雨':'⛈️','阵雨':'🌦️','雾':'🌫️','霾':'🌫️','雪':'🌨️'};
-    function getIcon(w){for(var k in WEATHER_ICONS){if(w.indexOf(k)>=0)return WEATHER_ICONS[k];}return '🌤️';}
-    function updWidget(id,label,info){
-        var el=document.getElementById(id);if(!el)return;
-        var dw=info.day.weather||'',nw=info.night.weather||'';
-        el.querySelector('.weather-date').textContent=label;
-        el.querySelector('.weather-icon').textContent=getIcon(dw);
-        el.querySelector('.weather-temp').textContent=info.night.temperature+'~'+info.day.temperature+'°C';
-        el.querySelector('.weather-desc').textContent=dw===nw?dw:dw+'→'+nw;
-    }
-    function addToCards(dayData,container){
-        if(!dayData||!container)return;
-        var cards=container.querySelectorAll('.timeline-card');
-        var dw=dayData.day.weather||'',nw=dayData.night.weather||'';
-        var dt=dayData.day.temperature||'--',nt=dayData.night.temperature||'--';
-        cards.forEach(function(card){
-            var timeEl=card.querySelector('.card-time');if(!timeEl)return;
-            var t=timeEl.textContent,m=t.match(/(\d{1,2}):\d{2}/);
-            var h=m?parseInt(m[1]):12,isNight=h>=18||h<4;
-            var w=isNight?nw:dw,temp=isNight?nt:dt;
-            var old=card.querySelector('.card-weather');if(old)old.remove();
-            var badge=document.createElement('span');
-            badge.className='card-weather';
-            badge.style.cssText='font-size:.7rem;padding:1px 7px;border-radius:10px;background:rgba(245,158,11,.12);color:#f59e0b;font-weight:500;margin-left:auto;margin-right:8px;white-space:nowrap';
-            badge.innerHTML='<span style="font-size:.75rem">'+getIcon(w)+'</span> '+temp+'°';
-            var cat=card.querySelector('.card-cat');if(cat)card.querySelector('.card-header').insertBefore(badge,cat);
-        });
-    }
-    function fallback(){
-        var d1={day:{weather:'多云',temperature:33},night:{weather:'多云',temperature:23}};
-        var d2={day:{weather:'多云',temperature:34},night:{weather:'阴',temperature:24}};
-        updWidget('weather-day1','6月19日 周五',d1);
-        updWidget('weather-day2','6月20日 周六',d2);
-        addToCards(d1,document.querySelector('#day1'));addToCards(d2,document.querySelector('#day2'));
-    }
-    var cb='weatherCB_'+Date.now(),adcode='370300';
-    window[cb]=function(d){
-        delete window[cb];if(d.status===0&&d.result&&d.result.forecast){
-            var infos=d.result.forecast.infos,d1=null,d2=null;
-            for(var i=0;i<infos.length;i++){if(infos[i].date==='2026-06-19')d1=infos[i];if(infos[i].date==='2026-06-20')d2=infos[i];}
-            if(d1){updWidget('weather-day1','6月19日 周五',d1);addToCards(d1,document.querySelector('#day1'));}
-            if(d2){updWidget('weather-day2','6月20日 周六',d2);addToCards(d2,document.querySelector('#day2'));}
-            var ue=document.getElementById('weather-update-time');if(ue&&d.result.forecast.update_time)ue.textContent='更新于 '+d.result.forecast.update_time;
-        }
-    };
-    var s=document.createElement('script');
-    s.src='https://apis.map.qq.com/ws/weather/v1/?key='+TENCENT_MAP_KEY+'&adcode='+adcode+'&type=future&get_md=1&output=jsonp&callback='+cb;
-    s.onerror=fallback;document.body.appendChild(s);
-    setTimeout(function(){if(window[cb]){delete window[cb];fallback()}},8000);
-})();
+// ========== 天气：交由 assets/weather.js（Open-Meteo 历史实况 + 实时）==========
+// 天气格由 data-date / data-lat / data-lng 驱动，模块自动请求、缓存并注入时间轴天气徽章；
+// 淄博之旅为 2026-06-19~20，日期已过 → 自动走历史库取当天真实天气。
 </script>
 <script>document.addEventListener('click',function(e){var b=e.target.closest('.book-btn.ctrip[data-hotel-id]');if(!b)return;e.preventDefault();var id=b.dataset.hotelId,m=innerWidth<=768;window.open(m?'https://m.ctrip.com/html5/hotel/hoteldetail/'+id+'.html?checkIn=2026-06-19&checkOut=2026-06-20':'https://hotels.ctrip.com/hotels/'+id+'.html?checkIn=2026-06-19&checkOut=2026-06-20','_blank')});</script>
 

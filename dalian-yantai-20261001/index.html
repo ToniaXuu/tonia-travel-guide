@@ -85,6 +85,11 @@ body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Noto Sans SC',s
 .weather-desc{font-size:.7rem;color:var(--text-light);margin-top:3px}
 .weather-date{font-size:.74rem;color:var(--text-light);margin-bottom:2px}
 .weather-update-time{font-size:.65rem;color:var(--gray-300);font-weight:400;margin-left:8px}
+/* 实时天气条（Open-Meteo 实时数据） */
+.weather-now{display:flex;flex-wrap:wrap;gap:6px 14px;margin:-2px 0 12px;padding:8px 11px;border-radius:9px;background:linear-gradient(118deg,#0c4a6e0d,#0284c70d);border:1px solid #e2eef6;font-size:.72rem;color:var(--text-light);line-height:1.5}
+.weather-now span{white-space:nowrap}
+.weather-now span[data-w-state="fail"]{color:#b91c1c}
+.weather-day[data-w-state="fail"] .weather-desc{color:#b91c1c}
 .weather-note{font-size:.72rem;color:var(--text-light);line-height:1.65;margin-top:10px;padding:8px 11px;background:#fffbeb;border:1px solid #fde68a;border-radius:8px}
 .weather-note b{color:#92400e}
 /* 方案 B 只有 2 天，天气格按两列排 */
@@ -372,40 +377,44 @@ body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Noto Sans SC',s
 
 <div class="main-layout">
     <div class="left-panel">
-        <!-- 天气 -->
+        <!-- 天气（Open-Meteo 实时预报） -->
         <div class="weather-widget">
-            <div class="weather-title">🌤️ 天气参考<span data-wtime="a" class="weather-update-time"></span></div>
+            <div class="weather-title">🌤️ 行程天气 · 实时<span data-wtime="a" class="weather-update-time"></span></div>
+            <div class="weather-now" data-weather-now>
+                <span data-now-city data-city="大连" data-lat="38.9140" data-lng="121.6147"></span>
+                <span data-now-city data-city="烟台" data-lat="37.5485" data-lng="121.3825"></span>
+            </div>
             <div class="weather-grid">
-                <div class="weather-day" data-adcode="210200" data-date="2026-10-02">
+                <div class="weather-day" data-date="2026-10-02" data-lat="38.9140" data-lng="121.6147" data-city="大连">
                     <div class="weather-city">大连</div>
                     <div class="weather-date">10/02 周五</div>
-                    <div class="weather-icon">🌤️</div>
-                    <div class="weather-temp">15~22°C</div>
-                    <div class="weather-desc">晴间多云</div>
+                    <div class="weather-icon">—</div>
+                    <div class="weather-temp">—</div>
+                    <div class="weather-desc">加载中…</div>
                 </div>
-                <div class="weather-day" data-adcode="210200" data-date="2026-10-03">
+                <div class="weather-day" data-date="2026-10-03" data-lat="38.9140" data-lng="121.6147" data-city="大连">
                     <div class="weather-city">大连</div>
                     <div class="weather-date">10/03 周六</div>
-                    <div class="weather-icon">☀️</div>
-                    <div class="weather-temp">16~23°C</div>
-                    <div class="weather-desc">晴</div>
+                    <div class="weather-icon">—</div>
+                    <div class="weather-temp">—</div>
+                    <div class="weather-desc">加载中…</div>
                 </div>
-                <div class="weather-day" data-adcode="370600" data-date="2026-10-04">
+                <div class="weather-day" data-date="2026-10-04" data-lat="37.5485" data-lng="121.3825" data-city="烟台" data-sun="1">
                     <div class="weather-city">烟台</div>
                     <div class="weather-date">10/04 周日</div>
-                    <div class="weather-icon">🌅</div>
-                    <div class="weather-temp">17~24°C</div>
-                    <div class="weather-desc">晴 · 日出 05:52</div>
+                    <div class="weather-icon">—</div>
+                    <div class="weather-temp">—</div>
+                    <div class="weather-desc">加载中…</div>
                 </div>
-                <div class="weather-day" data-adcode="370600" data-date="2026-10-05">
+                <div class="weather-day" data-date="2026-10-05" data-lat="37.5485" data-lng="121.3825" data-city="烟台">
                     <div class="weather-city">烟台</div>
                     <div class="weather-date">10/05 周一</div>
-                    <div class="weather-icon">⛅</div>
-                    <div class="weather-temp">17~23°C</div>
-                    <div class="weather-desc">多云</div>
+                    <div class="weather-icon">—</div>
+                    <div class="weather-temp">—</div>
+                    <div class="weather-desc">加载中…</div>
                 </div>
             </div>
-            <div class="weather-note">⚠️ 距出发还有 31 天，超出 7 天预报范围；以上为大连 / 烟台<b>常年 10 月上旬气候参考值</b>，出发前 3 天务必再查实时预报。</div>
+            <div class="weather-note">📡 数据来自 <b>Open-Meteo 实时预报</b>（每 20 分钟自动刷新，含 16 天逐日预报与降水概率）。出行前 1 天再核对一次，海上项目遇大风预警随时改期。</div>
         </div>
 
         <!-- Day Tabs -->
@@ -1256,24 +1265,27 @@ body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Noto Sans SC',s
     <div class="left-panel">
         <!-- 天气 -->
         <div class="weather-widget">
-            <div class="weather-title">🌤️ 天气参考<span class="weather-update-time" data-wtime="b"></span></div>
+            <div class="weather-title">🌤️ 行程天气 · 实时<span class="weather-update-time" data-wtime="b"></span></div>
+            <div class="weather-now" data-weather-now>
+                <span data-now-city data-city="大连" data-lat="38.9140" data-lng="121.6147"></span>
+            </div>
             <div class="weather-grid">
-                <div class="weather-day" data-adcode="210200" data-date="2026-10-02">
+                <div class="weather-day" data-date="2026-10-02" data-lat="38.9140" data-lng="121.6147" data-city="大连">
                     <div class="weather-city">大连</div>
                     <div class="weather-date">10/02 周五</div>
-                    <div class="weather-icon">🌤️</div>
-                    <div class="weather-temp">15~22°C</div>
-                    <div class="weather-desc">晴间多云</div>
+                    <div class="weather-icon">—</div>
+                    <div class="weather-temp">—</div>
+                    <div class="weather-desc">加载中…</div>
                 </div>
-                <div class="weather-day" data-adcode="210200" data-date="2026-10-03">
+                <div class="weather-day" data-date="2026-10-03" data-lat="38.9140" data-lng="121.6147" data-city="大连">
                     <div class="weather-city">大连</div>
                     <div class="weather-date">10/03 周六</div>
-                    <div class="weather-icon">☀️</div>
-                    <div class="weather-temp">16~23°C</div>
-                    <div class="weather-desc">晴</div>
+                    <div class="weather-icon">—</div>
+                    <div class="weather-temp">—</div>
+                    <div class="weather-desc">加载中…</div>
                 </div>
             </div>
-            <div class="weather-note">⚠️ 距出发还有 31 天，超出 7 天预报范围；以上为大连<b>常年 10 月上旬气候参考值</b>，出发前 3 天务必再查实时预报。</div>
+            <div class="weather-note">📡 数据来自 <b>Open-Meteo 实时预报</b>。方案 B 只有两天一晚，天气弹性最大——<b>遇到大风或下雨，棒棰岛和渔人码头可以整体对调</b>。</div>
         </div>
 
         <!-- Day Tabs -->
@@ -1654,39 +1666,41 @@ body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Noto Sans SC',s
     <div class="left-panel">
         <!-- 天气 -->
         <div class="weather-widget">
-            <div class="weather-title">🌤️ 天气参考<span class="weather-update-time" data-wtime="c"></span></div>
+            <div class="weather-title">🌤️ 行程天气 · 实时<span class="weather-update-time" data-wtime="c"></span></div>
+            <div class="weather-now" data-weather-now>
+                <span data-now-city data-city="济南" data-lat="36.6662" data-lng="117.0077"></span>
+            </div>
             <div class="weather-grid">
-                <div class="weather-day" data-adcode="370100" data-date="2026-10-01">
+                <div class="weather-day" data-date="2026-10-01" data-lat="36.6662" data-lng="117.0077" data-city="济南">
                     <div class="weather-city">济南</div>
                     <div class="weather-date">10/01 周四</div>
-                    <div class="weather-icon">☀️</div>
-                    <div class="weather-temp">16~26°C</div>
-                    <div class="weather-desc">晴</div>
+                    <div class="weather-icon">—</div>
+                    <div class="weather-temp">—</div>
+                    <div class="weather-desc">加载中…</div>
                 </div>
-                <div class="weather-day" data-adcode="370100" data-date="2026-10-02">
+                <div class="weather-day" data-date="2026-10-02" data-lat="36.6662" data-lng="117.0077" data-city="济南">
                     <div class="weather-city">济南</div>
                     <div class="weather-date">10/02 周五</div>
-                    <div class="weather-icon">☀️</div>
-                    <div class="weather-temp">17~26°C</div>
-                    <div class="weather-desc">晴</div>
+                    <div class="weather-icon">—</div>
+                    <div class="weather-temp">—</div>
+                    <div class="weather-desc">加载中…</div>
                 </div>
-                <div class="weather-day" data-adcode="370100" data-date="2026-10-03">
+                <div class="weather-day" data-date="2026-10-03" data-lat="36.6662" data-lng="117.0077" data-city="济南">
                     <div class="weather-city">济南</div>
                     <div class="weather-date">10/03 周六</div>
-                    <div class="weather-icon">⛅</div>
-                    <div class="weather-temp">16~25°C</div>
-                    <div class="weather-desc">多云</div>
+                    <div class="weather-icon">—</div>
+                    <div class="weather-temp">—</div>
+                    <div class="weather-desc">加载中…</div>
                 </div>
-                <div class="weather-day" data-adcode="370100" data-date="2026-10-04">
+                <div class="weather-day" data-date="2026-10-04" data-lat="36.6662" data-lng="117.0077" data-city="济南">
                     <div class="weather-city">济南</div>
                     <div class="weather-date">10/04 周日</div>
-                    <div class="weather-icon">🌤️</div>
-                    <div class="weather-temp">15~24°C</div>
-                    <div class="weather-desc">晴间多云</div>
+                    <div class="weather-icon">—</div>
+                    <div class="weather-temp">—</div>
+                    <div class="weather-desc">加载中…</div>
                 </div>
             </div>
-            <div class="weather-note">⚠️ 距出发还有 30 天，超出 7 天预报范围；以上为济南<b>常年 10 月上旬气候参考值</b>，10 月济南昼夜温差可达 10℃，早晚要带外套。</div>
-            <div style="font-size:.7rem;color:var(--text-faint);margin-top:8px;line-height:1.6">10 月上旬济南常年 15-26°C，昼夜温差 8-10°C，早晚加件薄外套。10/05-10/07 出发前再看一次预报。</div>
+            <div class="weather-note">📡 数据来自 <b>Open-Meteo 实时预报</b>。⚠️ 表中为济南市区数值，<b>南部山区（九如山 / 青铜山 / 柳埠 / 石崮寨）气温比市区低 3-5℃</b>，进山务必带件外套；青铜山溶洞常年 18℃。</div>
         </div>
 
         <!-- Day Tabs -->
@@ -2133,6 +2147,9 @@ body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Noto Sans SC',s
 </div>
 
 
+<!-- 实时天气模块（Open-Meteo，免 Key / 16 天预报 + 历史实况） -->
+<script src="../assets/weather.js"></script>
+
 <!-- 腾讯地图 -->
 <script>
 const TENCENT_MAP_KEY = 'PBOBZ-S4XEN-YOVFW-STAR3-KJOME-4QBOO';
@@ -2402,55 +2419,13 @@ function fallbackMap(p){
     el.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 500" style="width:100%;height:100%;background:#eef4f9">'+svg+'</svg>';
 }
 
-/* ══════════════════ 天气：按方案 / 按 adcode 属性驱动 ══════════════════ */
-var ICONS = {'晴':'☀️','多云':'⛅','阴':'☁️','小雨':'🌦️','中雨':'🌧️','大雨':'🌧️','暴雨':'🌊','雷阵雨':'⛈️','阵雨':'🌦️','雾':'🌫️','霾':'🌫️','雪':'🌨️'};
-function getIcon(w){ for(var k in ICONS){ if(w.indexOf(k) >= 0) return ICONS[k]; } return '🌤️'; }
-function fmtLabel(dt){
-    var p = dt.split('-'), w = ['周日','周一','周二','周三','周四','周五','周六'];
-    var d = new Date(dt + 'T12:00:00+08:00');
-    return p[1] + '/' + p[2] + ' ' + w[d.getDay()];
-}
-function updCell(el, label, info){
-    if(!el || !info) return;
-    var dw = info.day.weather || '', nw = info.night.weather || '';
-    el.querySelector('.weather-icon').textContent = getIcon(dw);
-    el.querySelector('.weather-temp').textContent = info.night.temperature + '~' + info.day.temperature + '°C';
-    el.querySelector('.weather-desc').textContent = (dw === nw) ? dw : (dw + '→' + nw);
-    el.querySelector('.weather-date').textContent = label;
-}
-function fetchCityWeather(adcode, cells, p){
-    var cb = 'wcb_' + adcode + '_' + p + '_' + Date.now();
-    window[cb] = function(d){
-        try{ delete window[cb]; }catch(e){}
-        if(!(d && d.status === 0 && d.result && d.result.forecast)) return;
-        var infos = d.result.forecast.infos || [];
-        cells.forEach(function(cell){
-            var dt = cell.getAttribute('data-date');
-            for(var k=0;k<infos.length;k++){
-                if(infos[k].date === dt){ updCell(cell, fmtLabel(dt), infos[k]); break; }
-            }
-        });
-        var v = view(p);
-        var ue = v ? v.querySelector('.weather-update-time[data-wtime="'+p+'"]') : null;
-        if(ue && d.result.forecast.update_time) ue.textContent = '实时更新于 ' + d.result.forecast.update_time;
-    };
-    var s = document.createElement('script');
-    s.src = 'https://apis.map.qq.com/ws/weather/v1/?key=' + TENCENT_MAP_KEY
-          + '&adcode=' + adcode + '&type=future&get_md=1&output=jsonp&callback=' + cb;
-    s.onerror = function(){ try{ delete window[cb]; }catch(e){} };
-    document.body.appendChild(s);
-    setTimeout(function(){ if(window[cb]){ try{ delete window[cb]; }catch(e){} } }, 8000);
-}
+/* ══════════════════ 天气：委托给 assets/weather.js（Open-Meteo 实时数据） ══════════════════ */
+/* 格子由 data-date + data-lat/data-lng 驱动，模块自动批量请求 + 缓存 + 昼夜拆分 */
 function loadWeather(p){
     if(weatherLoaded[p]) return;
     weatherLoaded[p] = true;
     var v = view(p); if(!v) return;
-    var groups = {};
-    v.querySelectorAll('.weather-day[data-adcode]').forEach(function(c){
-        var a = c.getAttribute('data-adcode');
-        (groups[a] = groups[a] || []).push(c);
-    });
-    for(var a in groups){ fetchCityWeather(a, groups[a], p); }
+    if(window.TravelWeather){ TravelWeather.load(v); }
 }
 
 /* ══════════════════ 启动 ══════════════════ */
