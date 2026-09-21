@@ -11,7 +11,11 @@
 <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16.png">
 <link rel="apple-touch-icon" sizes="128x128" href="assets/favicon-128.png">
+<!-- 全站共享层：防闪烁主题初始化必须同步、且排在最前 -->
+<script src="assets/ui-init.js"></script>
+<link rel="stylesheet" href="assets/ui.css">
 <style>
+/* 主页保留「暖白手账」调性：只覆盖共享层的取值，机制（四模式主题/粒子/左栏）全站统一 */
 :root{
     --bg:#faf9f6; --card:#ffffff;
     --text:#2c3a47; --text-light:#7d8b99; --text-faint:#a8b2bc;
@@ -20,6 +24,56 @@
     --orange:#cf8a55;
     --shadow:0 8px 30px rgba(44,58,71,.07);
     --shadow-hover:0 14px 40px rgba(44,58,71,.12);
+
+    /* 共享层变量（手账色系） */
+    --surface:#ffffff;
+    --surface-2:#f6f5f1;
+    --surface-3:#ecebe5;
+    --surface-glass:rgba(250,249,246,.78);
+    --card-bg:#ffffff;
+    --border:rgba(44,58,71,.12);
+    --border-soft:rgba(44,58,71,.07);
+    --hairline:rgba(44,58,71,.09);
+    --gray-100:#f6f5f1; --gray-300:#dfe3e7;
+    --accent:#3f9179;
+    --rail-bg:rgba(250,249,246,.8);
+    --rail-active:rgba(63,145,121,.1);
+    --fx-dot:63,145,121;
+    --fx-line:110,160,145;
+    --glow:rgba(63,145,121,.16);
+    --code-bg:rgba(44,58,71,.05);
+    --scrim:rgba(20,30,40,.42);
+    --shadow-lift:0 14px 40px rgba(44,58,71,.14);
+    --scrollbar:#cdd6dd;
+}
+[data-theme="dark"]{
+    --bg:#14161a; --card:#1d2126;
+    --text:#e9e7e2; --text-light:#a6a29a; --text-faint:#71706a;
+    --teal:#5fbf9c; --teal-deep:#4da98a;
+    --mist:#8fa3b8; --lav:#b8a9d4;
+    --orange:#e0a06a;
+    --shadow:0 8px 30px rgba(0,0,0,.42);
+    --shadow-hover:0 14px 40px rgba(0,0,0,.55);
+
+    --surface:#1d2126;
+    --surface-2:#242830;
+    --surface-3:#2c313a;
+    --surface-glass:rgba(20,22,26,.78);
+    --card-bg:#1d2126;
+    --border:rgba(255,255,255,.1);
+    --border-soft:rgba(255,255,255,.06);
+    --hairline:rgba(255,255,255,.08);
+    --gray-100:#242830; --gray-300:#3a3f48;
+    --accent:#5fbf9c;
+    --rail-bg:rgba(20,22,26,.76);
+    --rail-active:rgba(95,191,156,.14);
+    --fx-dot:120,195,165;
+    --fx-line:100,165,140;
+    --glow:rgba(95,191,156,.15);
+    --code-bg:rgba(255,255,255,.06);
+    --scrim:rgba(0,0,0,.62);
+    --shadow-lift:0 16px 44px rgba(0,0,0,.56);
+    --scrollbar:#3a4048;
 }
 *{margin:0;padding:0;box-sizing:border-box}
 body{
@@ -52,8 +106,7 @@ body{animation:pageEnter .6s ease-out}
 #page-transition .dot:nth-child(3){animation-delay:.3s;background:var(--teal)}
 @keyframes dotBounce{0%,80%,100%{transform:translateY(0)}40%{transform:translateY(-12px)}}
 
-/* 背景 — 轻微星点轨迹 */
-#particles{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none}
+/* 背景粒子层由 assets/ui.css 的 #fx 提供（全站统一） */
 
 /* 容器 — 旅行杂志宽度 */
 .container{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:0 28px}
@@ -232,9 +285,31 @@ body{animation:pageEnter .6s ease-out}
 .footer .f-meta a b{font-weight:600;font-variant-numeric:tabular-nums}
 .footer .f-meta a:hover{color:var(--teal);border-color:rgba(63,145,121,.55)}
 
+/* ─── 深色主题微调（手账暖色版，不是简单反色） ─── */
+[data-theme="dark"] .hero h1{
+    background:linear-gradient(118deg,#e9e7e2 0%,#9dc3b3 58%,#c0b0dd 100%);
+    -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+[data-theme="dark"] .card-cta{border-top-color:rgba(255,255,255,.07)}
+[data-theme="dark"] .archive-card.placeholder{border-color:rgba(255,255,255,.16)}
+[data-theme="dark"] .archive-card.placeholder:hover{border-color:rgba(95,191,156,.38)}
+[data-theme="dark"] .card-status.past{background:rgba(45,50,58,.9);color:#b9b5ad}
+[data-theme="dark"] .archive-card.past .card-media i{filter:saturate(.6) brightness(.8)}
+[data-theme="dark"] .footer .f-meta a{border-bottom-color:rgba(143,163,184,.35)}
+[data-theme="dark"] #page-transition{
+    background:radial-gradient(circle at center,rgba(24,42,36,.95),rgba(30,28,40,.97));
+}
+[data-theme="dark"] .next-trip{box-shadow:0 8px 30px rgba(0,0,0,.45)}
+[data-theme="dark"] .next-trip:hover{box-shadow:0 14px 44px rgba(0,0,0,.6)}
+
 /* ─── 响应式 ─── */
-@media(max-width:1199px){
+/* 断点前移：左侧栏占 268px，内容区实际可用宽度比视口窄一栏 */
+@media(max-width:1320px){
     .archive-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:1080px){
+    .nt-main{gap:22px}
+    .nt-info h2{font-size:1.8rem}
 }
 @media(max-width:767px){
     .hero{padding:52px 16px 0}
@@ -258,9 +333,58 @@ body{animation:pageEnter .6s ease-out}
 </head>
 <body>
 
-<canvas id="particles"></canvas>
+<canvas id="fx"></canvas>
+<div id="loader"
+     data-title="TONIA'S TRAVEL JOURNAL"
+     data-sub="✈ 旅行手记"
+     data-hints="正在打开手账…|整理旅行档案…|接入实时天气…|校准出发倒计时…|就绪"></div>
 <div id="page-transition"><div class="ripple"></div><div class="loading-dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div></div>
 
+<div class="app">
+
+<aside class="rail">
+    <a class="rail-back" href="changelog/" onclick="return navigateTo(event,this.href)">🔖 版本更新 v3.1.0</a>
+
+    <div class="rail-brand">
+        <h2>Tonia's <em>Travel</em> Journal</h2>
+        <p>✈ 旅行手记</p>
+    </div>
+
+    <div class="rail-sep"></div>
+
+    <nav class="rail-tabs" data-kind="anchors">
+        <div class="ps-tab" data-target="sec-next" tabindex="0">
+            <div class="ps-name">✈ 下一次旅行</div>
+        </div>
+        <div class="ps-tab" data-target="sec-archive" tabindex="0">
+            <div class="ps-name">📔 旅行档案</div>
+        </div>
+        <div class="ps-tab" data-target="sec-foot" tabindex="0">
+            <div class="ps-name">🔖 关于本站</div>
+        </div>
+    </nav>
+
+    <div class="rail-theme" id="rail-theme">
+        <div class="rt-label">🌓 主题</div>
+        <div class="rt-modes">
+            <div class="rt-btn" data-mode="light" tabindex="0">☀️ 浅色</div>
+            <div class="rt-btn" data-mode="dark" tabindex="0">🌙 深色</div>
+            <div class="rt-btn wide" data-mode="schedule" tabindex="0">🕐 按时段自动</div>
+            <div class="rt-btn wide" data-mode="system" tabindex="0">💻 跟随系统</div>
+        </div>
+        <div class="rt-schedule" id="rt-schedule">
+            <div class="rt-times">
+                <input type="time" id="rt-dark-start" value="19:00">
+                <span>→</span>
+                <input type="time" id="rt-dark-end" value="07:00">
+            </div>
+            <div class="rt-note">到点自动切深色、过点自动切回浅色，支持跨零点（如 19:00 → 07:00）。</div>
+        </div>
+        <div class="rt-now"><span id="rt-now-dot">●</span><b id="rt-now-text">—</b></div>
+    </div>
+</aside>
+
+<div class="app-main">
 <div class="container">
 
     <header class="hero">
@@ -279,7 +403,7 @@ body{animation:pageEnter .6s ease-out}
     <div class="year-content active" data-year="2026">
 
         <!-- NEXT TRIP — 下一次旅行 -->
-        <a href="dalian-yantai-20261001/" class="next-trip" onclick="return navigateTo(event,this.href)">
+        <a href="dalian-yantai-20261001/" id="sec-next" class="next-trip" onclick="return navigateTo(event,this.href)">
             <div class="nt-content">
                 <div class="nt-top">
                     <span class="nt-badge">NEXT TRIP · 下一次旅行</span>
@@ -311,7 +435,7 @@ body{animation:pageEnter .6s ease-out}
         </a>
 
         <!-- 我的旅行 / Travel Archive -->
-        <div class="archive-head">
+        <div class="archive-head" id="sec-archive">
             <h2>我的旅行</h2>
             <span>TRAVEL ARCHIVE</span>
         </div>
@@ -372,54 +496,20 @@ body{animation:pageEnter .6s ease-out}
         </div>
     </div>
 
-    <footer class="footer">
+    <footer class="footer" id="sec-foot">
         <p class="f-quote">记录走过的路，也记录路上的风。</p>
         <p class="f-meta">Tonia's Travel Journal · 2026 &nbsp;·&nbsp; <a href="changelog/" onclick="return navigateTo(event,this.href)">版本更新 <b>v3.1.0</b></a></p>
     </footer>
-</div>
+</div><!-- /.container -->
+</div><!-- /.app-main -->
+</div><!-- /.app -->
+
+<div class="rt-fab" id="rt-fab" title="切换主题">🌓</div>
 
 <!-- 实时天气模块（Open-Meteo，免 Key） -->
 <script src="assets/weather.js"></script>
 
 <script>
-// ========== 背景星点 — 轻量减法 ==========
-(function(){
-    var c=document.getElementById('particles'),ctx=c.getContext('2d'),ps=[],w,h,mouse={x:-999,y:-999};
-    function rz(){w=c.width=innerWidth;h=c.height=innerHeight}
-    rz();addEventListener('resize',rz);
-    if(matchMedia('(pointer:fine)').matches){
-        addEventListener('mousemove',function(e){mouse.x=e.clientX;mouse.y=e.clientY});
-        addEventListener('mouseleave',function(){mouse.x=-999;mouse.y=-999});
-    }
-    var gs=['#a8cbb8','#88b3a0','#c2d8ce','#cfc4dd','#b3a8c9'];
-    function P(){
-        this.x=Math.random()*w;this.y=Math.random()*h;this.s=.5+Math.random()*1.6;
-        this.sx=(Math.random()-.5)*.35;this.sy=(Math.random()-.5)*.35;
-        this.c=gs[Math.floor(Math.random()*gs.length)];
-        this.a=.08+Math.random()*.12;this.ps=.004+Math.random()*.01;this.pd=Math.random()>.5?1:-1;
-    }
-    P.prototype.u=function(){
-        this.a+=this.ps*this.pd;if(this.a>=.2)this.pd=-1;if(this.a<=.06)this.pd=1;
-        var dx=mouse.x-this.x,dy=mouse.y-this.y,dist=Math.sqrt(dx*dx+dy*dy);
-        if(dist<140&&dist>0){var f=.22/(dist*.03+1);this.sx+=dx*f*.008;this.sy+=dy*f*.008}
-        this.x+=this.sx;this.y+=this.sy;this.sx*=.999;this.sy*=.999;
-        if(this.x>w+20)this.x=-20;if(this.x<-20)this.x=w+20;
-        if(this.y>h+20)this.y=-20;if(this.y<-20)this.y=h+20;
-    };
-    P.prototype.d=function(){ctx.beginPath();ctx.arc(this.x,this.y,this.s,0,Math.PI*2);ctx.fillStyle=this.c;ctx.globalAlpha=this.a;ctx.fill();ctx.globalAlpha=1};
-    var cnt=Math.min(Math.floor(w*h/30000),44);
-    for(var i=0;i<cnt;i++)ps.push(new P());
-    function anim(){
-        ctx.clearRect(0,0,w,h);
-        for(var i=0;i<ps.length;i++){ps[i].u();ps[i].d();
-            for(var j=i+1;j<ps.length;j++){var dx=ps[i].x-ps[j].x,dy=ps[i].y-ps[j].y,d=dx*dx+dy*dy;
-                if(d<9000){ctx.beginPath();ctx.moveTo(ps[i].x,ps[i].y);ctx.lineTo(ps[j].x,ps[j].y);
-                    ctx.strokeStyle='rgba(136,179,160,.045)';ctx.lineWidth=.5;ctx.stroke()}}}
-        requestAnimationFrame(anim);
-    }
-    anim();
-})();
-
 // ========== 年度切换 ==========
 document.getElementById('year-tabs').addEventListener('click',function(e){
     var tab=e.target.closest('.year-tab');if(!tab)return;
@@ -490,5 +580,6 @@ function navigateTo(e,url){
     tick();setInterval(tick,15e3);
 })();
 </script>
+<script src="assets/ui.js"></script>
 </body>
 </html>

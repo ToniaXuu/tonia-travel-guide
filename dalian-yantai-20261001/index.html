@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
+<script src="../assets/ui-init.js"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="大连·烟台跨海四日国庆情侣游攻略：济南飞大连、大连玩满三天（含金石滩一日）、22:50 渤海玛珠夜航跨渤海、次日 G2010 高铁返济南。含逐日时间轴、交互地图、预算表与订票时间节点。">
@@ -12,239 +13,10 @@
 <link rel="icon" type="image/png" sizes="16x16" href="../assets/favicon-16.png">
 <link rel="apple-touch-icon" sizes="128x128" href="../assets/favicon-128.png">
 <!-- 主题：首屏前置应用（必须在 CSS 之前执行，避免闪白/闪黑） -->
-<script>
-(function(){
-    var THEME_KEY='tg-theme-v1';
-    function resolve(cfg){
-        if(cfg.mode==='dark') return true;
-        if(cfg.mode==='light') return false;
-        if(cfg.mode==='schedule'){
-            var d=new Date(), cur=d.getHours()*60+d.getMinutes();
-            var s=String(cfg.darkStart||'19:00').split(':'), e=String(cfg.darkEnd||'07:00').split(':');
-            var sm=parseInt(s[0],10)*60+parseInt(s[1],10), em=parseInt(e[0],10)*60+parseInt(e[1],10);
-            return sm<=em ? (cur>=sm&&cur<em) : (cur>=sm||cur<em);
-        }
-        return !!(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
-    }
-    var dark=true;
-    try{
-        var raw=localStorage.getItem(THEME_KEY);
-        var cfg=raw?JSON.parse(raw):{mode:'system',darkStart:'19:00',darkEnd:'07:00'};
-        dark=resolve(cfg);
-    }catch(err){
-        dark=true;
-    }
-    document.documentElement.setAttribute('data-theme', dark?'dark':'light');
-    document.documentElement.setAttribute('data-theme-ready','1');
-})();
-</script>
+
+    <link rel="stylesheet" href="../assets/ui.css">
 <style>body{animation:pageIn .5s ease-out}@keyframes pageIn{from{opacity:0}to{opacity:1}}</style>
 <style>
-:root {
-    --bg:#eef4f9; --card-bg:#fff; --text:#12263a; --text-light:#5b6b7c;
-    --orange:#ea580c; --ocean:#0284c7; --coral:#e11d48; --night:#4f46e5;
-    --green:#059669; --purple:#7c3aed; --amber:#d97706; --gray-100:#f4f7fa; --gray-300:#dbe3ea;
-    --shadow:0 2px 16px rgba(15,40,70,0.07);
-    --banner-start:#0c4a6e; --banner-end:#b45309;
-
-    /* 主题扩展变量 */
-    --surface:#ffffff;
-    --surface-2:#f4f7fa;
-    --surface-3:#e9eff5;
-    --surface-glass:rgba(238,244,249,.78);
-    --border:#e5eaf0;
-    --border-soft:#f1f5f9;
-    --hairline:rgba(15,40,70,.09);
-    --text-faint:#93a2b3;
-    --accent:#0284c7;
-    --rail-bg:rgba(255,255,255,.72);
-    --rail-active:rgba(2,132,199,.10);
-    --fx-dot:110,160,210;
-    --fx-line:90,140,195;
-    --glow:rgba(2,132,199,.16);
-    --code-bg:rgba(15,40,70,.055);
-    --scrim:rgba(10,26,42,.42);
-    --shadow-lift:0 14px 40px rgba(15,40,70,.14);
-    --scrollbar:#c3d0dc;
-}
-[data-theme="dark"]{
-    --bg:#0b131d; --card-bg:#141f2c; --text:#e4edf6; --text-light:#9aabbd;
-    --gray-100:#1b2735; --gray-300:#33415280;
-    --shadow:0 2px 18px rgba(0,0,0,.34);
-    --surface:#141f2c;
-    --surface-2:#1b2735;
-    --surface-3:#22303f;
-    --surface-glass:rgba(11,19,29,.72);
-    --border:#26333f;
-    --border-soft:#1f2b38;
-    --hairline:rgba(255,255,255,.08);
-    --text-faint:#6f8296;
-    --accent:#38bdf8;
-    --rail-bg:rgba(20,31,44,.72);
-    --rail-active:rgba(56,189,248,.12);
-    --fx-dot:120,205,255;
-    --fx-line:100,180,240;
-    --glow:rgba(56,189,248,.14);
-    --code-bg:rgba(255,255,255,.07);
-    --scrim:rgba(2,7,13,.6);
-    --shadow-lift:0 16px 44px rgba(0,0,0,.5);
-    --scrollbar:#31404f;
-
-    --orange:#fb8c3c; --ocean:#38bdf8; --coral:#fb7185; --night:#818cf8;
-    --green:#34d399; --purple:#a78bfa; --amber:#fbbf24;
-}
-*{margin:0;padding:0;box-sizing:border-box}
-html{scrollbar-color:var(--scrollbar) transparent}
-body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Noto Sans SC',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;transition:background-color .35s ease,color .35s ease}
-
-/* ══════════════ 粒子画布（增强版，全屏背景） ══════════════ */
-#fx{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;display:block}
-
-/* ══════════════ 加载遮罩 ══════════════ */
-#loader{
-    position:fixed;inset:0;z-index:9000;display:flex;flex-direction:column;
-    align-items:center;justify-content:center;gap:26px;
-    background:radial-gradient(ellipse at 50% 34%,#12304d 0%,#0a1d2f 52%,#060f1a 100%);
-    transition:opacity .6s ease,visibility .6s ease;
-}
-#loader.done{opacity:0;visibility:hidden}
-.ld-mark{position:relative;width:88px;height:88px;display:grid;place-items:center}
-.ld-ring{position:absolute;inset:0;border-radius:50%;border:2px solid rgba(255,255,255,.09)}
-.ld-ring.arc{
-    border-color:transparent;border-top-color:#38bdf8;border-right-color:#38bdf8;
-    animation:ldSpin 1.05s cubic-bezier(.5,.15,.5,.85) infinite;
-}
-.ld-ring.arc2{
-    inset:11px;border-color:transparent;border-bottom-color:#7dd3fc;
-    animation:ldSpin 1.5s linear infinite reverse;opacity:.7;
-}
-@keyframes ldSpin{to{transform:rotate(360deg)}}
-.ld-pct{font-size:1.02rem;font-weight:800;color:#e6f3ff;font-variant-numeric:tabular-nums;letter-spacing:.5px}
-.ld-title{
-    font-size:.9rem;letter-spacing:5px;color:rgba(226,240,255,.82);font-weight:600;
-    text-align:center;padding:0 24px;
-}
-.ld-sub{font-size:.7rem;letter-spacing:2.5px;color:rgba(160,196,228,.6);margin-top:-16px}
-.ld-bar{width:min(300px,60vw);height:3px;border-radius:2px;background:rgba(255,255,255,.1);overflow:hidden}
-.ld-bar i{
-    display:block;height:100%;width:0;border-radius:2px;
-    background:linear-gradient(90deg,#0ea5e9,#38bdf8 55%,#a5e8ff);
-    box-shadow:0 0 12px rgba(56,189,248,.7);
-    transition:width .32s cubic-bezier(.3,.8,.4,1);
-}
-.ld-hint{font-size:.7rem;color:rgba(150,186,216,.55);letter-spacing:1px;height:1em}
-
-/* 首屏内容入场 */
-.stage-in{animation:stageIn .62s cubic-bezier(.22,.86,.34,1) both}
-@keyframes stageIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
-
-/* ══════════════ 应用外壳：左侧栏 + 内容区 ══════════════ */
-.app{display:flex;align-items:flex-start;position:relative;z-index:1}
-
-.rail{
-    flex:0 0 268px;width:268px;
-    position:sticky;top:0;align-self:flex-start;
-    height:100vh;height:100dvh;
-    display:flex;flex-direction:column;gap:14px;
-    padding:20px 16px 18px;
-    background:var(--rail-bg);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
-    border-right:1px solid var(--hairline);
-    z-index:800;
-}
-.rail-back{
-    display:inline-flex;align-items:center;gap:6px;align-self:flex-start;
-    font-size:.76rem;font-weight:500;text-decoration:none;color:var(--text-light);
-    padding:6px 12px;border-radius:20px;border:1px solid var(--border);
-    transition:all .2s ease;
-}
-.rail-back:hover{color:var(--accent);border-color:var(--accent);transform:translateX(-2px)}
-.rail-brand{padding:2px 4px 0}
-.rail-brand h2{font-size:1.06rem;font-weight:800;letter-spacing:.6px;line-height:1.35}
-.rail-brand h2 em{font-style:normal;color:var(--accent)}
-.rail-brand p{font-size:.68rem;letter-spacing:2.6px;color:var(--text-faint);margin-top:5px;text-transform:uppercase}
-.rail-sep{height:1px;background:var(--hairline);margin:2px 4px}
-
-.rail-tabs{display:flex;flex-direction:column;gap:9px;flex:1 1 auto;min-height:0;overflow-y:auto;overflow-x:hidden;padding:2px 2px 4px;scrollbar-width:thin}
-.ps-tab{
-    position:relative;cursor:pointer;text-align:left;
-    /* flex:0 0 auto —— 不参与压缩，否则矮屏下卡片会被压扁并裁掉文字 */
-    flex:0 0 auto;
-    border:1px solid var(--border);background:var(--surface);
-    border-radius:13px;padding:12px 14px 13px;
-    transition:transform .22s cubic-bezier(.3,.9,.4,1),border-color .22s ease,box-shadow .22s ease,background-color .3s ease;
-    overflow:hidden;
-}
-.ps-tab::before{
-    content:'';position:absolute;left:0;top:0;bottom:0;width:3px;
-    background:var(--accent);transform:scaleY(0);transform-origin:top;
-    transition:transform .32s cubic-bezier(.3,.9,.4,1);border-radius:0 3px 3px 0;
-}
-.ps-tab:hover{border-color:var(--accent);transform:translateX(3px)}
-.ps-tab:hover::before{transform:scaleY(.45)}
-.ps-tab.active{
-    border-color:transparent;color:#fff;
-    box-shadow:0 8px 22px rgba(12,40,70,.22);
-    transform:translateX(3px);
-}
-.ps-tab.active::before{transform:scaleY(1);background:rgba(255,255,255,.75)}
-.ps-tab.active[data-plan="a"]{background:linear-gradient(118deg,#0c4a6e 0%,#0284c7 100%)}
-.ps-tab.active[data-plan="b"]{background:linear-gradient(118deg,#075985 0%,#0891b2 100%)}
-.ps-tab.active[data-plan="c"]{background:linear-gradient(118deg,#065f46 0%,#059669 100%)}
-.ps-name{font-size:.9rem;font-weight:800;letter-spacing:.4px;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
-.ps-name .ps-badge{font-size:.58rem;letter-spacing:1.4px;padding:2px 7px;border-radius:8px;background:rgba(255,255,255,.24);font-weight:700}
-.ps-tab:not(.active) .ps-badge{background:var(--surface-2);color:var(--text-faint)}
-.ps-desc{font-size:.7rem;opacity:.88;margin-top:4px;line-height:1.5}
-.ps-tab:not(.active) .ps-desc{color:var(--text-light)}
-.ps-meta{font-size:.69rem;margin-top:7px;font-weight:700}
-.ps-tab.active .ps-meta{color:rgba(255,255,255,.95)}
-.ps-tab:not(.active) .ps-meta{color:var(--orange)}
-
-/* 主题切换器 */
-.rail-theme{border-top:1px solid var(--hairline);padding-top:13px;flex:0 0 auto}
-.rt-label{
-    display:flex;align-items:center;gap:6px;font-size:.66rem;letter-spacing:2px;
-    color:var(--text-faint);margin-bottom:9px;text-transform:uppercase;
-}
-.rt-modes{display:grid;grid-template-columns:repeat(2,1fr);gap:6px}
-.rt-btn{
-    cursor:pointer;user-select:none;text-align:center;
-    font-size:.72rem;font-weight:600;color:var(--text-light);
-    background:var(--surface);border:1px solid var(--border);
-    border-radius:9px;padding:8px 4px;transition:all .2s ease;
-    display:flex;align-items:center;justify-content:center;gap:4px;
-}
-.rt-btn:hover{border-color:var(--accent);color:var(--text);transform:translateY(-1px)}
-.rt-btn.active{background:var(--rail-active);border-color:var(--accent);color:var(--accent);font-weight:700}
-.rt-btn.wide{grid-column:1/-1}
-
-.rt-schedule{display:none;margin-top:10px;padding:11px 12px;border-radius:11px;background:var(--surface-2);border:1px solid var(--border)}
-.rt-schedule.on{display:block;animation:stageIn .3s ease-out}
-.rt-times{display:flex;align-items:center;gap:8px}
-.rt-times input{
-    flex:1;min-width:0;font-family:inherit;font-size:.76rem;font-weight:600;
-    color:var(--text);background:var(--surface);border:1px solid var(--border);
-    border-radius:8px;padding:6px 8px;outline:none;transition:border-color .2s ease;
-}
-.rt-times input:focus{border-color:var(--accent)}
-.rt-times span{font-size:.72rem;color:var(--text-faint)}
-.rt-note{font-size:.64rem;color:var(--text-faint);line-height:1.6;margin-top:7px}
-.rt-now{margin-top:9px;font-size:.66rem;color:var(--text-light);display:flex;align-items:center;gap:5px}
-.rt-now b{color:var(--accent);font-weight:700}
-
-/* 移动端浮动主题按钮 */
-.rt-fab{
-    display:none;position:fixed;right:16px;bottom:18px;z-index:950;
-    width:48px;height:48px;border-radius:50%;cursor:pointer;
-    align-items:center;justify-content:center;font-size:1.2rem;
-    background:var(--surface);border:1px solid var(--border);
-    box-shadow:var(--shadow-lift);color:var(--text);
-}
-.rt-fab:active{transform:scale(.94)}
-
-/* 关键：min-width:0 —— 否则内部宽表格会把 flex 项撑开，
-   整个内容区连带 banner 一起超过视口宽度（滚动条被隐藏时表现为右侧被裁） */
-.plan-views{flex:1 1 auto;min-width:0}
-
 .plan-view{display:none}
 .plan-view.active{display:block;animation:planIn .5s cubic-bezier(.22,.86,.34,1)}
 @keyframes planIn{from{opacity:0;transform:translateY(14px) scale(.995)}to{opacity:1;transform:none}}
@@ -537,42 +309,17 @@ body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Noto Sans SC',s
 [data-theme="dark"] .box-red{background:#2d1618!important;border-color:#4c2028!important;color:#fecaca!important}
 
 /* ══════════════ 响应式 ══════════════ */
-@media(max-width:980px){
-    .app{flex-direction:column}
-    .rail{
-        width:100%;flex:none;height:auto;position:sticky;top:0;
-        flex-direction:row;align-items:center;gap:10px;
-        padding:9px 14px;border-right:none;border-bottom:1px solid var(--hairline);
-        /* 关键：去掉 backdrop-filter，否则 .rail 会成为 .rail-theme 的
-           containing block，浮动主题面板的 fixed 定位会被困在侧栏里 */
-        background:var(--bg);
-        backdrop-filter:none;-webkit-backdrop-filter:none;
-        box-shadow:0 1px 14px rgba(0,0,0,.06);
-    }
-    .rail-brand,.rail-sep{display:none}
-    .rail-tabs{flex-direction:row;flex:1;overflow-x:auto;overflow-y:hidden;align-items:center;padding:0 0 2px}
-    .ps-tab{flex:0 0 auto;min-width:186px;padding:9px 12px 10px}
-    .ps-tab:hover,.ps-tab.active{transform:none}
-    .ps-desc{font-size:.67rem}
-    .rt-fab{display:flex}
-    .rail-theme{
-        position:fixed;right:14px;bottom:78px;width:min(272px,calc(100vw - 28px));
-        z-index:960;background:var(--surface);border:1px solid var(--border);
-        border-radius:15px;padding:15px;box-shadow:var(--shadow-lift);
-        opacity:0;visibility:hidden;transform:translateY(10px) scale(.96);
-        transition:opacity .24s ease,transform .24s cubic-bezier(.3,.9,.4,1),visibility .24s;
-        border-top:none;padding-top:15px;
-    }
-    .rail-theme.open{opacity:1;visibility:visible;transform:none}
+/* 左侧栏占 268px，内容区可用宽度比视口窄一栏 → 分栏断点从 900px 前移到 1240px */
+@media(max-width:1240px){
+    .main-layout{flex-direction:column}
+    .left-panel{flex:auto}
+    .right-panel{position:static;height:450px;min-width:auto}
 }
 @media(max-width:900px){
     .plan-cmp{font-size:.78rem}
     .plan-cmp th,.plan-cmp td{padding:9px 8px}
     .plan-cmp th:first-child,.plan-cmp td:first-child{white-space:normal}
     .plan-split{grid-template-columns:1fr}
-    .main-layout{flex-direction:column}
-    .left-panel{flex:auto}
-    .right-panel{position:static;height:450px;min-width:auto}
     .tips-grid{grid-template-columns:1fr}
     .weather-grid{grid-template-columns:repeat(2,1fr)}
     .fix-table{font-size:.78rem}
@@ -580,14 +327,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Noto Sans SC',s
     .banner{padding:56px 18px 34px}
 }
 @media(max-width:600px){
-    .ps-tab{min-width:154px}
-    .ps-name{font-size:.82rem}
     .detail-section,.shared-section{padding-left:16px;padding-right:16px}
     .main-layout{padding:18px 16px 32px}
-}
-@media(prefers-reduced-motion:reduce){
-    #fx{display:none}
-    *{animation-duration:.01ms!important;transition-duration:.01ms!important}
 }
 </style>
 </head>
@@ -2446,12 +2187,7 @@ function cards(p){ var v=view(p); return v ? v.querySelectorAll('.timeline-card'
 function switchPlan(p){
     if(!PLAN_DAYS[p]) return;
     currentPlan = p;
-    document.querySelectorAll('.ps-tab').forEach(function(t){
-        t.classList.toggle('active', t.getAttribute('data-plan')===p);
-    });
-    document.querySelectorAll('.plan-view').forEach(function(v){
-        v.classList.toggle('active', v.getAttribute('data-plan')===p);
-    });
+    /* 页签高亮与视图切换由 assets/ui.js 完成，这里只负责地图与天气 */
     if(maps[p]){
         resizeMap(p); drawRoutes(currentDay[p], p);
     } else if(mapApiReady){
@@ -2462,22 +2198,10 @@ function switchPlan(p){
         fallbackMap(p);
     }
     if(!weatherLoaded[p]){ loadWeather(p); }
-    /* 左侧栏切成顶栏时（<980px），滚动到顶；桌面端内容区自身滚动即可 */
-    if(window.innerWidth <= 980 && window.scrollY > 0){
-        window.scrollTo({ top:0, behavior:'smooth' });
-    }
 }
 
-/* 侧栏方案按钮：事件委托（替代原 inline onclick） */
-document.addEventListener('click', function(e){
-    var t = e.target.closest('.ps-tab');
-    if(t){ switchPlan(t.getAttribute('data-plan')); }
-});
-document.addEventListener('keydown', function(e){
-    if(e.key !== 'Enter' && e.key !== ' ') return;
-    var t = e.target.closest && e.target.closest('.ps-tab');
-    if(t){ e.preventDefault(); switchPlan(t.getAttribute('data-plan')); }
-});
+/* 侧栏方案按钮的点击 / 键盘交互由 assets/ui.js 统一接管，这里只响应切换结果 */
+document.addEventListener('tg:plan', function(e){ switchPlan(e.detail.plan); });
 
 function resizeMap(p){
     var m = maps[p]; if(!m) return;
@@ -2527,6 +2251,7 @@ function initMap(p){
         maps[p] = new qq.maps.Map(el, { center:new qq.maps.LatLng(c[0], c[1]), zoom:PLAN_ZOOM[p] });
     }catch(e){ fallbackMap(p); return; }
     var lo = document.getElementById('map-loading-'+p); if(lo) lo.style.display='none';
+    if(window.TG && TG.loaderDone) TG.loaderDone();
     bindCards(p);
     renderLegend(p);
     drawRoutes(currentDay[p], p);
@@ -2651,6 +2376,7 @@ function toggleSatellite(p){
 
 /* ══════════════════ 地图不可用时的降级示意图 ══════════════════ */
 function fallbackMap(p){
+    if(window.TG && TG.loaderDone) TG.loaderDone();
     var lo = document.getElementById('map-loading-'+p); if(lo) lo.style.display='none';
     var el = document.getElementById('map-'+p); if(!el) return;
     var svg;
@@ -2714,441 +2440,14 @@ document.addEventListener('click',function(e){
 </script>
 
 <!-- ══════════════════ 增强版粒子背景（Canvas · 鼠标交互） ══════════════════ -->
-<script>
-(function(){
-    var canvas = document.getElementById('fx');
-    if(!canvas || !canvas.getContext) return;
-    if(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
-    var ctx = canvas.getContext('2d');
-    var W = 0, H = 0, DPR = 1;
-    var parts = [], N = 0;
-    var mouse = { x:-9999, y:-9999, px:-9999, py:-9999, vx:0, vy:0, active:false };
-    var ripples = [], bursts = [];
-    var raf = null, running = true, hovering = true;
-    var LINK = 130;        /* 粒子互相连线距离 */
-    var MOUSE_R = 170;     /* 鼠标影响半径 */
-
-    function css(name, fb){
-        var v = getComputedStyle(document.documentElement).getPropertyValue(name);
-        return (v || '').trim() || fb;
-    }
-    var DOT = css('--fx-dot', '110,160,210');
-    var LINE = css('--fx-line', '90,140,195');
-    function refreshColors(){
-        DOT  = css('--fx-dot', '110,160,210');
-        LINE = css('--fx-line', '90,140,195');
-    }
-
-    function rnd(a, b){ return a + Math.random() * (b - a); }
-
-    function makeParticle(){
-        var dir = Math.random() * Math.PI * 2;
-        var speed = rnd(0.10, 0.36);
-        return {
-            x: Math.random() * W, y: Math.random() * H,
-            vx: Math.cos(dir) * speed, vy: Math.sin(dir) * speed,
-            r: rnd(0.8, 2.0), o: rnd(0.26, 0.72),
-            ph: Math.random() * Math.PI * 2, sp: rnd(0.006, 0.018),
-            temp: false
-        };
-    }
-
-    function build(){
-        parts = [];
-        for(var i = 0; i < N; i++) parts.push(makeParticle());
-    }
-
-    function size(){
-        DPR = Math.min(window.devicePixelRatio || 1, 2);
-        W = canvas.clientWidth || window.innerWidth;
-        H = canvas.clientHeight || window.innerHeight;
-        canvas.width  = Math.floor(W * DPR);
-        canvas.height = Math.floor(H * DPR);
-        ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
-        /* 粒子数按视口面积自适应：小屏省电，大屏够密 */
-        N = Math.round(Math.min(112, Math.max(32, (W * H) / 16000)));
-        build();
-    }
-
-    function step(){
-        ctx.clearRect(0, 0, W, H);
-
-        /* 鼠标位移速度 → 用于"带着粒子走"的拖尾感 */
-        mouse.vx = mouse.x - mouse.px;
-        mouse.vy = mouse.y - mouse.py;
-        mouse.px = mouse.x; mouse.py = mouse.y;
-        var mvx = Math.max(-14, Math.min(14, mouse.vx));
-        var mvy = Math.max(-14, Math.min(14, mouse.vy));
-
-        /* ── 物理更新 ── */
-        for(var i = 0; i < parts.length; i++){
-            var p = parts[i];
-            p.ph += p.sp;
-
-            if(p.temp){
-                /* 点击迸发出的临时粒子：快速衰减后移除 */
-                p.vx *= 0.94; p.vy *= 0.94;
-                if(Math.abs(p.vx) < 0.06 && Math.abs(p.vy) < 0.06){ parts.splice(i, 1); i--; continue; }
-            } else if(mouse.active){
-                var dx = p.x - mouse.x, dy = p.y - mouse.y;
-                var d2 = dx * dx + dy * dy;
-                if(d2 < MOUSE_R * MOUSE_R && d2 > 0.02){
-                    var d = Math.sqrt(d2);
-                    var f = 1 - d / MOUSE_R;
-                    f = f * f * 0.9;                  /* 越近排斥越强 */
-                    p.vx += (dx / d) * f;
-                    p.vy += (dy / d) * f;
-                    p.vx += mvx * 0.014 * (1 - d / MOUSE_R);
-                    p.vy += mvy * 0.014 * (1 - d / MOUSE_R);
-                }
-            }
-
-            /* 阻尼 + 限速，避免被鼠标推到失控 */
-            p.vx *= 0.975; p.vy *= 0.975;
-            var s2 = p.vx * p.vx + p.vy * p.vy;
-            var MIN = 0.06, MAX = 2.6;
-            if(s2 > MAX * MAX){ var k = MAX / Math.sqrt(s2); p.vx *= k; p.vy *= k; }
-            else if(!p.temp && s2 < MIN * MIN){
-                var a = Math.random() * Math.PI * 2;
-                p.vx += Math.cos(a) * 0.045; p.vy += Math.sin(a) * 0.045;
-            }
-
-            p.x += p.vx; p.y += p.vy;
-
-            /* 出界环绕，保证密度恒定 */
-            if(p.x < -20) p.x = W + 20; else if(p.x > W + 20) p.x = -20;
-            if(p.y < -20) p.y = H + 20; else if(p.y > H + 20) p.y = -20;
-        }
-
-        /* ── 连线 ── */
-        ctx.lineWidth = 0.7;
-        for(var a = 0; a < parts.length; a++){
-            var pa = parts[a];
-            for(var b = a + 1; b < parts.length; b++){
-                var pb = parts[b];
-                var ddx = pa.x - pb.x, ddy = pa.y - pb.y;
-                if(ddx > LINK || ddx < -LINK || ddy > LINK || ddy < -LINK) continue;
-                var dd = Math.sqrt(ddx * ddx + ddy * ddy);
-                if(dd > LINK) continue;
-                ctx.strokeStyle = 'rgba(' + LINE + ',' + ((1 - dd / LINK) * 0.30).toFixed(3) + ')';
-                ctx.beginPath(); ctx.moveTo(pa.x, pa.y); ctx.lineTo(pb.x, pb.y); ctx.stroke();
-            }
-            /* 与鼠标连线：越近越亮，这是"手伸进星空"的核心观感 */
-            if(mouse.active){
-                var mdx = pa.x - mouse.x, mdy = pa.y - mouse.y;
-                var md = Math.sqrt(mdx * mdx + mdy * mdy);
-                if(md < MOUSE_R){
-                    ctx.strokeStyle = 'rgba(' + DOT + ',' + ((1 - md / MOUSE_R) * 0.5).toFixed(3) + ')';
-                    ctx.lineWidth = 1.0;
-                    ctx.beginPath(); ctx.moveTo(pa.x, pa.y); ctx.lineTo(mouse.x, mouse.y); ctx.stroke();
-                    ctx.lineWidth = 0.7;
-                }
-            }
-        }
-
-        /* ── 粒子本体（各自呼吸） ── */
-        for(var c = 0; c < parts.length; c++){
-            var q = parts[c];
-            ctx.fillStyle = 'rgba(' + DOT + ',' + (q.o * (0.72 + 0.28 * Math.sin(q.ph))).toFixed(3) + ')';
-            ctx.beginPath(); ctx.arc(q.x, q.y, q.r, 0, 6.2832); ctx.fill();
-        }
-
-        /* ── 光标光晕 ── */
-        if(mouse.active){
-            var g = ctx.createRadialGradient(mouse.x, mouse.y, 0, mouse.x, mouse.y, MOUSE_R * 0.95);
-            g.addColorStop(0, 'rgba(' + DOT + ',0.15)');
-            g.addColorStop(1, 'rgba(' + DOT + ',0)');
-            ctx.fillStyle = g;
-            ctx.beginPath(); ctx.arc(mouse.x, mouse.y, MOUSE_R * 0.95, 0, 6.2832); ctx.fill();
-        }
-
-        /* ── 点击涟漪 ── */
-        for(var r = ripples.length - 1; r >= 0; r--){
-            var rp = ripples[r];
-            rp.t++;
-            var prog = rp.t / rp.life;
-            if(prog >= 1){ ripples.splice(r, 1); continue; }
-            ctx.strokeStyle = 'rgba(' + DOT + ',' + ((1 - prog) * 0.55).toFixed(3) + ')';
-            ctx.lineWidth = 2 * (1 - prog) + 0.4;
-            ctx.beginPath(); ctx.arc(rp.x, rp.y, prog * 132, 0, 6.2832); ctx.stroke();
-        }
-        ctx.lineWidth = 0.7;
-
-        /* 清理过期的迸发标记 */
-        for(var s = bursts.length - 1; s >= 0; s--){
-            bursts[s].t++;
-            if(bursts[s].t > bursts[s].life) bursts.splice(s, 1);
-        }
-
-        if(running) raf = requestAnimationFrame(step);
-    }
-
-    function addBurst(x, y){
-        bursts.push({ t:0, life:60 });
-        if(bursts.length > 6) bursts.shift();
-        var dir = Math.random() * Math.PI * 2;
-        parts.push({
-            x:x, y:y, vx:Math.cos(dir) * 1.5, vy:Math.sin(dir) * 1.5,
-            r:rnd(1.0, 1.8), o:0.95, ph:0, sp:0.02, temp:true
-        });
-        if(parts.length > N + 24) parts.splice(N, 1);
-    }
-
-    function setMouse(e){
-        var rect = canvas.getBoundingClientRect();
-        mouse.x = e.clientX - rect.left;
-        mouse.y = e.clientY - rect.top;
-        if(!mouse.active){ mouse.px = mouse.x; mouse.py = mouse.y; }
-        mouse.active = true;
-    }
-    function clearMouse(){ mouse.active = false; mouse.x = mouse.y = -9999; }
-
-    window.addEventListener('mousemove', setMouse, { passive:true });
-    document.addEventListener('mouseleave', clearMouse);
-    window.addEventListener('touchmove', function(e){
-        if(e.touches && e.touches[0]) setMouse(e.touches[0]);
-    }, { passive:true });
-    window.addEventListener('touchend', clearMouse, { passive:true });
-
-    window.addEventListener('click', function(e){
-        var rect = canvas.getBoundingClientRect();
-        var x = e.clientX - rect.left, y = e.clientY - rect.top;
-        ripples.push({ x:x, y:y, t:0, life:52 });
-        if(ripples.length > 5) ripples.shift();
-        addBurst(x, y);
-        /* 点击冲击波：把周围粒子往外推一下 */
-        for(var i = 0; i < parts.length; i++){
-            var p = parts[i];
-            var dx = p.x - x, dy = p.y - y, d = Math.sqrt(dx * dx + dy * dy);
-            if(d < 190 && d > 0.02){
-                var f = (1 - d / 190) * 3.4;
-                p.vx += (dx / d) * f; p.vy += (dy / d) * f;
-            }
-        }
-    });
-
-    /* 切主题时刷新粒子配色（浅色=雾蓝，深色=霓虹青） */
-    document.addEventListener('tg:theme', refreshColors);
-
-    /* 切到后台就停，省电 */
-    document.addEventListener('visibilitychange', function(){
-        if(document.hidden){
-            running = false;
-            if(raf){ cancelAnimationFrame(raf); raf = null; }
-        } else if(!running){
-            running = true;
-            raf = requestAnimationFrame(step);
-        }
-    });
-
-    var rz;
-    window.addEventListener('resize', function(){
-        clearTimeout(rz);
-        rz = setTimeout(size, 180);
-    });
-
-    size();
-    raf = requestAnimationFrame(step);
-})();
-</script>
 
 <!-- ══════════════════ 主题切换（浅色 / 深色 / 按时段 / 跟随系统） ══════════════════ -->
-<script>
-(function(){
-    var KEY = 'tg-theme-v1';
-    var DEFAULTS = { mode:'system', darkStart:'19:00', darkEnd:'07:00' };
-    var cfg = { mode:DEFAULTS.mode, darkStart:DEFAULTS.darkStart, darkEnd:DEFAULTS.darkEnd };
-    try{
-        var raw = localStorage.getItem(KEY);
-        if(raw){
-            var saved = JSON.parse(raw) || {};
-            if(saved.mode) cfg.mode = saved.mode;
-            if(saved.darkStart) cfg.darkStart = saved.darkStart;
-            if(saved.darkEnd) cfg.darkEnd = saved.darkEnd;
-        }
-    }catch(e){}
 
-    var root  = document.documentElement;
-    var mql   = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null;
-    var ticker = null;
-
-    function toMin(s){
-        var a = String(s || '').split(':');
-        var h = parseInt(a[0], 10), m = parseInt(a[1], 10);
-        if(isNaN(h)) h = 0;
-        if(isNaN(m)) m = 0;
-        return h * 60 + m;
-    }
-    /* 支持跨零点，例如 19:00 → 07:00 */
-    function inSchedule(){
-        var d = new Date(), cur = d.getHours() * 60 + d.getMinutes();
-        var s = toMin(cfg.darkStart), e = toMin(cfg.darkEnd);
-        if(s === e) return false;
-        return s < e ? (cur >= s && cur < e) : (cur >= s || cur < e);
-    }
-    function resolve(){
-        if(cfg.mode === 'dark')     return true;
-        if(cfg.mode === 'light')    return false;
-        if(cfg.mode === 'schedule') return inSchedule();
-        return !!(mql && mql.matches);
-    }
-    function label(){
-        if(cfg.mode === 'light')    return '浅色 · 手动';
-        if(cfg.mode === 'dark')     return '深色 · 手动';
-        if(cfg.mode === 'schedule') return (inSchedule() ? '深色' : '浅色') + ' · ' + cfg.darkStart + '–' + cfg.darkEnd + ' 时段';
-        return (mql && mql.matches ? '深色' : '浅色') + ' · 跟随系统';
-    }
-
-    function apply(silent){
-        if(ticker){ clearInterval(ticker); ticker = null; }
-        var dark = resolve();
-        root.setAttribute('data-theme', dark ? 'dark' : 'light');
-        if(!silent){
-            document.dispatchEvent(new CustomEvent('tg:theme', { detail:{ dark:dark, mode:cfg.mode } }));
-        }
-        var txt = document.getElementById('rt-now-text');
-        if(txt) txt.textContent = label();
-        var dot = document.getElementById('rt-now-dot');
-        if(dot) dot.style.color = dark ? '#38bdf8' : '#f59e0b';
-        var btns = document.querySelectorAll('.rt-btn');
-        for(var i = 0; i < btns.length; i++){
-            btns[i].classList.toggle('active', btns[i].getAttribute('data-mode') === cfg.mode);
-        }
-        var sc = document.getElementById('rt-schedule');
-        if(sc) sc.classList.toggle('on', cfg.mode === 'schedule');
-        /* 按时段模式：每 30 秒核对一次，跨过设定时间点自动切换 */
-        if(cfg.mode === 'schedule'){
-            ticker = setInterval(function(){
-                var want = inSchedule();
-                if((root.getAttribute('data-theme') === 'dark') !== want) apply(false);
-            }, 30000);
-        }
-    }
-    function save(){ try{ localStorage.setItem(KEY, JSON.stringify(cfg)); }catch(e){} }
-
-    /* ── 初始化 ── */
-    var ds = document.getElementById('rt-dark-start');
-    var de = document.getElementById('rt-dark-end');
-    if(ds) ds.value = cfg.darkStart;
-    if(de) de.value = cfg.darkEnd;
-    apply(true);
-    /* 首屏脚本已设过一次 data-theme，这里补齐按钮态 + 派发一次事件同步粒子配色 */
-    document.dispatchEvent(new CustomEvent('tg:theme', { detail:{ dark: resolve(), mode: cfg.mode } }));
-
-    /* ── 四种模式按钮 ── */
-    (function(){
-        var btns = document.querySelectorAll('.rt-btn');
-        for(var i = 0; i < btns.length; i++){
-            (function(btn){
-                function go(){
-                    cfg.mode = btn.getAttribute('data-mode');
-                    save(); apply(false);
-                }
-                btn.addEventListener('click', go);
-                btn.addEventListener('keydown', function(e){
-                    if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); go(); }
-                });
-            })(btns[i]);
-        }
-    })();
-
-    /* ── 自定义时段 ── */
-    function onTime(){
-        if(ds && ds.value) cfg.darkStart = ds.value;
-        if(de && de.value) cfg.darkEnd = de.value;
-        save();
-        if(cfg.mode !== 'schedule'){ cfg.mode = 'schedule'; }
-        apply(false);
-    }
-    if(ds) ds.addEventListener('change', onTime);
-    if(de) de.addEventListener('change', onTime);
-
-    /* ── 跟随系统：实时监听系统主题变化 ── */
-    if(mql){
-        var onSys = function(){ if(cfg.mode === 'system') apply(false); };
-        if(mql.addEventListener) mql.addEventListener('change', onSys);
-        else if(mql.addListener) mql.addListener(onSys);
-    }
-
-    /* ── 移动端浮动开关 ── */
-    var fab = document.getElementById('rt-fab');
-    var panel = document.getElementById('rail-theme');
-    if(fab && panel){
-        fab.addEventListener('click', function(e){
-            e.stopPropagation();
-            panel.classList.toggle('open');
-        });
-        document.addEventListener('click', function(e){
-            if(!panel.classList.contains('open')) return;
-            if(panel.contains(e.target) || e.target === fab) return;
-            panel.classList.remove('open');
-        });
-    }
-
-    /* ── 其他标签页改了主题 → 同步 ── */
-    window.addEventListener('storage', function(e){
-        if(e.key !== KEY || !e.newValue) return;
-        try{
-            var s = JSON.parse(e.newValue) || {};
-            if(s.mode) cfg.mode = s.mode;
-            if(s.darkStart){ cfg.darkStart = s.darkStart; if(ds) ds.value = s.darkStart; }
-            if(s.darkEnd){ cfg.darkEnd = s.darkEnd; if(de) de.value = s.darkEnd; }
-            apply(false);
-        }catch(err){}
-    });
-})();
-</script>
 
 <!-- ══════════════════ 首屏加载动效 ══════════════════ -->
-<script>
-(function(){
-    var box = document.getElementById('loader');
-    if(!box) return;
-    var pctEl  = box.querySelector('[data-ld-pct]');
-    var barEl  = box.querySelector('[data-ld-bar]');
-    var hintEl = box.querySelector('[data-ld-hint]');
-    var hints  = ['正在准备行程…', '校准轮渡时刻…', '接入实时天气…', '加载交互地图…', '就绪'];
-    var p = 0, hi = 0, done = false;
 
-    function paint(){
-        if(pctEl) pctEl.textContent = Math.round(p) + '%';
-        if(barEl) barEl.style.width = p + '%';
-        var idx = Math.min(hints.length - 1, Math.floor(p / 25));
-        if(idx !== hi){ hi = idx; if(hintEl) hintEl.textContent = hints[idx]; }
-    }
 
-    /* 缓慢逼近 92%，真正就绪时再冲 100%——避免"进度条骗人"的观感 */
-    var timer = setInterval(function(){
-        if(done) return;
-        p += Math.max(1.2, (92 - p) * 0.12);
-        if(p > 92) p = 92;
-        paint();
-    }, 90);
-
-    function finish(){
-        if(done) return;
-        done = true;
-        clearInterval(timer);
-        p = 100; paint();
-        if(hintEl) hintEl.textContent = hints[hints.length - 1];
-        setTimeout(function(){
-            box.classList.add('done');
-            setTimeout(function(){ box.style.display = 'none'; }, 700);
-        }, 220);
-    }
-
-    paint();
-    /* 等地图脚本就绪，最多 3.2s 兜底，绝不卡住首屏 */
-    var t0 = Date.now();
-    (function wait(){
-        var ok = (typeof mapApiReady !== 'undefined') && (mapApiReady || mapApiFailed);
-        if(ok || Date.now() - t0 > 3200) finish();
-        else setTimeout(wait, 150);
-    })();
-    window.addEventListener('load', function(){ setTimeout(finish, 500); });
-})();
-</script>
-
+<script src="../assets/ui.js"></script>
 </body>
 </html>

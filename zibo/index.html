@@ -10,6 +10,9 @@
 <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="../assets/favicon-16.png">
 <link rel="apple-touch-icon" sizes="128x128" href="../assets/favicon-128.png">
+<!-- 全站共享层：防闪烁主题初始化必须同步、且排在最前 -->
+<script src="../assets/ui-init.js"></script>
+<link rel="stylesheet" href="../assets/ui.css">
 <style>body{animation:pageIn .5s ease-out}@keyframes pageIn{from{opacity:0}to{opacity:1}}</style>
 <style>
 :root {
@@ -18,13 +21,56 @@
     --green:#10b981; --purple:#8b5cf6; --gray-100:#f8f9fa; --gray-300:#d1d5db;
     --shadow:0 2px 16px rgba(0,0,0,0.06);
     --color-banner-start:#e67e22; --color-banner-end:#8e44ad;
+
+    /* 共享层变量（淄博暖橙调性） */
+    --surface:#ffffff;
+    --surface-2:#fdf5ee;
+    --surface-3:#f7e9dc;
+    --surface-glass:rgba(254,249,244,.78);
+    --border:#f0e2d5;
+    --border-soft:#f7ede4;
+    --hairline:rgba(90,50,20,.09);
+    --text-faint:#a8927f;
+    --accent:#ea580c;
+    --rail-bg:rgba(255,252,249,.78);
+    --rail-active:rgba(234,88,12,.1);
+    --fx-dot:225,150,100;
+    --fx-line:200,130,90;
+    --glow:rgba(234,88,12,.16);
+    --code-bg:rgba(90,50,20,.055);
+    --scrim:rgba(40,22,10,.42);
+    --shadow-lift:0 14px 40px rgba(90,50,20,.14);
+    --scrollbar:#e0cbb8;
+}
+[data-theme="dark"] {
+    --bg:#17120e; --card-bg:#241c16; --text:#f0e6dd; --text-light:#b3a396;
+    --gray-100:#2a211a; --gray-300:#43362c;
+    --shadow:0 2px 18px rgba(0,0,0,.4);
+    --surface:#241c16;
+    --surface-2:#2a211a;
+    --surface-3:#332921;
+    --surface-glass:rgba(23,18,14,.74);
+    --border:#3a2e25;
+    --border-soft:#2e251e;
+    --hairline:rgba(255,255,255,.08);
+    --text-faint:#8b7a6b;
+    --accent:#fb923c;
+    --rail-bg:rgba(36,28,22,.74);
+    --rail-active:rgba(251,146,60,.13);
+    --fx-dot:245,175,120;
+    --fx-line:220,150,100;
+    --glow:rgba(251,146,60,.15);
+    --code-bg:rgba(255,255,255,.07);
+    --scrim:rgba(10,6,3,.62);
+    --shadow-lift:0 16px 44px rgba(0,0,0,.55);
+    --scrollbar:#4a3a2e;
+    --amber:#fbbf24; --orange:#fb923c; --coral:#fb7185; --night:#818cf8;
+    --green:#34d399; --purple:#a78bfa;
 }
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Noto Sans SC',sans-serif;background:var(--bg);color:var(--text);line-height:1.6}
 
 /* 返回按钮 */
-.back-btn{position:fixed;top:20px;left:20px;z-index:1000;background:rgba(255,255,255,0.9);backdrop-filter:blur(10px);border:1px solid #e5e7eb;border-radius:30px;padding:8px 18px;text-decoration:none;color:var(--text);font-size:0.85rem;font-weight:500;box-shadow:0 2px 8px rgba(0,0,0,0.06);transition:all 0.2s;display:flex;align-items:center;gap:6px}
-.back-btn:hover{background:#fff;transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,0,0,0.1)}
 
 /* Banner */
 .banner{background:url('../assets/zibo-bg.jpg') center/cover;color:#fff;text-align:center;padding:70px 20px 40px;position:relative;overflow:hidden}
@@ -58,13 +104,13 @@ body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Noto Sans SC',s
 
 /* Day Tabs */
 .day-tabs{display:flex;gap:8px;margin-bottom:16px}
-.day-tab{flex:1;text-align:center;padding:10px;border-radius:10px;background:#fff;cursor:pointer;font-weight:600;font-size:0.85rem;box-shadow:var(--shadow);transition:all 0.2s;border:2px solid transparent}
+.day-tab{flex:1;text-align:center;padding:10px;border-radius:10px;background:var(--surface);cursor:pointer;font-weight:600;font-size:0.85rem;box-shadow:var(--shadow);transition:all 0.2s;border:2px solid transparent}
 .day-tab.active{border-color:var(--orange);color:var(--orange);background:rgba(234,88,12,0.04)}
 .day-content{display:none}
 .day-content.active{display:block}
 
 /* 时间轴卡片 */
-.timeline-card{background:var(--card-bg);border-radius:12px;padding:16px;box-shadow:var(--shadow);margin-bottom:12px;border-left:4px solid #e5e7eb;transition:all 0.2s;cursor:pointer}
+.timeline-card{background:var(--card-bg);border-radius:12px;padding:16px;box-shadow:var(--shadow);margin-bottom:12px;border-left:4px solid var(--border);transition:all 0.2s;cursor:pointer}
 .timeline-card:hover{transform:translateX(4px);box-shadow:0 4px 20px rgba(0,0,0,0.1)}
 .timeline-card[data-cat="景点"]{border-left-color:var(--green)}
 .timeline-card[data-cat="美食"]{border-left-color:var(--coral)}
@@ -89,7 +135,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Noto Sans SC',s
 .tag{font-size:0.7rem;padding:2px 7px;border-radius:7px;background:var(--gray-100);color:var(--text-light)}
 
 /* 地图容器 */
-.map-container{background:#fff;border-radius:14px;overflow:hidden;box-shadow:var(--shadow);height:100%;position:relative;min-height:400px}
+.map-container{background:var(--surface);border-radius:14px;overflow:hidden;box-shadow:var(--shadow);height:100%;position:relative;min-height:400px}
 .map-container svg{width:100%;height:100%}
 #map{width:100%;height:100%}
 .map-legend{position:absolute;bottom:16px;left:16px;background:rgba(255,255,255,0.92);backdrop-filter:blur(8px);padding:10px 14px;border-radius:10px;font-size:0.72rem;display:flex;gap:12px;flex-wrap:wrap;box-shadow:0 2px 8px rgba(0,0,0,0.08)}
@@ -101,7 +147,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Noto Sans SC',s
 .section-card{background:var(--card-bg);border-radius:14px;padding:24px;box-shadow:var(--shadow);margin-bottom:18px}
 .section-title{font-size:1.15rem;font-weight:700;margin-bottom:18px;display:flex;align-items:center;gap:8px}
 .hotel-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
-.hotel-card{border:1px solid #e5e7eb;border-radius:12px;padding:16px;transition:all 0.2s}
+.hotel-card{border:1px solid var(--border);border-radius:12px;padding:16px;transition:all 0.2s}
 .hotel-card:hover{border-color:var(--orange);box-shadow:0 4px 12px rgba(234,88,12,0.1)}
 .hotel-card h4{font-size:0.95rem;font-weight:600}
 .hotel-card .stars{color:var(--amber);margin:4px 0}
@@ -114,7 +160,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Noto Sans SC',s
 @media(max-width:767px){}
 .hotel-card .price-note{font-size:0.68rem;color:var(--coral);margin-top:2px}
 .budget-table{width:100%;border-collapse:collapse;font-size:0.85rem}
-.budget-table th,.budget-table td{padding:10px 12px;text-align:left;border-bottom:1px solid #f3f4f6}
+.budget-table th,.budget-table td{padding:10px 12px;text-align:left;border-bottom:1px solid var(--border-soft)}
 .budget-table th{background:var(--gray-100);font-weight:600}
 .budget-table tr:last-child{font-weight:700}
 .budget-table tr:last-child td{border-top:2px solid var(--orange)}
@@ -131,17 +177,97 @@ body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Noto Sans SC',s
 .map-loading-spinner{width:36px;height:36px;border:3px solid #e5e7eb;border-top-color:var(--orange);border-radius:50%;animation:spin 0.8s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 
-@media(max-width:900px){
+/* 天气说明条（原为内联样式，提取出来以便主题适配） */
+.weather-note{font-size:.72rem;color:var(--text-light);line-height:1.65;margin-top:10px;padding:8px 11px;background:#f0f9ff;border:1px solid #bae6fd;border-radius:8px}
+
+/* ─── 深色主题适配 ─── */
+[data-theme="dark"] .day-tab.active{background:var(--rail-active)}
+[data-theme="dark"] .timeline-card.highlight{background:#1c2734}
+[data-theme="dark"] .weather-now{background:linear-gradient(118deg,rgba(56,189,248,.09),rgba(56,189,248,.03));border-color:var(--border)}
+[data-theme="dark"] .weather-now span[data-w-state="fail"],
+[data-theme="dark"] .weather-day[data-w-state="fail"] .weather-desc{color:#fca5a5}
+[data-theme="dark"] .map-legend{background:rgba(20,31,44,.92);color:var(--text-light)}
+[data-theme="dark"] .map-loading-overlay{background:rgba(20,31,44,.9)}
+[data-theme="dark"] .map-loading-spinner{border-color:#2a3949;border-top-color:var(--orange)}
+[data-theme="dark"] .tips-box.bad{background:#2d1618;border-color:#4c2028}
+[data-theme="dark"] .weather-note{background:#14273c;border-color:#1e3a55;color:#bfdbfe}
+[data-theme="dark"] .tips-box.good{background:#0c2a20;border-color:#1b4636}
+
+/* 左侧栏占 268px，内容区可用宽度更窄 → 分栏断点从 900px 前移到 1240px */
+@media(max-width:1240px){
     .main-layout{flex-direction:column}
     .left-panel{flex:auto}
     .right-panel{position:static;height:450px;min-width:auto}
+}
+
+@media(max-width:900px){
     .tips-grid{grid-template-columns:1fr}
 }
 </style>
 </head>
 <body>
 
-<a href="../" class="back-btn">← 返回旅行手记</a>
+<canvas id="fx"></canvas>
+<div id="loader"
+     data-title="淄博 · 烧烤之旅"
+     data-sub="✈ 旅行手记"
+     data-hints="正在准备行程…|加载当日实况…|接入行程地图…|就绪"></div>
+
+<div class="app">
+
+<aside class="rail">
+    <a class="rail-back" href="../">← 返回旅行手记</a>
+
+    <div class="rail-brand">
+        <h2>淄博 <em>烧烤之旅</em></h2>
+        <p>2026.06.19 – 06.20</p>
+    </div>
+
+    <div class="rail-sep"></div>
+
+    <nav class="rail-tabs" data-kind="anchors">
+        <div class="ps-tab" data-target="sec-weather" tabindex="0">
+            <div class="ps-name">🌤 当日实况</div>
+        </div>
+        <div class="ps-tab" data-target="sec-map" tabindex="0">
+            <div class="ps-name">🗺 行程地图</div>
+        </div>
+        <div class="ps-tab" data-target="sec-hotel" tabindex="0">
+            <div class="ps-name">🏨 住宿推荐</div>
+        </div>
+        <div class="ps-tab" data-target="sec-budget" tabindex="0">
+            <div class="ps-name">💰 预算估算</div>
+        </div>
+        <div class="ps-tab" data-target="sec-tips" tabindex="0">
+            <div class="ps-name">⚠️ 避坑指南</div>
+        </div>
+        <div class="ps-tab" data-target="sec-food" tabindex="0">
+            <div class="ps-name">🍽 必吃美食</div>
+        </div>
+    </nav>
+
+    <div class="rail-theme" id="rail-theme">
+        <div class="rt-label">🌓 主题</div>
+        <div class="rt-modes">
+            <div class="rt-btn" data-mode="light" tabindex="0">☀️ 浅色</div>
+            <div class="rt-btn" data-mode="dark" tabindex="0">🌙 深色</div>
+            <div class="rt-btn wide" data-mode="schedule" tabindex="0">🕐 按时段自动</div>
+            <div class="rt-btn wide" data-mode="system" tabindex="0">💻 跟随系统</div>
+        </div>
+        <div class="rt-schedule" id="rt-schedule">
+            <div class="rt-times">
+                <input type="time" id="rt-dark-start" value="19:00">
+                <span>→</span>
+                <input type="time" id="rt-dark-end" value="07:00">
+            </div>
+            <div class="rt-note">到点自动切深色、过点自动切回浅色，支持跨零点（如 19:00 → 07:00）。</div>
+        </div>
+        <div class="rt-now"><span id="rt-now-dot">●</span><b id="rt-now-text">—</b></div>
+    </div>
+</aside>
+
+<div class="app-main">
+
 
 <!-- Banner -->
 <div class="banner">
@@ -158,7 +284,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Noto Sans SC',s
 <div class="main-layout">
     <div class="left-panel">
         <!-- 天气小组件（Open-Meteo：当日历史实况 + 实时） -->
-        <div class="weather-widget">
+        <div class="weather-widget" id="sec-weather">
             <div class="weather-title">🌤️ 当日实况 · 回看<span id="weather-update-time" class="weather-update-time"></span></div>
             <div class="weather-now" data-weather-now>
                 <span data-now-city data-city="淄博" data-lat="36.8131" data-lng="118.0550"></span>
@@ -177,7 +303,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Noto Sans SC',s
                     <div class="weather-desc">加载中…</div>
                 </div>
             </div>
-            <div class="weather-note" style="font-size:.72rem;color:var(--text-light);line-height:1.65;margin-top:10px;padding:8px 11px;background:#f0f9ff;border:1px solid #bae6fd;border-radius:8px">📡 这两格是<b>旅行当天的真实历史天气</b>（Open-Meteo 历史库）；上方一行是淄博<b>此刻实时天气</b>。</div>
+            <div class="weather-note">📡 这两格是<b>旅行当天的真实历史天气</b>（Open-Meteo 历史库）；上方一行是淄博<b>此刻实时天气</b>。</div>
         </div>
 
         <!-- Day Tabs -->
@@ -314,7 +440,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Noto Sans SC',s
     </div>
 
     <!-- 右侧地图 -->
-    <div class="right-panel">
+    <div class="right-panel" id="sec-map">
         <div class="map-container">
             <div class="map-loading-overlay" id="map-loading">
                 <div class="map-loading-spinner"></div>
@@ -336,7 +462,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Noto Sans SC',s
 <!-- 详细内容 -->
 <div class="detail-section">
     <!-- 酒店 -->
-    <div class="section-card">
+    <div class="section-card" id="sec-hotel">
         <h2 class="section-title">🏨 住宿推荐 · 八大局 / 万象汇周边</h2>
         <p style="color:var(--coral);font-size:0.85rem;margin-bottom:16px;">⚠ 端午期间酒店价格普遍上浮 30%-50%，建议尽早预订</p>
         <div class="hotel-grid">
@@ -384,7 +510,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Noto Sans SC',s
     </div>
 
     <!-- 预算 -->
-    <div class="section-card">
+    <div class="section-card" id="sec-budget">
         <h2 class="section-title">💰 预算估算（两人）</h2>
         <table class="budget-table">
             <tr><th>项目</th><th>明细</th><th>金额</th></tr>
@@ -398,7 +524,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Noto Sans SC',s
     </div>
 
     <!-- 避坑 -->
-    <div class="section-card">
+    <div class="section-card" id="sec-tips">
         <h2 class="section-title">⚠️ 避坑指南</h2>
         <div class="tips-grid">
             <div class="tips-box bad"><h4>❌ 千万别做</h4><ul><li>不要在八大局买"网红炒锅饼"高价版，每家口味差不多</li><li>不要在中午高峰去牧羊村，排队 1 小时起</li><li>不要周一去陶瓷馆和齐文化博物院（闭馆！）</li><li>不要在八大局开车进去，步行街禁机动车</li><li>不要轻易尝试路边摊毛蛋/蚕蛹（肠胃不适风险）</li><li>不要周村古商城买高价纪念品，货比三家</li><li>不要在高速服务区加满油，市区加油站更便宜</li></ul></div>
@@ -407,7 +533,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Noto Sans SC',s
     </div>
 
     <!-- 美食 -->
-    <div class="section-card">
+    <div class="section-card" id="sec-food">
         <h2 class="section-title">🍽 必吃美食清单</h2>
         <table class="budget-table">
             <tr><th>美食</th><th>推荐店</th><th>价格</th><th>备注</th></tr>
@@ -521,5 +647,11 @@ loadMap();
 </script>
 <script>document.addEventListener('click',function(e){var b=e.target.closest('.book-btn.ctrip[data-hotel-id]');if(!b)return;e.preventDefault();var id=b.dataset.hotelId,m=innerWidth<=768;window.open(m?'https://m.ctrip.com/html5/hotel/hoteldetail/'+id+'.html?checkIn=2026-06-19&checkOut=2026-06-20':'https://hotels.ctrip.com/hotels/'+id+'.html?checkIn=2026-06-19&checkOut=2026-06-20','_blank')});</script>
 
+</div><!-- /.app-main -->
+</div><!-- /.app -->
+
+<div class="rt-fab" id="rt-fab" title="切换主题">🌓</div>
+
+<script src="../assets/ui.js"></script>
 </body>
 </html>
