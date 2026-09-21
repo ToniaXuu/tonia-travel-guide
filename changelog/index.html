@@ -218,9 +218,9 @@ body{
 
     <div class="stats">
         <div class="stat"><b id="s-ver">—</b><span>正式版本</span></div>
-        <div class="stat"><b id="s-commit">44</b><span>次提交</span></div>
+        <div class="stat"><b id="s-commit">45</b><span>次提交</span></div>
         <div class="stat"><b id="s-day">97</b><span>天持续迭代</span></div>
-        <div class="stat"><b id="s-cur">v3.0.0</b><span>当前版本</span></div>
+        <div class="stat"><b id="s-cur">v3.1.0</b><span>当前版本</span></div>
     </div>
 
     <div class="filters" id="filters">
@@ -232,12 +232,38 @@ body{
 
     <div class="timeline" id="timeline">
 
+        <!-- ══════════ v3.1.0 ══════════ -->
+        <article class="release latest" data-ver="3.1.0" id="v3-1-0">
+            <div class="rel-card">
+                <div class="rel-head">
+                    <span class="ver">v3.1.0</span>
+                    <span class="ver-tag">最新</span>
+                    <span class="rel-date">2026-09-21</span>
+                </div>
+                <h2 class="rel-title">左侧导航 · 双主题 · 交互粒子</h2>
+                <p class="rel-desc">大连攻略页的一次大改：方案切换移到左侧、粒子背景重做并支持鼠标交互、新增深浅色双主题，同时把大连行程调整为玩满三天。</p>
+                <ul class="rel-list">
+                    <li data-type="feat"><span class="k feat">新增</span>方案切换器从顶部横排改为<b>左侧常驻竖排导航</b>（268px sticky），窄屏自动回落为顶部横条 + 浮动主题按钮</li>
+                    <li data-type="feat"><span class="k feat">新增</span><b>深色 / 浅色双主题</b>，四种模式：手动浅色、手动深色、<b>按自定义时段自动切换</b>（支持跨零点）、跟随系统实时联动</li>
+                    <li data-type="feat"><span class="k feat">新增</span>主题偏好在 CSS 之前预置应用（零闪白/闪黑），并存 localStorage，多标签页之间自动同步</li>
+                    <li data-type="feat"><span class="k feat">新增</span>重写<b>增强版粒子背景</b>：Canvas 全屏、鼠标引力排斥 + 光标光晕 + 悬停连线 + <b>点击涟漪与冲击波</b>，粒子数量按视口面积自适应、切后台自动暂停</li>
+                    <li data-type="feat"><span class="k feat">新增</span>首屏加载动效：双层旋转弧 + 百分比进度 + 分阶段文案，等地图就绪或 3.2s 兜底自动淡出</li>
+                    <li data-type="feat"><span class="k feat">新增</span>方案 A 行程重排：<b>10/02 - 10/05 四天</b>，大连玩满三个整天（新增<b>金石滩一日</b>：滨海国家地质公园 + 十里黄金海岸），10/04 22:50 夜航，10/05 08:30 高铁返济南</li>
+                    <li data-type="impr"><span class="k impr">优化</span>夜航改走「金石滩 → 地铁 3 号线大连湾站 → 打车 3km 到港」，全程轨道、避开市区晚高峰，比原方案打车 20km 稳得多</li>
+                    <li data-type="impr"><span class="k impr">优化</span>返程由 K286 夜车改为 <b>G2010 高铁</b>（3h49m、¥198），10/05 12:19 就到济南站，还多出 10/06 一整天假期；两人总预算 ¥4,996 → <b>¥4,806</b></li>
+                    <li data-type="fix"><span class="k fix">修复</span>核对渤海轮渡时刻表：22:50 大连湾新港发船的班次是<b>「渤海玛珠」</b>、05:30 抵烟台港客运站，原稿写的「渤海翠珠 05:50 到」船名与到港时间都不对</li>
+                    <li data-type="fix"><span class="k fix">修复</span>flex 外壳下内容区被宽表格撑开导致 banner 右侧被裁——给内容区加 <code>min-width:0</code>，宽表格改为卡片内横向滚动</li>
+                    <li data-type="fix"><span class="k fix">修复</span>矮屏下左侧栏方案卡片被 flex 压扁并裁掉文字（改为 <code>flex:0 0 auto</code> + 容器滚动）</li>
+                    <li data-type="fix"><span class="k fix">修复</span>移动端主题面板定位失效——父级 <code>backdrop-filter</code> 会使其成为 fixed 定位的包含块，窄屏下已禁用</li>
+                </ul>
+            </div>
+        </article>
+
         <!-- ══════════ v3.0.0 ══════════ -->
-        <article class="release latest" data-ver="3.0.0" id="v3-0-0">
+        <article class="release" data-ver="3.0.0" id="v3-0-0">
             <div class="rel-card">
                 <div class="rel-head">
                     <span class="ver">v3.0.0</span>
-                    <span class="ver-tag">最新</span>
                     <span class="rel-date">2026-09-21</span>
                 </div>
                 <h2 class="rel-title">全站接入实时天气</h2>
