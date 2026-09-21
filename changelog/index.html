@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Tonia's Travel Journal 版本更新记录 — 每一次改动的完整日志：新增攻略、交互地图、实时天气、UI 重构与问题修复。">
+<meta property="og:title" content="版本更新 · Changelog | Tonia's Travel Journal">
+<meta property="og:description" content="旅行手记的每一次迭代都在这里：从第一版上线到全站实时天气。">
+<meta property="og:type" content="website">
+<title>版本更新 · Changelog | Tonia's Travel Journal</title>
+<link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../assets/favicon-16.png">
+<link rel="apple-touch-icon" sizes="128x128" href="../assets/favicon-128.png">
+<style>
+:root{
+    --bg:#faf9f6; --card:#ffffff;
+    --text:#2c3a47; --text-light:#7d8b99; --text-faint:#a8b2bc;
+    --teal:#3f9179; --teal-deep:#2e7562; --teal-soft:#e8f2ee;
+    --mist:#7d95ad; --lav:#a99bc4; --lav-soft:#f0edf7;
+    --orange:#cf8a55; --orange-soft:#fbf0e6;
+    --line:rgba(44,58,71,.1);
+    --shadow:0 8px 30px rgba(44,58,71,.07);
+    --shadow-hover:0 14px 40px rgba(44,58,71,.12);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+    font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Noto Sans SC',sans-serif;
+    background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;
+    -webkit-font-smoothing:antialiased;
+    animation:pageIn .55s ease-out;
+}
+@keyframes pageIn{from{opacity:0}to{opacity:1}}
+
+/* 返回按钮 — 与攻略页一致 */
+.back-btn{
+    position:fixed;top:20px;left:20px;z-index:1000;
+    background:rgba(255,255,255,.9);backdrop-filter:blur(10px);
+    border:1px solid #e5e7eb;border-radius:30px;padding:8px 18px;
+    text-decoration:none;color:var(--text);font-size:.85rem;font-weight:500;
+    box-shadow:0 2px 8px rgba(0,0,0,.06);transition:all .2s;
+    display:flex;align-items:center;gap:6px;
+}
+.back-btn:hover{background:#fff;transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,0,0,.1)}
+
+/* 背景星点 */
+#particles{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none}
+
+.container{position:relative;z-index:1;max-width:940px;margin:0 auto;padding:0 28px}
+
+/* ─── Hero ─── */
+.hero{text-align:center;padding:76px 20px 0}
+.hero .eyebrow{
+    font-size:.68rem;letter-spacing:6px;color:var(--text-faint);font-weight:500;
+}
+.hero h1{
+    margin-top:16px;
+    font-family:Georgia,'Times New Roman','Noto Serif SC',serif;
+    font-size:clamp(1.9rem,4.2vw,2.55rem);font-weight:600;letter-spacing:.5px;
+    background:linear-gradient(118deg,#2c3a47 0%,#5b7a93 58%,#8a7fae 100%);
+    -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.hero .subtitle{margin-top:15px;font-size:.82rem;color:var(--mist);letter-spacing:6px}
+
+/* 统计条 */
+.stats{
+    display:flex;justify-content:center;gap:0;flex-wrap:wrap;
+    margin-top:42px;background:var(--card);border-radius:18px;
+    box-shadow:var(--shadow);overflow:hidden;
+}
+.stat{flex:1;min-width:150px;padding:22px 16px;text-align:center;position:relative}
+.stat+.stat::before{
+    content:'';position:absolute;left:0;top:22%;height:56%;width:1px;background:var(--line);
+}
+.stat b{
+    display:block;font-family:Georgia,serif;font-size:1.85rem;font-weight:600;
+    color:var(--teal-deep);font-variant-numeric:tabular-nums;line-height:1.1;
+}
+.stat span{display:block;margin-top:7px;font-size:.72rem;letter-spacing:2px;color:var(--text-faint)}
+
+/* ─── 筛选 ─── */
+.filters{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:34px}
+.chip{
+    cursor:pointer;user-select:none;
+    font-size:.78rem;letter-spacing:.5px;font-weight:500;
+    padding:8px 17px;border-radius:20px;
+    background:var(--card);color:var(--text-light);
+    border:1px solid rgba(44,58,71,.09);
+    transition:all .2s ease;
+}
+.chip:hover{color:var(--text);border-color:rgba(63,145,121,.35);transform:translateY(-1px)}
+.chip.active{background:var(--teal);color:#fff;border-color:var(--teal);box-shadow:0 4px 14px rgba(63,145,121,.28)}
+.chip .c{opacity:.62;margin-left:5px;font-variant-numeric:tabular-nums}
+
+/* ─── 时间轴 ─── */
+.timeline{position:relative;margin-top:52px;padding-left:38px}
+.timeline::before{
+    content:'';position:absolute;left:9px;top:8px;bottom:8px;width:2px;border-radius:1px;
+    background:linear-gradient(180deg,var(--teal) 0%,var(--mist) 46%,var(--lav) 100%);
+    opacity:.32;
+}
+.release{position:relative;margin-bottom:26px;animation:fadeUp .45s ease-out both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.release::before{
+    content:'';position:absolute;left:-38px;top:26px;
+    width:20px;height:20px;border-radius:50%;
+    background:var(--card);border:2px solid var(--mist);
+    box-shadow:0 0 0 4px var(--bg);
+    transition:all .25s ease;z-index:1;
+}
+.release.latest::before{border-color:var(--teal);background:var(--teal)}
+.release.hidden{display:none}
+.release:hover::before{transform:scale(1.16);border-color:var(--teal)}
+
+.rel-card{
+    background:var(--card);border-radius:18px;padding:24px 26px 22px;
+    box-shadow:var(--shadow);border:1px solid rgba(44,58,71,.05);
+    transition:transform .24s ease,box-shadow .24s ease;
+}
+.release:hover .rel-card{transform:translateY(-3px);box-shadow:var(--shadow-hover)}
+
+.rel-head{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.ver{
+    font-family:Georgia,serif;font-size:1.02rem;font-weight:700;letter-spacing:.5px;
+    color:#fff;background:var(--teal-deep);padding:4px 13px;border-radius:9px;
+    font-variant-numeric:tabular-nums;
+}
+.release.latest .ver{background:linear-gradient(118deg,#2e7562,#3f9179 55%,#5aa88c)}
+.ver-tag{
+    font-size:.64rem;font-weight:600;letter-spacing:2px;
+    color:var(--teal-deep);background:var(--teal-soft);
+    padding:4px 10px;border-radius:8px;
+}
+.rel-date{
+    font-size:.76rem;color:var(--text-faint);letter-spacing:.8px;
+    font-variant-numeric:tabular-nums;margin-left:auto;
+}
+.rel-title{
+    margin-top:16px;font-size:1.16rem;font-weight:700;letter-spacing:.4px;
+    font-family:Georgia,'Noto Serif SC',serif;
+}
+.rel-desc{margin-top:7px;font-size:.84rem;color:var(--text-light);line-height:1.72}
+
+/* 变更条目 */
+.rel-list{list-style:none;margin-top:15px;display:flex;flex-direction:column;gap:9px}
+.rel-list li{
+    position:relative;padding-left:57px;font-size:.835rem;line-height:1.72;
+    color:var(--text);animation:itemIn .3s ease-out both;
+}
+@keyframes itemIn{from{opacity:0}to{opacity:1}}
+.rel-list li.hidden{display:none}
+.rel-list li .k{
+    position:absolute;left:0;top:1px;
+    font-size:.66rem;font-weight:600;letter-spacing:.5px;
+    padding:2.5px 8px;border-radius:6px;white-space:nowrap;
+}
+.k.feat{color:#1f6b55;background:var(--teal-soft)}
+.k.impr{color:#5b4a86;background:var(--lav-soft)}
+.k.fix {color:#8a5424;background:var(--orange-soft)}
+.rel-list li b{font-weight:700}
+.rel-list li code{
+    font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    font-size:.93em;background:rgba(44,58,71,.05);
+    padding:1px 5px;border-radius:5px;
+}
+
+/* 空态 */
+.empty-filter{
+    display:none;text-align:center;padding:56px 20px;color:var(--text-faint);
+}
+.empty-filter.on{display:block}
+.empty-filter .e-icon{font-size:1.7rem;opacity:.6;display:block;margin-bottom:12px}
+.empty-filter p{font-size:.86rem;letter-spacing:1px}
+
+/* Footer */
+.footer{text-align:center;padding:56px 20px 58px}
+.footer .f-quote{font-size:.85rem;color:var(--text-light);letter-spacing:2.5px}
+.footer .f-meta{margin-top:10px;font-size:.72rem;color:var(--text-faint);letter-spacing:1.5px}
+.footer .f-meta a{color:var(--mist);text-decoration:none;border-bottom:1px solid rgba(125,149,173,.4);padding-bottom:1px}
+.footer .f-meta a:hover{color:var(--teal);border-color:rgba(63,145,121,.5)}
+
+/* 响应式 */
+@media(max-width:767px){
+    .back-btn{top:14px;left:14px;padding:7px 15px;font-size:.8rem}
+    .hero{padding:70px 16px 0}
+    .hero .eyebrow{letter-spacing:4px}
+    .container{padding:0 18px}
+    .stats{margin-top:32px;border-radius:15px}
+    .stat{min-width:0;flex:1 1 33.333%;padding:17px 8px}
+    .stat+.stat::before{display:none}
+    .stat:nth-child(2)::before{display:block}
+    .stat b{font-size:1.42rem}
+    .stat span{font-size:.63rem;letter-spacing:1px}
+    .filters{gap:8px;margin-top:26px}
+    .chip{padding:7px 13px;font-size:.74rem}
+    .timeline{margin-top:38px;padding-left:26px}
+    .timeline::before{left:5px}
+    .release::before{left:-26px;top:22px;width:14px;height:14px;border-width:2px;box-shadow:0 0 0 3px var(--bg)}
+    .rel-card{padding:20px 18px 18px;border-radius:15px}
+    .rel-title{font-size:1.04rem}
+    .rel-date{margin-left:0;width:100%;margin-top:2px}
+    .rel-list li{padding-left:0;padding-top:19px}
+    .rel-list li .k{top:0}
+}
+</style>
+</head>
+<body>
+
+<canvas id="particles"></canvas>
+<a href="../" class="back-btn">← 返回旅行手记</a>
+
+<div class="container">
+
+    <header class="hero">
+        <p class="eyebrow">C H A N G E L O G</p>
+        <h1>版本更新</h1>
+        <p class="subtitle">✈ 每一次改动都算数</p>
+    </header>
+
+    <div class="stats">
+        <div class="stat"><b id="s-ver">—</b><span>正式版本</span></div>
+        <div class="stat"><b id="s-commit">44</b><span>次提交</span></div>
+        <div class="stat"><b id="s-day">97</b><span>天持续迭代</span></div>
+        <div class="stat"><b id="s-cur">v3.0.0</b><span>当前版本</span></div>
+    </div>
+
+    <div class="filters" id="filters">
+        <div class="chip active" data-filter="all">全部<span class="c" data-count="all"></span></div>
+        <div class="chip" data-filter="feat">✨ 新功能<span class="c" data-count="feat"></span></div>
+        <div class="chip" data-filter="impr">🔧 优化<span class="c" data-count="impr"></span></div>
+        <div class="chip" data-filter="fix">🐛 修复<span class="c" data-count="fix"></span></div>
+    </div>
+
+    <div class="timeline" id="timeline">
+
+        <!-- ══════════ v3.0.0 ══════════ -->
+        <article class="release latest" data-ver="3.0.0" id="v3-0-0">
+            <div class="rel-card">
+                <div class="rel-head">
+                    <span class="ver">v3.0.0</span>
+                    <span class="ver-tag">最新</span>
+                    <span class="rel-date">2026-09-21</span>
+                </div>
+                <h2 class="rel-title">全站接入实时天气</h2>
+                <p class="rel-desc">天气从「常年气候参考值」变成真正拉取的数据——每个页面、每一天、连日出日落都有。</p>
+                <ul class="rel-list">
+                    <li data-type="feat"><span class="k feat">新增</span>新建共享天气模块 <code>assets/weather.js</code>，接入 Open-Meteo：免 Key、支持跨域，覆盖 16 天逐日预报与历史实况</li>
+                    <li data-type="feat"><span class="k feat">新增</span>四个页面全部接入：逐日天气格、当前实况条、时间轴卡片上的昼夜天气徽章、日出日落时间</li>
+                    <li data-type="impr"><span class="k impr">优化</span>未来日期走预报接口、历史日期走归档接口，同一页混排时自动分组分别请求</li>
+                    <li data-type="impr"><span class="k impr">优化</span>20 分钟会话缓存 + 在途请求去重 + 12 秒超时降级，切换页签不再重复请求</li>
+                    <li data-type="fix"><span class="k fix">修复</span>原腾讯天气接口已失效（返回「签名验证失败」），此前全站天气实为写死的静态文本</li>
+                </ul>
+            </div>
+        </article>
+
+        <!-- ══════════ v2.2.0 ══════════ -->
+        <article class="release" data-ver="2.2.0" id="v2-2-0">
+            <div class="rel-card">
+                <div class="rel-head">
+                    <span class="ver">v2.2.0</span>
+                    <span class="rel-date">2026-09-01</span>
+                </div>
+                <h2 class="rel-title">三方案页签 · 济南四日</h2>
+                <p class="rel-desc">备选方案升级为与主方案平级的独立页签，济南行程收敛为「南部山区为主」的四天。</p>
+                <ul class="rel-list">
+                    <li data-type="feat"><span class="k feat">新增</span>方案 B / C 升级为顶部 sticky 页签，三个方案架构完全平级、随时互切，切换淡入并平滑回滚</li>
+                    <li data-type="feat"><span class="k feat">新增</span>方案 C 重构为《济南四日 · 南部山区为主》：九如山 → 青铜山大峡谷 → 柳埠四门塔 + 龙门山</li>
+                    <li data-type="impr"><span class="k impr">优化</span>新增景点坐标逐一查证并做 WGS84→GCJ-02 转换，地图标记不再偏移</li>
+                    <li data-type="impr"><span class="k impr">优化</span>门票价格全部按携程 / 同程当日实价核实，预算重算为两人四天 ¥1,696</li>
+                    <li data-type="fix"><span class="k fix">修复</span>三个方案的地图整体不显示——容器 id 改名后 CSS 高度选择器未同步，容器高度被算成 0</li>
+                </ul>
+            </div>
+        </article>
+
+        <!-- ══════════ v2.1.0 ══════════ -->
+        <article class="release" data-ver="2.1.0" id="v2-1-0">
+            <div class="rel-card">
+                <div class="rel-head">
+                    <span class="ver">v2.1.0</span>
+                    <span class="rel-date">2026-08-31</span>
+                </div>
+                <h2 class="rel-title">住宿实价校准</h2>
+                <p class="rel-desc">酒店从「名字好看」改成「真的订得起」，按钮直接落到具体酒店详情页。</p>
+                <ul class="rel-list">
+                    <li data-type="feat"><span class="k feat">新增</span>住宿卡片新增推荐酒店行（名称 / 地址 / 评分），预订按钮改为按酒店 ID 直达携程详情页并自动带入住日期</li>
+                    <li data-type="impr"><span class="k impr">优化</span>按实价把推荐档位校正到 300 元档，补充更多地铁沿线低价酒店</li>
+                    <li data-type="feat"><span class="k feat">新增</span>「原计划修正清单」升级为「AI 原计划修正清单」，逐条说明改了什么、为什么改</li>
+                </ul>
+            </div>
+        </article>
+
+        <!-- ══════════ v2.0.0 ══════════ -->
+        <article class="release" data-ver="2.0.0" id="v2-0-0">
+            <div class="rel-card">
+                <div class="rel-head">
+                    <span class="ver">v2.0.0</span>
+                    <span class="rel-date">2026-08-31</span>
+                </div>
+                <h2 class="rel-title">数字旅行手账 · 大连跨海四日</h2>
+                <p class="rel-desc">站点从「几个攻略页」变成一本有封面、有倒计时的手账。</p>
+                <ul class="rel-list">
+                    <li data-type="feat"><span class="k feat">新增</span>《大连 · 烟台国庆跨海四日》完整攻略页：飞机 + 轮渡 + 高铁，含交互地图与预算明细</li>
+                    <li data-type="feat"><span class="k feat">新增</span>主页重构为数字旅行手账：1100px 杂志宽度、暖白底 + Georgia 衬线标题</li>
+                    <li data-type="feat"><span class="k feat">新增</span>NEXT TRIP 主卡（海景渐变 + 天 / 时 / 分实时倒计时）与历史行程的杂志网格</li>
+                    <li data-type="impr"><span class="k impr">优化</span>背景粒子减半、footer 轻量化，页面更安静</li>
+                    <li data-type="fix"><span class="k fix">修复</span>跨海轮渡船期更正为真实的渤海翠珠轮 22:50 大连湾新港 → 05:50 烟台港（约 7 小时），原为虚构船期</li>
+                    <li data-type="fix"><span class="k fix">修复</span>机场坐标经度错误（偏差 36km），出发轨迹改为经唐冶接人的顺风车两段</li>
+                </ul>
+            </div>
+        </article>
+
+        <!-- ══════════ v1.4.0 ══════════ -->
+        <article class="release" data-ver="1.4.0" id="v1-4-0">
+            <div class="rel-card">
+                <div class="rel-head">
+                    <span class="ver">v1.4.0</span>
+                    <span class="rel-date">2026-06-16</span>
+                </div>
+                <h2 class="rel-title">内容校准与动线重排</h2>
+                <p class="rel-desc">把「看起来很美」的行程改成真的走得完的行程。</p>
+                <ul class="rel-list">
+                    <li data-type="impr"><span class="k impr">优化</span>淄博行程从「赶命模式」松绑为度假节奏，时间标签改为「清早出发」「睡到自然醒」这类真实表述</li>
+                    <li data-type="fix"><span class="k fix">修复</span>淄博第二天按地理顺行重排（先东后西），旧版路线来回折返、实际不可行</li>
+                    <li data-type="impr"><span class="k impr">优化</span>酒店预订按钮统一为携程直达，按设备自动选择移动端 / 桌面端域名</li>
+                </ul>
+            </div>
+        </article>
+
+        <!-- ══════════ v1.3.0 ══════════ -->
+        <article class="release" data-ver="1.3.0" id="v1-3-0">
+            <div class="rel-card">
+                <div class="rel-head">
+                    <span class="ver">v1.3.0</span>
+                    <span class="rel-date">2026-06-16</span>
+                </div>
+                <h2 class="rel-title">动效与年度体系</h2>
+                <p class="rel-desc">站点开始「有质感」——每一层都动起来，但不是为了动而动。</p>
+                <ul class="rel-list">
+                    <li data-type="feat"><span class="k feat">新增</span>年度时间线（2026 / 2025 / 2024），空年份自动占位</li>
+                    <li data-type="feat"><span class="k feat">新增</span>页面入场弹性缩放、卡片交错 spring 动画、标题渐变流光扫过</li>
+                    <li data-type="feat"><span class="k feat">新增</span>子页面之间的毛玻璃过渡遮罩 + 波纹扩散 + 三色弹跳圆点</li>
+                    <li data-type="feat"><span class="k feat">新增</span>全站 SEO meta 与 og 分享标签</li>
+                </ul>
+            </div>
+        </article>
+
+        <!-- ══════════ v1.2.0 ══════════ -->
+        <article class="release" data-ver="1.2.0" id="v1-2-0">
+            <div class="rel-card">
+                <div class="rel-head">
+                    <span class="ver">v1.2.0</span>
+                    <span class="rel-date">2026-06-16</span>
+                </div>
+                <h2 class="rel-title">真实可订的住宿</h2>
+                <p class="rel-desc">攻略里的酒店，点进去真的能订。</p>
+                <ul class="rel-list">
+                    <li data-type="feat"><span class="k feat">新增</span>烟台 / 淄博住宿换成真实可预订酒店，标注节假日上浮价与平日价对比</li>
+                    <li data-type="feat"><span class="k feat">新增</span>网站图标 favicon，从头像生成 5 档尺寸</li>
+                    <li data-type="fix"><span class="k fix">修复</span>移动端布局异常与 Banner / 卡片背景图不显示</li>
+                </ul>
+            </div>
+        </article>
+
+        <!-- ══════════ v1.1.0 ══════════ -->
+        <article class="release" data-ver="1.1.0" id="v1-1-0">
+            <div class="rel-card">
+                <div class="rel-head">
+                    <span class="ver">v1.1.0</span>
+                    <span class="rel-date">2026-06-16</span>
+                </div>
+                <h2 class="rel-title">交互地图系统</h2>
+                <p class="rel-desc">时间轴和地图联动——点哪张卡，地图就飞到哪里。</p>
+                <ul class="rel-list">
+                    <li data-type="feat"><span class="k feat">新增</span>双栏布局：左侧时间轴 + 右侧腾讯地图，点卡片联动地图定位</li>
+                    <li data-type="feat"><span class="k feat">新增</span>按天绘制的路线连线（颜色与线型区分）、卫星 / 地图切换</li>
+                    <li data-type="feat"><span class="k feat">新增</span>点击卡片高亮脉冲标记 + 地名标签</li>
+                    <li data-type="impr"><span class="k impr">优化</span>地图加载超时自动降级为 SVG 路线示意图，弱网也不会开天窗</li>
+                </ul>
+            </div>
+        </article>
+
+        <!-- ══════════ v1.0.0 ══════════ -->
+        <article class="release" data-ver="1.0.0" id="v1-0-0">
+            <div class="rel-card">
+                <div class="rel-head">
+                    <span class="ver">v1.0.0</span>
+                    <span class="rel-date">2026-06-16</span>
+                </div>
+                <h2 class="rel-title">旅行手记上线</h2>
+                <p class="rel-desc">第一版：一个主页，两篇攻略。</p>
+                <ul class="rel-list">
+                    <li data-type="feat"><span class="k feat">新增</span>博客式主页，粒子动画背景 + 浅绿浅紫色调</li>
+                    <li data-type="feat"><span class="k feat">新增</span>烟台养马岛攻略页（高铁两日游）</li>
+                    <li data-type="feat"><span class="k feat">新增</span>淄博烧烤攻略页（自驾两日游）</li>
+                </ul>
+            </div>
+        </article>
+
+    </div>
+
+    <div class="empty-filter" id="empty-filter">
+        <span class="e-icon">🗂️</span>
+        <p>这个分类下暂时没有记录</p>
+    </div>
+
+    <footer class="footer">
+        <p class="f-quote">记录走过的路，也记录路上的风。</p>
+        <p class="f-meta">Tonia's Travel Journal · 2026 &nbsp;·&nbsp; <a href="../">返回主页</a></p>
+    </footer>
+</div>
+
+<script>
+// ========== 背景星点 — 与主页一致 ==========
+(function(){
+    var c=document.getElementById('particles'),ctx=c.getContext('2d'),ps=[],w,h,mouse={x:-999,y:-999};
+    function rz(){w=c.width=innerWidth;h=c.height=innerHeight}
+    rz();addEventListener('resize',rz);
+    if(matchMedia('(pointer:fine)').matches){
+        addEventListener('mousemove',function(e){mouse.x=e.clientX;mouse.y=e.clientY});
+        addEventListener('mouseleave',function(){mouse.x=-999;mouse.y=-999});
+    }
+    var gs=['#a8cbb8','#88b3a0','#c2d8ce','#cfc4dd','#b3a8c9'];
+    function P(){
+        this.x=Math.random()*w;this.y=Math.random()*h;this.s=.5+Math.random()*1.6;
+        this.sx=(Math.random()-.5)*.35;this.sy=(Math.random()-.5)*.35;
+        this.c=gs[Math.floor(Math.random()*gs.length)];
+        this.a=.08+Math.random()*.12;this.ps=.004+Math.random()*.01;this.pd=Math.random()>.5?1:-1;
+    }
+    P.prototype.u=function(){
+        this.a+=this.ps*this.pd;if(this.a>=.2)this.pd=-1;if(this.a<=.06)this.pd=1;
+        var dx=mouse.x-this.x,dy=mouse.y-this.y,dist=Math.sqrt(dx*dx+dy*dy);
+        if(dist<140&&dist>0){var f=.22/(dist*.03+1);this.sx+=dx*f*.008;this.sy+=dy*f*.008}
+        this.x+=this.sx;this.y+=this.sy;this.sx*=.999;this.sy*=.999;
+        if(this.x>w+20)this.x=-20;if(this.x<-20)this.x=w+20;
+        if(this.y>h+20)this.y=-20;if(this.y<-20)this.y=h+20;
+    };
+    P.prototype.d=function(){ctx.beginPath();ctx.arc(this.x,this.y,this.s,0,Math.PI*2);ctx.fillStyle=this.c;ctx.globalAlpha=this.a;ctx.fill();ctx.globalAlpha=1};
+    var cnt=Math.min(Math.floor(w*h/32000),40);
+    for(var i=0;i<cnt;i++)ps.push(new P());
+    function anim(){
+        ctx.clearRect(0,0,w,h);
+        for(var i=0;i<ps.length;i++){ps[i].u();ps[i].d();
+            for(var j=i+1;j<ps.length;j++){var dx=ps[i].x-ps[j].x,dy=ps[i].y-ps[j].y,d=dx*dx+dy*dy;
+                if(d<9000){ctx.beginPath();ctx.moveTo(ps[i].x,ps[i].y);ctx.lineTo(ps[j].x,ps[j].y);
+                    ctx.strokeStyle='rgba(136,179,160,.045)';ctx.lineWidth=.5;ctx.stroke()}}}
+        requestAnimationFrame(anim);
+    }
+    anim();
+})();
+
+// ========== 计数自动统计（新增版本后无需手工改数字）==========
+(function(){
+    var items=document.querySelectorAll('.rel-list li');
+    var releases=document.querySelectorAll('.release');
+    var tally={all:items.length,feat:0,impr:0,fix:0};
+
+    items.forEach(function(li){
+        var t=li.dataset.type;
+        if(tally[t]!==undefined)tally[t]++;
+    });
+
+    document.querySelectorAll('.c[data-count]').forEach(function(el){
+        var k=el.dataset.count;
+        el.textContent=tally[k]!==undefined?tally[k]:'';
+    });
+
+    var verEl=document.getElementById('s-ver');
+    if(verEl)verEl.textContent=releases.length;
+
+    var curEl=document.getElementById('s-cur');
+    if(curEl&&releases.length)curEl.textContent='v'+releases[0].dataset.ver;
+})();
+
+// ========== 分类筛选 ==========
+(function(){
+    var chips=document.querySelectorAll('.chip');
+    var items=document.querySelectorAll('.rel-list li');
+    var releases=document.querySelectorAll('.release');
+    var empty=document.getElementById('empty-filter');
+
+    chips.forEach(function(chip){
+        chip.addEventListener('click',function(){
+            var f=chip.dataset.filter;
+            chips.forEach(function(c){c.classList.toggle('active',c===chip)});
+
+            // 条目级过滤
+            items.forEach(function(li){
+                li.classList.toggle('hidden', f!=='all' && li.dataset.type!==f);
+            });
+
+            // 整个版本内无可见条目时，隐藏该版本卡（但「全部」时全显示）
+            var visible=0;
+            releases.forEach(function(rel){
+                var shown=rel.querySelectorAll('.rel-list li:not(.hidden)').length;
+                var hide=(f!=='all' && shown===0);
+                rel.classList.toggle('hidden',hide);
+                if(!hide)visible++;
+            });
+
+            empty.classList.toggle('on',visible===0);
+        });
+    });
+})();
+
+// ========== 从子页面返回时的入场过渡 ==========
+(function(){
+    var ref=document.referrer||'';
+    if(ref && ref.indexOf(location.host)>=0){
+        document.body.style.animation='none';
+        document.body.style.opacity='0';
+        requestAnimationFrame(function(){
+            document.body.style.transition='opacity .35s ease';
+            document.body.style.opacity='1';
+        });
+    }
+})();
+</script>
+</body>
+</html>

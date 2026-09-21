@@ -224,6 +224,13 @@ body{animation:pageEnter .6s ease-out}
 .footer{text-align:center;padding:70px 20px 58px}
 .footer .f-quote{font-size:.85rem;color:var(--text-light);letter-spacing:2.5px}
 .footer .f-meta{margin-top:10px;font-size:.72rem;color:var(--text-faint);letter-spacing:1.5px}
+.footer .f-meta a{
+    color:var(--mist);text-decoration:none;
+    border-bottom:1px solid rgba(125,149,173,.4);padding-bottom:1px;
+    transition:color .22s ease,border-color .22s ease;
+}
+.footer .f-meta a b{font-weight:600;font-variant-numeric:tabular-nums}
+.footer .f-meta a:hover{color:var(--teal);border-color:rgba(63,145,121,.55)}
 
 /* ─── 响应式 ─── */
 @media(max-width:1199px){
@@ -367,7 +374,7 @@ body{animation:pageEnter .6s ease-out}
 
     <footer class="footer">
         <p class="f-quote">记录走过的路，也记录路上的风。</p>
-        <p class="f-meta">Tonia's Travel Journal · 2026</p>
+        <p class="f-meta">Tonia's Travel Journal · 2026 &nbsp;·&nbsp; <a href="changelog/" onclick="return navigateTo(event,this.href)">版本更新 <b>v3.0.0</b></a></p>
     </footer>
 </div>
 
